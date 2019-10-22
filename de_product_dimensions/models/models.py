@@ -17,7 +17,6 @@ class Product(models.Model):
     
     secondary_qty_available = fields.Float(string="Secondary Unit of Measure", compute='get_secondary_qty_available')
     
-    @api.multi
     @api.depends('secondary_uom_id')
     def get_secondary_qty_available(self):
         for record in self:
