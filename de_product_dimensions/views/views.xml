@@ -10,8 +10,8 @@
                 <label for="secondary_unit_qty" string="Secondary"/>
                 <div>
                     <field name="secondary_unit_qty" nolabel="1" class="oe_inline"/> 
-                    <field name="secondary_uom_id" nolabel="1" class="oe_inline"/>/
-                    <field name="uom_id" nolabel="1" readonly="1" class="oe_inline"/>
+                    <field name="secondary_uom_id" nolabel="1" class="oe_inline"/>
+                    <!--<field name="uom_id" nolabel="1" readonly="1" class="oe_inline"/>-->
                 </div>
             </xpath>
             <xpath expr="//group[@name='group_lots_and_weight']" position="inside">
