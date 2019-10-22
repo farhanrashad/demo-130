@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_de_modal_reference_de_modal_reference,de_modal_reference.de_modal_reference,model_de_modal_reference_de_modal_reference,,1,0,0,0
