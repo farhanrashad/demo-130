@@ -15,6 +15,20 @@
         </field>
     </record>
       
+      <record model="ir.ui.view" id="product_product_normal_form_view_inherit">
+        <field name="name">product.product.normal.form.view.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_id']" position="after">
+                <field name="reference_product_id"/> 
+            </xpath>
+            <xpath expr="//field[@name='reference_product_id']" position="attributes">
+                <attribute name="groups">base.group_system</attribute>
+            </xpath>
+        </field>
+    </record>
+      
     <!--
     <record model="ir.ui.view" id="de_modal_reference.list">
       <field name="name">de_modal_reference list</field>

@@ -15,3 +15,8 @@ class ProductTemplate(models.Model):
 #     @api.depends('value')
 #     def _value_pc(self):
 #         self.value2 = float(self.value) / 100
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.product'
+    
+    reference_product_id = fields.Many2one('product.product', 'Reference Product', ondelete='cascade', required=False)
