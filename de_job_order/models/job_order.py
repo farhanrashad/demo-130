@@ -42,7 +42,6 @@ class JobOrder(models.Model):
         res_id = super(JobOrder, self).create(vals)
         return res_id
     
-    @api.multi
     def compute_job(self):
         self.job_order_lines.unlink()
         job_order_line = self.env['job.order.line']
@@ -58,7 +57,8 @@ class JobOrder(models.Model):
                         'quantity':sale.product_uom_qty,
                     }
                     job_order_line.create(result_dict)
-    @api.multi
+                    
+                    
     def compute_job1(self):
         self.job_order_lines.unlink()
         for job in self:
@@ -66,7 +66,6 @@ class JobOrder(models.Model):
             job.create({'job_order_lines': lines})
         return True
     
-    @api.model
     def _get_job_order_lines(self, struct_id, job_id):
             
         result_dict = {}
@@ -86,7 +85,8 @@ class JobOrder(models.Model):
                 'quantity':1,
             }
         return list(result_dict.values())
-    @api.multi
+    
+    
     def generate_sale_lines(self):
         vals = {}
         self.job_order_sale_lines.unlink()
@@ -105,7 +105,6 @@ class JobOrder(models.Model):
             
    
         
-    @api.multi
     def _compute_details_by_component_category(self):
         for job in self:
             job.details_by_component_category = job.mapped('job_order_lines').filtered(lambda line: line.category_id)

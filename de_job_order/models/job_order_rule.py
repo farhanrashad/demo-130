@@ -25,7 +25,6 @@ class JobOrderStructure(models.Model):
     note = fields.Text(string='Description')
     rule_ids = fields.Many2many('job.order.rule', 'job_structure_job_rule_rel', 'struct_id', 'rule_id', string='Job Order Rules')
     
-    @api.multi
     def get_all_rules(self):
         """
         @return: returns a list of tuple (id, sequence) of rules that are maybe to apply
@@ -68,7 +67,6 @@ class JobOrderRule(models.Model):
     quantity_percentage_base = fields.Char(string='Percentage based on', help='result will be affected to a variable')
             
     #TODO should add some checks on the type of result (should be float)
-    @api.multi
     def _compute_rule(self, localdict):
         """
         :param localdict: dictionary containing the environement in which to compute the rule
