@@ -74,6 +74,31 @@ class JobOrderRule(models.Model):
         :rtype: (float, float, float)
         """
         self.ensure_one()
+        if self.quantity_select == 'fix':
+            try:
+                return self.quantity_fix
+            except:
+                raise UserError(_('Wrong quantity defined for salary rule %s (%s).') % (self.name, self.code))
+        elif self.quantity_select == 'percentage':
+            try:
+                return (float(safe_eval(self.quantity_percentage_base, localdict)))
+            except:
+                raise UserError(_('Wrong percentage base or quantity defined for salary rule %s (%s).') % (self.name, self.code))
+        else:
+            try:
+                safe_eval(self.amount_python_compute, localdict, mode='exec', nocopy=True)
+                return float(localdict['result']), 'result_qty' in localdict and localdict['result_qty'] or 1.0
+            except:
+                raise UserError(_('Wrong python code defined for salary rule %s (%s).') % (self.name, self.code))
+                
+                
+    def _compute_rule(self, localdict):
+        """
+        :param localdict: dictionary containing the environement in which to compute the rule
+        :return: returns a tuple build as the base/amount computed, the quantity and the rate
+        :rtype: (float, float, float)
+        """
+        self.ensure_one()
         if self.amount_select == 'fix':
             try:
                 return self.amount_fix, float(safe_eval(self.quantity, localdict)), 100.0

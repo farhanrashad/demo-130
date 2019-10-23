@@ -47,8 +47,8 @@
                                         <td><span t-field="item.product_uom_qty"/></td>
                                         <t t-foreach="o.job_order_lines" t-as="l">
                                             <t t-if="item.id==l.job_sale_line_id.id">
-                                                <td t-if="l.rule_id.name" style="">
-                                                    <strong><span t-field="l.rule_id.code"/></strong>
+                                                <td t-if="l.job_rule_id.name" style="">
+                                                    <strong><span t-field="l.job_rule_id.code"/></strong>
                                                     <p t-field="l.quantity"/>
                                                 </td>
                                             </t>
