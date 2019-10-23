@@ -15,6 +15,7 @@
                 </div>
             </xpath>
             <xpath expr="//group[@name='group_lots_and_weight']" position="inside">
+                <field name="gsm"/>
                 <field name="length"/>
                 <field name="width"/>
                 <field name="height"/>

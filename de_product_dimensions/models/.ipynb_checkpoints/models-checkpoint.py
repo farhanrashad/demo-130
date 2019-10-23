@@ -5,9 +5,10 @@ from odoo import models, fields, api
 class Product(models.Model):
     _inherit = 'product.template'
 
-    length = fields.Char(string='Length',)
-    width = fields.Char(string='Width',)
-    height = fields.Char(string='Height',)
+    length = fields.Integer(string='Length',)
+    width = fields.Integer(string='Width',)
+    height = fields.Integer(string='Height',)
+    gsm = fields.Integer(string='GSM',)
     
     secondary_unit_qty = fields.Float(string='Unit Quantity',default=1.0,required=True)
 
