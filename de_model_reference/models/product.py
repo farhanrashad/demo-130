@@ -2,10 +2,10 @@
 
 from odoo import models, fields, api
 
-class ProductTemplate(models.Model):
+class ProductTemplateRef(models.Model):
     _inherit = 'product.template'
     
-    reference_product_tmpl_id = fields.Many2one('product.template', 'Reference Product', ondelete='cascade', required=False)
+    ref_product_tmpl_id = fields.Many2one('product.template', 'Product Reference', stored=True, required=False)
 
 #     name = fields.Char()
 #     value = fields.Integer()
@@ -16,7 +16,7 @@ class ProductTemplate(models.Model):
 #     def _value_pc(self):
 #         self.value2 = float(self.value) / 100
 
-class ProductTemplate(models.Model):
+class ProductProductRef(models.Model):
     _inherit = 'product.product'
     
-    reference_product_id = fields.Many2one('product.product', 'Reference Product', ondelete='cascade', required=False)
+    ref_product_id = fields.Many2one('product.product', 'Variant Reference', stored=True, required=False)
