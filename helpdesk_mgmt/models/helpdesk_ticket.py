@@ -162,10 +162,10 @@ class HelpdeskTicket(models.Model):
     # Mail gateway
     # ---------------------------------------------------
 
-    def _track_template(self, tracking):
-        res = super(HelpdeskTicket, self)._track_template(tracking)
+    def _track_template(self, changes):
+        res = super(HelpdeskTicket, self)._track_template(changes)
         test_task = self[0]
-        changes, tracking_value = tracking[test_task.id]
+        #changes, tracking_value = tracking[test_task.id]
         if "stage_id" in changes and test_task.stage_id.mail_template_id:
             res['stage_id'] = (test_task.stage_id.mail_template_id,
                                {"composition_mode": "mass_mail"})

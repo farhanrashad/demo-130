@@ -98,6 +98,21 @@
         </field>
     </record>
    
+    <!-- Reporting action for dashboard -->
+    <record id="helpdesk_ticket_reporting_action" model="ir.actions.act_window">
+        <field name="name">Closed Tickets Analysis</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">pivot,graph</field>
+        <!--
+        <field name="search_view_id" ref="helpdesk_ticket_view_search_analysis_closed"/>
+        <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+        <field name="context">{'search_default_my_ticket': True}</field>
+        <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'graph', 'view_id': ref('helpdesk_ticket_view_graph_analysis')}),
+                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('helpdesk_ticket_view_pivot_analysis')})]"/>
+-->
+    </record>
 
         <!-- Menus -->
         <menuitem id="helpdesk_ticket_root_menu" name="Helpdesk" sequence="16"
@@ -108,8 +123,12 @@
             parent="helpdesk_ticket_root_menu" sequence="20"
             groups="group_helpdesk_user"/>
     
+    <menuitem id="helpdesk_ticket_reporting_main_menu" name="Reporting"
+            parent="helpdesk_ticket_root_menu" sequence="30"
+            groups="group_helpdesk_user"/>
+    
     <menuitem id="helpdesk_ticket_config_main_menu" name="Configuration"
-            parent="helpdesk_ticket_root_menu" sequence="35"
+            parent="helpdesk_ticket_root_menu" sequence="40"
             groups="group_helpdesk_manager"/>
     
     
@@ -118,6 +137,9 @@
     
     <menuitem id="helpdesk_ticket_menu" name="Tickets"
             parent="helpdesk_ticket_menu_main" action="helpdesk_ticket_action_main" sequence="10"/>
+    
+    <menuitem id="helpdesk_ticket_reporting_menu" name="Tickets"
+            parent="helpdesk_ticket_reporting_main_menu" action="helpdesk_ticket_reporting_action" sequence="10"/>
     
     
     <menuitem id="helpdesk_ticket_team_menu" name="Helpdesk Teams"
