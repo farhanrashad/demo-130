@@ -81,12 +81,12 @@
             </p>
         </field>
     </record>
-    
+ 
     <record id="helpdesk_ticket_action_main" model="ir.actions.act_window">
         <field name="name">All Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
         <field name="view_mode">kanban,tree,form,activity</field>
-        <field name="search_view_id" ref="helpdesk_ticket_view_search"/>
+        <!--<field name="search_view_id" ref="helpdesk_ticket_view_search"/>-->
         
         <field name="context">{'search_default_my_ticket': True, 'search_default_is_open': True}</field>
         <field name="help" type="html">
@@ -97,7 +97,6 @@
             </p>
         </field>
     </record>
-   
     <!-- Reporting action for dashboard -->
     <record id="helpdesk_ticket_reporting_action" model="ir.actions.act_window">
         <field name="name">Closed Tickets Analysis</field>
