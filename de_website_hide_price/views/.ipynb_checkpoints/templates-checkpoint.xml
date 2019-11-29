@@ -11,13 +11,24 @@
                 base.group_user, base.group_portal
             </attribute>
         </xpath>
+       
     </template>
+    
+    <template id="product_buy_now_inherit" inherit_id="website_sale.product_buy_now">
+         <xpath expr="//a[@id='buy_now']" position="attributes">
+            <attribute name="groups">
+                base.group_user, base.group_portal
+            </attribute>
+        </xpath>
+    </template>
+   
     <template id="de_website_show_hide_price_product_detail" inherit_id="website_sale.product_price">
         <xpath expr="//div[@itemprop='offers']" position="attributes">
             <attribute name="groups">
                 base.group_user, base.group_portal
             </attribute>
         </xpath>
+        
     </template>
     <!-- Product Grid/Product item Page -->
     <template id="de_website_hide_price_products_item" inherit_id="website_sale.products_item" >
@@ -27,6 +38,11 @@
             </div>
         </xpath>
         <xpath expr="//div[@itemprop='offers']" position="attributes">
+            <attribute name="groups">
+                base.group_user, base.group_portal
+            </attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_wsale_product_btn')]" position="attributes">
             <attribute name="groups">
                 base.group_user, base.group_portal
             </attribute>

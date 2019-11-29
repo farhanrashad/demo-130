@@ -40,7 +40,7 @@
     "price"                :  5,
     "currency"             :  "EUR",
     "license"              :  "Other proprietary",
-    "live_test_url"        :  "https://youtu.be/oJ049abU_Kw",
+    "live_test_url"        :  "https://youtu.be/uCBdNkRjWh4",
 
     'demo': [
         'demo/demo.xml',
