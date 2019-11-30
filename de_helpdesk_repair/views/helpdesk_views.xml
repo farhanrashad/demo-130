@@ -11,7 +11,7 @@
     <record id="helpdesk_ticket_view_form_inherit_helpdesk_repair" model="ir.ui.view">
         <field name='name'>helpdesk.ticket.form.inherit.helpdesk.repair</field>
         <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+        <field name="inherit_id" ref="de_helpdesk.ticket_view_form"/>
         <field name="arch" type="xml">
             <div class="oe_button_box" position="inside">
                 <button class="oe_stat_button" name="action_view_repairs" icon="fa-wrench" type="object" attrs="{'invisible': [('repairs_count', '=', 0)]}">
@@ -24,23 +24,18 @@
     <record id="helpdesk_ticket_view_form_inherit_stock_user" model="ir.ui.view">
         <field name='name'>helpdesk.ticket.form.inherit.repair.stock.user</field>
         <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+        <field name="inherit_id" ref="de_helpdesk.ticket_view_form"/>
         <field name="arch" type="xml">
             <field name="stage_id" position="before">
-               
-                <button name="%(action_repair_order_form)d" type="action" string="Repair" />
+                <!-- <field name="use_product_repairs" invisible="1"/> -->
+                <!-- <button name="%(action_repair_order_form)d" type="action" string="Repair" /> -->
+                <button name="%(action_repair_order_form)d" type="action"
+                    groups="de_helpdesk.group_helpdesk_user"
+                    string="Repair" context="{'default_partner_id': partner_id, 'default_ticket_id': id, 'default_company_id': company_id}"/>
+                
             </field>
         </field>
-        <field name="groups_id" eval="[(4, ref('stock.group_stock_user'))]"/>
+        <!-- <field name="groups_id" eval="[(4, ref('stock.group_stock_user'))]"/> -->
     </record>
-<!--
-    <record id="helpdesk_team_view_form_inherit_helpdesk_repair" model="ir.ui.view">
-        <field name='name'>helpdesk.team.form.inherit.helpdesk.repair</field>
-        <field name="model">helpdesk.team</field>
-        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
-        <field name="arch" type="xml">
-            <div id="use_product_repairs" position="replace"/>
-        </field>
-    </record>
--->
+
 </odoo>
