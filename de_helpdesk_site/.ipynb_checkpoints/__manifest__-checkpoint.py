@@ -26,7 +26,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/helpdesk_site_views.xml',
-        'views/templates.xml',
+        'views/helpdesk_templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

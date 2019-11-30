@@ -41,6 +41,7 @@ class HelpdeskTicketControllerSite(HelpdeskTicketController):
             'company_id': http.request.env.user.company_id.id,
             'category_id': kw.get('category'),
             'partner_email': kw.get('email'),
+            'reference': kw.get('reference'),
             'site_name': kw.get('site_name'),
             'contact_name': kw.get('contact_name'),
             'site_address': kw.get('site_address'),
