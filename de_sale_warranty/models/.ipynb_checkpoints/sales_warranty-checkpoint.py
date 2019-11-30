@@ -12,7 +12,7 @@ class SalesWarrenty(models.Model):
     _name = 'sales.warranty'
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
     _description = 'Sale Warranty'
-    _order = 'date_order desc, id desc'
+    _order = 'id desc'
     
     name = fields.Char(string='Name',  copy=False,  index=True, default=lambda self: _('New'))
     internal_reference = fields.Text(string='Internal Reference')
