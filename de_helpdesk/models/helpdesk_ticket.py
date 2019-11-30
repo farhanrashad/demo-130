@@ -80,6 +80,7 @@ class HelpdeskTicket(models.Model):
         ('normal', 'Default'),
         ('done', 'Ready for next stage'),
         ('blocked', 'Blocked')], string='Kanban State')
+    active = fields.Boolean('Active', default=True)
 
     def send_user_mail(self):
         self.env.ref('helpdesk_mgmt.assignment_email_template'). \
