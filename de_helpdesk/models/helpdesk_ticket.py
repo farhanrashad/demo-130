@@ -83,7 +83,7 @@ class HelpdeskTicket(models.Model):
     active = fields.Boolean('Active', default=True)
 
     def send_user_mail(self):
-        self.env.ref('helpdesk_mgmt.assignment_email_template'). \
+        self.env.ref('de_helpdesk.assignment_email_template'). \
             send_mail(self.id)
 
     def assign_to_me(self):
