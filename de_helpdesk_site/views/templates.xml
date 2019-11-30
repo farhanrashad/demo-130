@@ -1,0 +1,117 @@
+<odoo>
+    <data>
+        <template id="portal_create_ticket_inherit" name="Create Ticket" inherit_id="de_helpdesk.portal_create_ticket" priority="40">
+            <xpath expr="//form" position="replace">
+                <form action="/submitted/ticket" method="POST" class="form-horizontal mt32" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="name">Name</label>
+                        <div class="col-md-7 col-sm-8">
+                            <input type="text" class="form-control" name="name" t-attf-value="#{name}" required="True"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="email">Email</label>
+                        <div class="col-md-7 col-sm-8">
+                            <input type="email" class="form-control" name="email" required="True" t-attf-value="#{email}" readonly="True" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="category">Category</label>
+                        <div class="col-md-7 col-sm-8">
+                            <select class="form-control" id="category" name="category" required="True">
+                                <t t-foreach="categories" t-as="cat">
+                                    <option t-attf-value="#{cat.id}"><t t-esc="cat.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="subject">Subject</label>
+                        <div class="col-md-7 col-sm-8">
+                            <input type="text" class="form-control" name="subject" required="True"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="site_name">Site Name</label>
+                        <div class="col-md-7 col-sm-8">
+                            <input type="text" class="form-control" name="site_name" required="False"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="contact_name">Contact Name</label>
+                        <div class="col-md-7 col-sm-8">
+                            <input type="text" class="form-control" name="contact_name" required="False"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12 col-sm-4 control-label" for="site_address">Address</label>
+                        <div class="col-md-5 col-sm-4" style="display:inline-block;" >
+                            <input type="text" class="form-control" placeholder="Street" name="site_address" required="False"/>
+                        </div>
+                        <div class="col-md-3 col-sm-4" style="display:inline-block;">
+                            <input type="text" class="form-control" placeholder="Region" name="region" required="False"/>
+                        </div>
+                        <div class="col-md-3 col-sm-4" style="display:inline-block;">
+                           <input type="text" class="form-control" placeholder="City" name="city" required="False"/>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-12 col-sm-4 control-label" for="material">Material</label>
+                        <div class="col-md-5 col-sm-8" style="display:inline-block;">
+                            <input type="text" class="form-control" placeholder="Material" name="material" required="False"/>
+                        </div>
+                        <div class="col-md-3 col-sm-8" style="display:inline-block;">
+                            <input type="text" class="form-control" placeholder="Barcode" name="barcode" required="False"/>
+                        </div>
+                        <div class="col-md-3 col-sm-8" style="display:inline-block;">
+                            <input type="text" class="form-control" placeholder="Model" name="model" required="False"/>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-4 control-label" for="attachment">Add Attachments</label>
+                        <div class="col-md-7 col-sm-8">
+                            <div class="btn btn-default btn-file col-md-12"><input class="form-control o_website_form_input" name="attachment" id="attachment" type="file" multiple="multiple"/></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-dm-4 control-label" for="description">Description</label>
+                        <div class="col-md-7 col-sm-8">
+                            <textarea class="form-control" name="description" style="min-height: 120px" required="True"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                            <button class="btn btn-primary btn-lg">Submit Ticket</button>
+                        </div>
+                    </div>
+                </form>
+            </xpath>
+        </template>
+        
+        <template id="portal_helpdesk_ticket_page_inherit" inherit_id="de_helpdesk.portal_helpdesk_ticket_page" >
+            <xpath expr="//div[hasclass('description')]" position="before">
+                <div class="col-md-6 mb-0">
+                    <p><strong>Site Name:</strong> <span t-field="ticket.site_name" /></p>
+                    <p><strong>Contact Name:</strong> <span t-field="ticket.contact_name" /></p>
+                    <p><strong>Address:</strong> <span t-field="ticket.site_address" />,<span t-field="ticket.region" />,<span t-field="ticket.city" /></p>
+                </div>
+                <div class="col-md-6 mb-0">
+                    <p><strong>Material:</strong> <span t-field="ticket.material" /></p>
+                    <p><strong>Barcode:</strong> <span t-field="ticket.barcode" /></p>
+                    <p><strong>model:</strong> <span t-field="ticket.model" /></p>
+                </div>
+            </xpath>
+        </template>
+        <template id="portal_my_tickets_inherit" inherit_id="de_helpdesk.portal_my_tickets" >
+            <xpath expr="//div[hasclass('panel')]/div/table/thead/tr/th[3]" position="after">
+                <th>Site</th>
+            </xpath>
+            <xpath expr="//div[hasclass('panel')]/div/table/t/tr/td[3]" position="after">
+                <td><span t-field="ticket.site_name" />-<span t-field="ticket.site_address" />,<span t-field="ticket.region" />,<span t-field="ticket.city" /></td>
+            </xpath>
+        </template>
+    </data>
+</odoo>
