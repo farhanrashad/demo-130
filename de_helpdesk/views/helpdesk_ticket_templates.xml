@@ -51,7 +51,7 @@
                             <th>Last Stage Update</th>
                             <th>Close Date</th>
                         </tr>
-                </thead>
+                    </thead>
                 <t t-foreach="tickets" t-as="ticket">
                   <tr>
                     <td>
@@ -117,9 +117,9 @@
                 <div class="container bg-white no-gutters border rounded">
                 <div class="row card-body mb8">
                     <div class="col-md-6 mb-0">
-                        <p><strong>Reported On:</strong><span t-field="ticket.create_date" /></p>
+                        <p><strong>Reported On: </strong><span t-field="ticket.create_date" /></p>
                         <p>
-                            <strong>Reported By:</strong>
+                            <strong>Reported By: </strong>
                             <img t-if="ticket.partner_id.image_1024" class="rounded-circle o_portal_contact_img" t-attf-src="data:image/png;base64,#{ticket.partner_id.image_1024}" alt="Contact"/>
                             <img t-else="" class="rounded-circle o_portal_contact_img" src="/web/static/src/img/user_menu_avatar.png" alt="Contact"/>
                             <span t-field="ticket.partner_id.name" /><br/><span t-field="ticket.partner_id.email" />
@@ -130,16 +130,15 @@
                     <div class="col-md-6 mb-0">
                         <p><strong>Last Stage Update:</strong> <span t-field="ticket.last_stage_update" /></p>
                         <p>
-                            <strong>Assigned To:</strong>
+                            <strong>Assigned To: </strong>
                             <img t-if="ticket.user_id.image_1024" class="rounded-circle o_portal_contact_img" t-attf-src="data:image/png;base64,#{ticket.user_id.image_1024}" alt="Contact"/>
                             <img t-else="" class="rounded-circle o_portal_contact_img" src="/web/static/src/img/user_menu_avatar.png" alt="Contact"/>
                             <span t-field="ticket.user_id.partner_id.name" /><br/><span t-field="ticket.user_id.email" />
                         </p>
-                        <p><strong>Managed By:</strong><span t-field="ticket.team_id.name" /></p>
+                        <p><strong>Managed By:</strong> <span t-field="ticket.team_id.name" /></p>
                     </div>
-                    <div class="col-md-12 mb-0">
-                        <p><strong>Description</strong><t t-raw="ticket.description"/></p>
-                        <p><t t-raw="ticket.description"/></p>
+                    <div class="col-md-12 mb-0 description">
+                        <p><strong>Description</strong> <t t-raw="ticket.description"/></p>
                     </div>
                 </div>
                
