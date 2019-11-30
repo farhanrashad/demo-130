@@ -115,7 +115,7 @@
 
         <!-- Menus -->
         <menuitem id="helpdesk_ticket_root_menu" name="Helpdesk" sequence="16"
-            web_icon="helpdesk_mgmt,static/description/icon.png" groups="group_helpdesk_user_own"/>
+            web_icon="de_helpdesk,static/description/icon.png" groups="group_helpdesk_user_own"/>
 
     
     <menuitem id="helpdesk_ticket_menu_main" name="Tickets"
