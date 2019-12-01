@@ -27,7 +27,7 @@
         'security/ir.model.access.csv',
         'views/res_config_settings_views.xml',
         'views/sales_warranty_views.xml',
-        'views/templates.xml',
+        'views/product_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

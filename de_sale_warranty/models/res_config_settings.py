@@ -13,7 +13,7 @@ class ResConfigSettings(models.TransientModel):
         default='order',
         default_model='product.template')
     
-    default_period = fields.Selection([
+    default_warranty_period = fields.Selection([
         ('d', 'Day(s)'),
         ('m', 'Month(s)'),
         ('y', 'Year(s)'),
@@ -21,4 +21,4 @@ class ResConfigSettings(models.TransientModel):
         default='d',
         default_model='product.template')
     
-    warranty_period_interval = fields.Integer('Internval')
+    warranty_period_interval = fields.Integer(related='company_id.warranty_period_interval', required=True, readonly=False)
