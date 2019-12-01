@@ -30,6 +30,7 @@
         'views/sales_warranty_views.xml',
         'views/product_views.xml',
         'views/warranty_card_report.xml',
+        'views/sales_warranty_templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
