@@ -7,8 +7,9 @@
             <field name="arch" type="xml">
                 <tree string="Sales Warranty">
                     <field name="name"/>
-                    <field name="customer_id"/>
+                    <field name="partner_id"/>
                     <field name="product_id"/>
+                    <field name="warranty_start_date"/>
                     <field name="warranty_end_date"/>
                     <field name="state"/>
                 </tree>
@@ -23,17 +24,11 @@
             
             <form string="Sales Warranty Details">
 	            <header>
-                    <field name="state" widget="statusbar" statusbar_visible="inwarranty,toexpire,expired"/>
+                    <button name="start_warranty" string="Start Warranty" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'draft')]}" groups="sales_team.group_sale_manager" />
+                    <button name="force_expire_warranty" string="Force Expiry" type="object" class="btn-secondary" attrs="{'invisible': [('state', 'in', ['draft','expired'])]}" groups="sales_team.group_sale_manager" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,inwarranty,toexpire,expired"/>
 	            </header>
 					<sheet>
-						<div>
-							<div class="oe_right oe_button_box" name="button_box">
-		                        
-	                    	</div>
-							<div class="oe_right oe_button_box" name="button_box" position="inside">
-		                       
-	                        </div>
-	                    </div>
 						<div class="oe_title">
 		                	<h1>
 	                            <field name="name" readonly="1" required="True"/>
@@ -41,21 +36,26 @@
 		                </div>     
 					    <group>
 	                    	<group>
-	                     		<field name="customer_id" required="True"/>
-	                     		<field name="product_id" required="True"/>
-		                    	<field name="sale_id" domain="[('state','=','done')]"/>
-		                    	<field name="invoice_id" domain="[('state','=','paid')]"/>
+                                <field name="active" invisible="1"/>
+	                     		<field name="partner_id" />
+	                     		<field name="product_id" domain="[('is_warranty','=',True)]" />
+		                    	<field name="sale_id" />
+		                    	<field name="picking_id" />
+                                <field name="invoice_id" />
 		                    </group>
 		                    <group>
-		                    	<field name="purchase_date" required="True"/>
-		                       	<field name="warranty_end_date" required="True"/>
+		                    	<field name="purchase_date"/>
+                                <field name="warranty_start_date" />
+		                       	<field name="warranty_end_date" />
 		                       	<field name="sno"/>
+                                <field name="user_id"/>
+                                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
 			                </group>
 			           </group>
 		                <notebook>
 		                	<page string="Internal Reference">
 								<separator orientation="vertical"/>
-		                		<field name="internal_reference" placeholder="Add internal reference notes here..." />
+		                		<field name="notes" placeholder="Add internal reference notes here..." />
 		                	</page>
 		                </notebook>
 		         	</sheet>
@@ -74,8 +74,11 @@
             <field name="res_model">sales.warranty</field>
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
-                    Create a Sales Warranty</p>
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new warranty document!
+                </p><p>
+                    Once the warranty is started, it will expire automatically on the warranty end date.
+                </p>
             </field>
         </record>
     

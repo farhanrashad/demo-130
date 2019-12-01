@@ -26,8 +26,10 @@
     'data': [
         'security/ir.model.access.csv',
         'views/res_config_settings_views.xml',
+        'data/warranty_sequence.xml',
         'views/sales_warranty_views.xml',
         'views/product_views.xml',
+        'views/warranty_card_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
