@@ -16,14 +16,9 @@ class HelpdeskTicket(models.Model):
                          readonly=True)
     name = fields.Char(string='Title', required=True)
     description = fields.Text(required=True)
-    user_id = fields.Many2one(
-        'res.users',
-        string='Assigned user',)
+    user_id = fields.Many2one('res.users', string='Assigned to', tracking=True, domain=lambda self: [('groups_id', 'in', self.env.ref('de_helpdesk.group_helpdesk_user').id)])
 
-    user_ids = fields.Many2many(
-        comodel_name='res.users',
-        related='team_id.user_ids',
-        string='Users')
+    user_ids = fields.Many2many(comodel_name='res.users',related='team_id.user_ids',string='Users')
 
     @api.model
     def _read_group_stage_ids(self, stages, domain, order):
@@ -95,19 +90,19 @@ class HelpdeskTicket(models.Model):
             self.partner_name = self.partner_id.name
             self.partner_email = self.partner_id.email
 
-    @api.onchange('team_id', 'user_id')
-    def _onchange_dominion_user_id(self):
-        if self.user_id:
-            if self.user_id and self.user_ids and \
-                    self.user_id not in self.user_ids:
-                self.update({
-                    'user_id': False
-                })
-                return {'domain': {'user_id': []}}
-        if self.team_id:
-            return {'domain': {'user_id': [('id', 'in', self.user_ids.ids)]}}
-        else:
-            return {'domain': {'user_id': []}}
+    #@api.onchange('team_id', 'user_id')
+    #def _onchange_dominion_user_id(self):
+        #if self.user_id:
+         #   if self.user_id and self.user_ids and \
+          #          self.user_id not in self.user_ids:
+           #     self.update({
+            #        'user_id': False
+             #   })
+              #  return {'domain': {'user_id': []}}
+        #if self.team_id:
+         #   return {'domain': {'user_id': [('id', 'in', self.user_ids.ids)]}}
+        #else:
+         #   return {'domain': {'user_id': []}}
 
     # ---------------------------------------------------
     # CRUD

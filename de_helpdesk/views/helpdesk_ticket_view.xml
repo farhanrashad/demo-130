@@ -81,7 +81,7 @@
                             <field name="active" invisible="1"/>
                             <field name="team_id" options='{"always_reload": True}'/>
                             <field name="user_ids" invisible="1" readonly="1" />
-                            <field name="user_id" options='{"always_reload": True}'/>
+                            <field name="user_id" options='{"always_reload": False}' domain="[('id', 'in', user_ids)]"/>
 
                             <field name="priority" widget="priority"/>
                              <field name="category_id"/>
