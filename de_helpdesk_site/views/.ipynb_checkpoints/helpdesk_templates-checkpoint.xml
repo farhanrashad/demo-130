@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label class="col-md-3 col-sm-4 control-label" for="reference">Reference</label>
                         <div class="col-md-7 col-sm-8">
-                            <input type="text" class="form-control" name="reference" required="True"/>
+                            <input type="text" class="form-control" name="reference" required="False"/>
                         </div>
                     </div>
                     
