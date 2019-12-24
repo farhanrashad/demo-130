@@ -18,9 +18,11 @@ class SalesWarrenty(models.Model):
     notes = fields.Text(string='Notes')
     active = fields.Boolean(string='Active', default=True)
     product_id = fields.Many2one('product.product',string='Product', track_visibility='onchange', required=True, readonly=True, states={'draft': [('readonly', False)]}, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
-    sno = fields.Char(string='Serial No',track_visibility='onchange', readonly=True,states={'draft': [('readonly', False)]},)
+    #sno = fields.Char(string='Serial No',track_visibility='onchange', readonly=True,states={'draft': [('readonly', False)]},)
+    lot_id = fields.Many2one('stock.production.lot',domain="[('product_id', '=', product_id)]",)
     partner_id = fields.Many2one('res.partner',string='Customer', required=True, track_visibility='onchange', readonly=True, states={'draft': [('readonly', False)]}, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     sale_id = fields.Many2one('sale.order', string='SO Reference', readonly=True)
+    warranty_type = fields.Selection(string='Warranty Type', required=True, default='product', help="Type or Mode of the gatepass", selection=[('service', 'Service'), ('product', 'Product')])
     picking_id = fields.Many2one('stock.picking', string='Delivery Reference', readonly=True)
     invoice_id = fields.Many2one('account.invoice',string='Invoice Reference',readonly=True)
     purchase_date = fields.Date(string='Date of Purchase',required=True, readonly=True, states={'draft': [('readonly', False)]})
@@ -53,10 +55,7 @@ class SalesWarrenty(models.Model):
         seq = self.env['ir.sequence'].get('sales.warranty') 
         values['name'] = seq
         res = super(SalesWarrenty,self).create(values)
-        return res
-    
-    
-        
+        return res    
         
     def start_warranty(self):
         warranty = self.env['sales.warranty'].search([
@@ -69,7 +68,6 @@ class SalesWarrenty(models.Model):
             raise UserError(_('Product is already in-warrany.'))
         else:
             self.state = 'inwarranty'
-        
     
     def force_expire_warranty(self):
         self.state = 'expired'

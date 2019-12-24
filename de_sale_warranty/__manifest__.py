@@ -31,6 +31,7 @@
         'views/product_views.xml',
         'views/warranty_card_report.xml',
         'views/sales_warranty_templates.xml',
+        'wizard/warranty_claim.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
