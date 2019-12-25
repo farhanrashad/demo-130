@@ -34,7 +34,7 @@ class RepairWarrenty(models.Model):
                     'warranty_type':'service',
                     'purchase_date':warranty_start_date,
                     'warranty_start_date':warranty_start_date,
-                    'warranty_end_date':warranty_start_date,
+                    'warranty_end_date':warranty_end_date,
                     'state': 'draft',
                     'user_id':self.create_uid.id,
                 }
