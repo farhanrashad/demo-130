@@ -19,7 +19,7 @@ class SalesWarrenty(models.Model):
     active = fields.Boolean(string='Active', default=True)
     product_id = fields.Many2one('product.product',string='Product', track_visibility='onchange', required=True, readonly=True, states={'draft': [('readonly', False)]}, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     #sno = fields.Char(string='Serial No',track_visibility='onchange', readonly=True,states={'draft': [('readonly', False)]},)
-    lot_id = fields.Many2one('stock.production.lot',domain="[('product_id', '=', product_id)]",)
+    lot_id = fields.Many2one('stock.production.lot',domain="[('product_id', '=', product_id)]",states={'draft': [('readonly', False)]},)
     partner_id = fields.Many2one('res.partner',string='Customer', required=True, track_visibility='onchange', readonly=True, states={'draft': [('readonly', False)]}, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",)
     sale_id = fields.Many2one('sale.order', string='SO Reference', readonly=True)
     warranty_type = fields.Selection(string='Warranty Type', required=True, default='product', help="Type or Mode of the gatepass", selection=[('service', 'Service'), ('product', 'Product')])
@@ -61,7 +61,7 @@ class SalesWarrenty(models.Model):
         warranty = self.env['sales.warranty'].search([
             ('partner_id','=',self.partner_id.id),
             ('product_id','=',self.product_id.id),
-            ('sno','=', self.sno),
+            ('lot_id','=', self.lot_id.id),
             ('state','=','inwarranty'),
         ])
         if len(warranty):
