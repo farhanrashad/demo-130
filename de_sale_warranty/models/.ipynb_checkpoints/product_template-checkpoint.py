@@ -25,7 +25,7 @@ class ProductTemplate(models.Model):
         ('delivery', 'Delivered Warranty')], string='Warranty Policy',
         help='Ordered Warranty: Warranty starts on order confrimation.\n'
              'Delivered Warranty: Warranty starts on delivered quantity.',
-        default='order')
+        default='order', domain="[('type', '=', 'product')" )
     
     warranty_period = fields.Selection([
         ('d', 'Day(s)'),
