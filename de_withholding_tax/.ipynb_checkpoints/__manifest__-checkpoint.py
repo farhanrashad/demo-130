@@ -28,7 +28,7 @@
         'views/partner_views.xml',
         'views/withholding_tax_views.xml',
         'views/invoice_withholding_views.xml',
-        #'views/account_payment_views.xml',
+        'views/account_payment_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
