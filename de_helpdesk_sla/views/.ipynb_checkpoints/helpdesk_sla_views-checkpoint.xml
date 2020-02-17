@@ -20,7 +20,7 @@
                             <field name="team_id"/>
                             <field name="ticket_type_id"/>
                             <separator colspan="2" string="Target" class="mt32"/>
-                            <field name="stage_id" string="Reach Stage" domain="[('team_ids', '=', team_id)]"/>
+                            <field name="stage_id" string="Reach Stage" />
                             <label for="time_days" string="Reach In"/>
                             <div class="o_row">
                                 <field name="time_days"/> days<br/>

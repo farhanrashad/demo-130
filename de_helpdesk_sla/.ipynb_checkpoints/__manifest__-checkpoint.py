@@ -13,7 +13,7 @@
     'author': "Dynexcel",
     'website': "http://www.dynexcel.com",
     'category': 'After-Sales',
-    'version': '0.1',
+    'version': '0.2',
 
     'depends': ['base','de_helpdesk'],
 
