@@ -20,5 +20,5 @@ class HelpdeskSite(models.Model):
     model = fields.Char('Model')
     
     customer_model_desc = fields.Char('Customer Model Desc')
-    reason = fields.Text('Model')
+    reason = fields.Text('Reason')
     crmid = fields.Char('CRM ID')
