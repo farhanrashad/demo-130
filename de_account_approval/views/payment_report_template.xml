@@ -1,0 +1,23 @@
+<odoo>
+    <template id="report_payment_document_inherit" inherit_id="account.report_payment_receipt_document">
+        <xpath expr="/t/t/div/table" position="after">
+        <div class="row mt96">
+            <t t-foreach="request.env['account.approval.log'].sudo().search([])" t-as="p">
+                <t t-if="p.payment_id.id==o.id">
+                    <div class="col-3">
+                        <strong>
+                            <span t-esc="p.status"/>
+                        </strong>
+                        <hr/>
+                        <span t-esc="p.user_id.name"/>
+                    </div>
+                </t>
+            </t>
+            <div class="col-3">
+                <strong>Received By</strong>
+                <hr/>
+            </div>
+        </div>
+    </xpath>
+    </template>
+</odoo>
