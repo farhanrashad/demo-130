@@ -17,6 +17,6 @@ class InvoiceWithholdingTax(models.Model):
     _description = 'Withholding Tax'
     
     move_id = fields.Many2one('account.move',string='Account Move', track_visibility='onchange', required=True, )
-    wht_type_id = fields.Many2one('account.wht_id',string='Withholding Tax Type', required=True, )
+    wht_type_id = fields.Many2one('account.wht.type',string='Withholding Tax Type', track_visibility='onchange', required=True, )
     base_amount = fields.Float(string='Base Amount',required=True)
     wht_amount = fields.Float(string='WHT Amount',required=True)

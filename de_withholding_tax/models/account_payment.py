@@ -19,10 +19,11 @@ class AccountPaymentWHT(models.Model):
         return True
     
     is_wht_liable = fields.Boolean(string='WHT Applicable',default=False,)
-    #wht_type_id = fields.Many2one('account.wht_id',string='Withholding Tax Type', required=True, )
+    wht_type_id = fields.Many2one('account.wht.type',string='Withholding Tax Type', required=True, )
+    amount = fields.Monetary(string='Amount', required=False, readonly=True, tracking=True)
     gross_amount = fields.Monetary(string='Gross Amount', required=True, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
     base_amount = fields.Monetary(string='Base Amount', readonly='_compute_calculation_type', states={'draft': [('readonly', False)]}, )
-    wht_amount = fields.Monetary(string='WHT Amount', required=True, readonly=True, states={'draft': [('readonly', False)]}, )
+    wht_amount = fields.Monetary(string='WHT Amount', required=False, readonly=True,  )
     
     
     
@@ -40,15 +41,28 @@ class AccountPaymentWHT(models.Model):
     def _onchange_amount(self):
         self.base_amount = self.gross_amount
         self._calculate_wth_amount()
+    
+    @api.onchange('base_amount')
+    def _onchange_base_amount(self):
+        self._calculate_wth_amount()
+        
+    @api.onchange('wht_type_id')
+    def _onchange_wht_type(self):
+        self.base_amount = self.gross_amount
+        self._calculate_wth_amount()
         
     def _calculate_wth_amount(self):
         wht_amount = 0
+        vendor_wht = 0
         for line in self.partner_id.partner_wht_type_ids:
             if line.is_liable and line.wht_type_id.wht_rate > 0:
-                wht_amount += self.base_amount * (line.wht_type_id.wht_rate / 100)
+                vendor_wht += self.base_amount * (line.wht_type_id.wht_rate / 100)
+       
+        wth_amount = ((self.wht_type_id.wht_rate/100) * self.base_amount)
+        
         self.update({
-            'wht_amount': wht_amount,
-            'amount': self.gross_amount - wht_amount
+            'wht_amount': ((self.wht_type_id.wht_rate/100) * self.base_amount),
+            'amount': self.gross_amount - ((self.wht_type_id.wht_rate/100) * self.base_amount)
         })
         
     
