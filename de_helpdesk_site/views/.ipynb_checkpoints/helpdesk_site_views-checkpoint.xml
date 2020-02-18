@@ -11,8 +11,10 @@
                 <page name="site_information" string="Site Information">
                     <group>
                         <group string="Site">
+                            <field name="distributor"/>
                             <field name="site_name"/>
                             <field name="contact_name"/>
+                            <field name="contact_no"/>
                             <field name="site_address"/>
                             <field name="region"/>
                             <field name="city"/>
@@ -23,7 +25,11 @@
                             <field name="model"/>
                         </group>
                     </group>
-                    
+                    <group string="Other Info">
+                        <field name="customer_model_desc"/>
+                            <field name="crmid"/>
+                            <field name="reason"/>
+                    </group>
                 </page>
             </xpath>
             
