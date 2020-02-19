@@ -1,0 +1,19 @@
+<odoo>
+    <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
+        <xpath expr="/t/t/div" position="inside">
+        <div class="row mt96">
+            <t t-foreach="request.env['account.approval.log'].sudo().search([])" t-as="p">
+                <t t-if="p.move_id.id==o.id">
+                    <div class="col-3">
+                        <strong>
+                            <span t-esc="p.status"/>
+                        </strong>
+                        <hr/>
+                        <span t-esc="p.user_id.name"/>
+                    </div>
+                </t>
+            </t>
+        </div>
+    </xpath>
+    </template>
+</odoo>

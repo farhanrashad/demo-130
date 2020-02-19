@@ -7,7 +7,7 @@ from odoo.exceptions import UserError, ValidationError, Warning
 
 from odoo.addons import decimal_precision as dp
 
-class AccountPaymentWHT(models.Model):
+class AccountPayment(models.Model):
     _inherit = 'account.payment'
     
     state = fields.Selection([('draft', 'Draft'), ('waiting_approval', 'Waiting For Approval'), ('accountant_approved', 'Approved'), ('manager_approved', 'Approved'), ('rejected', 'Rejected'),('posted', 'Validated'), ('sent', 'Sent'), ('reconciled', 'Reconciled'), ('cancelled', 'Cancelled')], tracking=True, readonly=True, default='draft', copy=False, string="Status",)
@@ -114,10 +114,3 @@ class AccountPaymentWHT(models.Model):
 
         return True
     
-class AccountApprovalLog(models.Model):
-    _name = 'account.approval.log'
-    _description = 'Account Approval Log'
-    
-    user_id = fields.Many2one('res.users', string='User', index=True, readonly=True, tracking=2, default=lambda self: self.env.user,)
-    payment_id = fields.Many2one('account.payment',string='Payment No.',readonly=True)
-    status = fields.Char(string='Status',readonly=True)
