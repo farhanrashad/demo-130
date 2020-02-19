@@ -18,7 +18,7 @@ class AccountPaymentWHT(models.Model):
                 return False
         return True
     
-    is_wht_liable = fields.Boolean(string='WHT Applicable',default=False,)
+    is_wht_liable = fields.Boolean(string='WHT Applicable',default=True,)
     wht_type_id = fields.Many2one('account.wht.type',string='Withholding Tax Type', required=True, )
     amount = fields.Monetary(string='Amount', required=False, readonly=True, tracking=True)
     gross_amount = fields.Monetary(string='Gross Amount', required=True, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
@@ -37,6 +37,15 @@ class AccountPaymentWHT(models.Model):
                 #self.is_wht_liable = False
         #return res
     
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        if self.payment_type == 'outbound':
+            wht = self.env['account.wht.type'].search([('wht_type','=','out_payment')],limit=1)
+        else:
+            wht = self.env['account.wht.type'].search([('wht_type','=','in_payment')],limit=1)
+            
+        self.wht_type_id = wht.id
+        
     @api.onchange('gross_amount')
     def _onchange_amount(self):
         self.base_amount = self.gross_amount

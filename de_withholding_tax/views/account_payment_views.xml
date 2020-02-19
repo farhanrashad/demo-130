@@ -13,9 +13,9 @@
             
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="gross_amount" attrs="{'required':[('is_wht_liable', '=', True)],'invisible':[('is_wht_liable', '!=', True)]}" />
+                <field name="is_wht_liable"/>
             </xpath>
             <xpath expr="//field[@name='payment_method_id']" position="after">
-                <field name="is_wht_liable"/>
                 <field name="wht_type_id"  attrs="{'required':[('is_wht_liable', '=', True)],'invisible':[('is_wht_liable', '!=', True)]}" />
                 <field name="base_amount" attrs="{'required':[('is_wht_liable', '=', True)],'invisible':[('is_wht_liable', '!=', True)]}" />
                 <!--<field name="wht_amount" attrs="{'required':[('is_wht_liable', '=', True)],'invisible':[('is_wht_liable', '!=', True)]}" />-->
