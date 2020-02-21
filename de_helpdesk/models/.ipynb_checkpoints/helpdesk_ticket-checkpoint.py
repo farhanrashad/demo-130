@@ -116,12 +116,23 @@ class HelpdeskTicket(models.Model):
                 seq = seq.with_context(force_company=vals['company_id'])
             vals['number'] = seq.next_by_code(
                 'helpdesk.ticket.sequence') or '/'
-        res = super().create(vals)
+        #res = super().create(vals)
 
+        # context: no_log, because subtype already handle this
+        tickets = super(HelpdeskTicket, self).create(vals)
+        for ticket in tickets:
+            if ticket.partner_id:
+                ticket.message_subscribe(partner_ids=ticket.partner_id.ids)
+        # make customer follower
+        #for ticket in tickets:
+            #if ticket.partner_id:
+                #ticket.message_subscribe(partner_ids=ticket.partner_id.ids)
+                
         # Check if mail to the user has to be sent
-        if vals.get('user_id') and res:
-            res.send_user_mail()
-        return res
+        if vals.get('user_id') and tickets:
+            tickets.send_user_mail()
+            
+        return tickets
 
     def copy(self, default=None):
         self.ensure_one()
@@ -147,6 +158,9 @@ class HelpdeskTicket(models.Model):
                 vals['assigned_date'] = now
 
         res = super(HelpdeskTicket, self).write(vals)
+        
+        if vals.get('partner_id'):
+            self.message_subscribe([vals['partner_id']])
 
         # Check if mail to the user has to be sent
         for ticket in self:

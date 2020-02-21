@@ -56,7 +56,7 @@
                   <tr>
                     <td>
                     <a t-attf-href="/my/ticket/#{ticket.id}">
-                        <t t-esc="ticket.id"/>
+                        <t t-esc="ticket.number"/>
                       </a>
                     </td>
                     <td>
