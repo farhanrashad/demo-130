@@ -18,12 +18,12 @@ class AccountPaymentWHT(models.Model):
                 return False
         return True
     
-    is_wht_liable = fields.Boolean(string='WHT Applicable',default=True,)
+    is_wht_liable = fields.Boolean(string='Withholding',default=True,)
     wht_type_id = fields.Many2one('account.wht.type',string='Withholding Tax Type', required=True, )
-    amount = fields.Monetary(string='Amount', required=False, readonly=True, tracking=True)
-    gross_amount = fields.Monetary(string='Gross Amount', required=True, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
-    base_amount = fields.Monetary(string='Base Amount', readonly='_compute_calculation_type', states={'draft': [('readonly', False)]}, )
-    wht_amount = fields.Monetary(string='WHT Amount', required=False, readonly=True,  )
+    #amount = fields.Monetary(string='Amount', required=False, readonly=True, tracking=True)
+    #gross_amount = fields.Monetary(string='Gross Amount', required=True, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
+    #base_amount = fields.Monetary(string='Base Amount', readonly='_compute_calculation_type', states={'draft': [('readonly', False)]}, )
+    wht_amount = fields.Monetary(string='WHT Amount', required=False, readonly=True, compute='_calculate_wth_amount' )
     
     
     
@@ -46,32 +46,38 @@ class AccountPaymentWHT(models.Model):
             
         self.wht_type_id = wht.id
         
-    @api.onchange('gross_amount')
-    def _onchange_amount(self):
-        self.base_amount = self.gross_amount
-        self._calculate_wth_amount()
+    #@api.onchange('gross_amount')
+    #def _onchange_amount(self):
+        #self.update({
+            #'wht_amount': ((self.wht_type_id.wht_rate/100) * self.base_amount),
+            #'amount': self.gross_amount - ((self.wht_type_id.wht_rate/100) * self.base_amount),
+            #'base_amount': self.gross_amount
+        #})
     
-    @api.onchange('base_amount')
-    def _onchange_base_amount(self):
-        self._calculate_wth_amount()
+    #@api.onchange('base_amount')
+    #def _onchange_base_amount(self):
+        #self._calculate_wth_amount()
         
-    @api.onchange('wht_type_id')
-    def _onchange_wht_type(self):
-        self.base_amount = self.gross_amount
-        self._calculate_wth_amount()
+    #@api.onchange('wht_type_id')
+    #def _onchange_wht_type(self):
+        #self.update({
+         #   'wht_amount': ((self.wht_type_id.wht_rate/100) * self.base_amount),
+          #  'amount': self.gross_amount - ((self.wht_type_id.wht_rate/100) * self.base_amount),
+          #  'base_amount': self.gross_amount
+        #})
         
+    @api.depends('partner_id','amount','wht_type_id')
     def _calculate_wth_amount(self):
-        wht_amount = 0
-        vendor_wht = 0
-        for line in self.partner_id.partner_wht_type_ids:
-            if line.is_liable and line.wht_type_id.wht_rate > 0:
-                vendor_wht += self.base_amount * (line.wht_type_id.wht_rate / 100)
+        #wht_amount = 0
+        #vendor_wht = 0
+        #for line in self.partner_id.partner_wht_type_ids:
+            #if line.is_liable and line.wht_type_id.wht_rate > 0:
+                #vendor_wht += self.base_amount * (line.wht_type_id.wht_rate / 100)
        
-        wth_amount = ((self.wht_type_id.wht_rate/100) * self.base_amount)
+        #wth_amount = ((self.wht_type_id.wht_rate/100) * self.base_amount)
         
         self.update({
-            'wht_amount': ((self.wht_type_id.wht_rate/100) * self.base_amount),
-            'amount': self.gross_amount - ((self.wht_type_id.wht_rate/100) * self.base_amount)
+            'wht_amount': ((self.wht_type_id.wht_rate/100) * self.amount),
         })
         
     
@@ -103,8 +109,10 @@ class AccountPaymentWHT(models.Model):
             company_currency = payment.company_id.currency_id
             move_names = payment.move_name.split(payment._get_move_name_transfer_separator()) if payment.move_name else None
 
-            # Compute amounts.
-            wht_amount = payment.wht_amount or 0.0
+            # Compute tax amounts.
+            if payment.is_wht_liable:
+                wht_amount = ((payment.wht_type_id.wht_rate/100) * payment.amount) or payment.wht_amount or 0.0
+                #wht_amount = 400
             
             write_off_amount = payment.payment_difference_handling == 'reconcile' and -payment.payment_difference or 0.0
             
@@ -181,8 +189,8 @@ class AccountPaymentWHT(models.Model):
                         'name': rec_pay_line_name,
                         'amount_currency': counterpart_amount + write_off_amount + wht_amount if currency_id else 0.0,
                         'currency_id': currency_id,
-                        'debit': balance + write_off_balance + wht_amount > 0.0 and balance + write_off_balance + wht_amount or 0.0,
-                        'credit': balance + write_off_balance + wht_amount < 0.0 and -balance - write_off_balance - wht_amount or 0.0,
+                        'debit': balance + write_off_balance > 0.0 and balance - write_off_balance or 0.0,
+                        'credit': balance + write_off_balance < 0.0 and -balance - write_off_balance or 0.0,
                         'date_maturity': payment.payment_date,
                         'partner_id': payment.partner_id.id,
                         'account_id': payment.destination_account_id.id,
@@ -193,8 +201,8 @@ class AccountPaymentWHT(models.Model):
                         'name': liquidity_line_name,
                         'amount_currency': -liquidity_amount if liquidity_line_currency_id else 0.0,
                         'currency_id': liquidity_line_currency_id,
-                        'debit': balance < 0.0 and -balance or 0.0,
-                        'credit': balance > 0.0 and balance or 0.0,
+                        'debit': balance - wht_amount < 0.0 and -balance + wht_amount or 0.0,
+                        'credit': balance - wht_amount > 0.0 and balance - wht_amount or 0.0,
                         'date_maturity': payment.payment_date,
                         'partner_id': payment.partner_id.id,
                         'account_id': liquidity_line_account.id,
@@ -216,21 +224,20 @@ class AccountPaymentWHT(models.Model):
                     'payment_id': payment.id,
                 }))
             if wht_amount:
-            # Write-off line.
-                for wht_line in payment.partner_id.partner_wht_type_ids:
-                    if wht_line.is_liable:
-                        wht_line_amount = payment.base_amount * (wht_line.wht_type_id.wht_rate / 100)
-                        move_vals['line_ids'].append((0, 0, {
-                            'name': wht_line.wht_type_id.description,
-                            'amount_currency': -wht_line_amount,
-                            'currency_id': currency_id,
-                            'debit': wht_line_amount < 0.0 and -wht_line_amount or 0.0,
-                            'credit': wht_line_amount > 0.0 and wht_line_amount or 0.0,
-                            'date_maturity': payment.payment_date,
-                            'partner_id': payment.partner_id.id,
-                            'account_id': wht_line.wht_type_id.account_id.id,
-                            'payment_id': payment.id,
-                        }))
+            # WHT Lines.
+                if payment.is_wht_liable:
+                    #wht_line_amount = payment.base_amount * (wht_line.wht_type_id.wht_rate / 100)
+                    move_vals['line_ids'].append((0, 0, {
+                        'name': payment.wht_type_id.description,
+                        'amount_currency': -wht_amount,
+                        'currency_id': currency_id,
+                        'debit': wht_amount < 0.0 and -wht_amount or 0.0,
+                        'credit': wht_amount > 0.0 and wht_amount or 0.0,
+                        'date_maturity': payment.payment_date,
+                        'partner_id': payment.partner_id.id,
+                        'account_id': payment.wht_type_id.account_id.id,
+                        'payment_id': payment.id,
+                    }))
 
             if move_names:
                 move_vals['name'] = move_names[0]
