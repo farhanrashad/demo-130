@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!--    training session tree view-->
+        <record id="training_session_tree" model="ir.ui.view">
+            <field name="name">training.session.tree</field>
+            <field name="model">training.session</field>
+            <field name="arch" type="xml">
+                <tree string="Session Tree">
+                    <field name="session_seq" readonly="1"/>
+                    <field name="name"/>
+                    <field name="course"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="delivery_location"/>
+                    <field name="delivery_method"/>
+                </tree>
+            </field>
+        </record>
+
+<!--    training session form view-->
+
+        <record id="training_session_form" model="ir.ui.view">
+            <field name="name">training.session.form</field>
+            <field name="model">training.session</field>
+            <field name="arch" type="xml">
+                <form string="Session Form">
+                    <header>
+                        <button name="apply_state" type="object" states="draft" class="oe_highlight" string="Submit"/>
+                        <button name="pending_state" type="object" states="confirm" class="oe_highlight" string="Pending Approval"/>
+                        <button name="approve_state" type="object" states="done" class="oe_highlight" string="Approved"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done,cancel"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="session_seq" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="start_date"/>
+                            <field name="delivery_location"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="course"/>
+                            <field name="end_date"/>
+                            <field name="delivery_method"/>
+                        </group>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+<!--        training courses tree view-->
+
+        <record id="training_course_tree" model="ir.ui.view">
+            <field name="name">training.course.tree</field>
+            <field name="model">training.course</field>
+            <field name="arch" type="xml">
+                <tree string="Course Tree">
+                    <field name="course_seq" readonly="1"/>
+                    <field name="title"/>
+                    <field name="coordinator"/>
+                    <field name="subunit"/>
+                    <field name="version"/>
+                    <field name="company"/>
+                    <field name="duration"/>
+                </tree>
+            </field>
+        </record>
+
+<!--    training course form view-->
+
+        <record id="training_course_form" model="ir.ui.view">
+            <field name="name">training.course.form</field>
+            <field name="model">training.course</field>
+            <field name="arch" type="xml">
+                <form string="Course Form">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="course_seq" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group >
+                                <field name="title"/>
+                                <field name="subunit" />
+                                <field name="version"/>
+                                <field name="company"/>
+                                <field name="description"/>
+                            </group>
+                            <group >
+                                <field name="coordinator"/>
+                                <field name="currency" />
+                                <field name="cost"/>
+                                <field name="duration" widget="float_time"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+<!--        training subject tree view-->
+
+        <record id="training_subject_tree" model="ir.ui.view">
+            <field name="name">training.subject.tree</field>
+            <field name="model">hr.training.subject</field>
+            <field name="arch" type="xml">
+                <tree string="Subject Tree">
+                    <field name="subject_seq" readonly="1"/>
+                    <field name="title"/>
+                    <field name="coordinator"/>
+                </tree>
+            </field>
+        </record>
+
+<!--    training subject form view-->
+
+        <record id="training_subject_form" model="ir.ui.view">
+            <field name="name">training.subject.form</field>
+            <field name="model">hr.training.subject</field>
+            <field name="arch" type="xml">
+                <form string="Subject Form">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="subject_seq" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="coordinator"/>
+                        </group>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <!--        training coordinator tree view-->
+
+        <record id="training_coordinator_tree" model="ir.ui.view">
+            <field name="name">training.coordinator.tree</field>
+            <field name="model">hr.training.coordinator</field>
+            <field name="arch" type="xml">
+                <tree string="Coordinator Tree">
+                    <field name="coordinator_seq" readonly="1"/>
+                    <field name="name"/>
+                    <field name="age"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+<!--    training coordinator form view-->
+
+        <record id="training_coordinator_form" model="ir.ui.view">
+            <field name="name">training.coordinator.form</field>
+            <field name="model">hr.training.coordinator</field>
+            <field name="arch" type="xml">
+                <form string="Subject Form">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="coordinator_seq" readonly="1"/>
+                            </h1>
+                        </div>
+                            <group>
+                                <field name="name"/>
+                                <field name="age"/>
+                                <field name="description"/>
+                            </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+<!--        action for sessions-->
+
+        <record id="action_training_session" model="ir.actions.act_window">
+            <field name="name">Session</field>
+            <field name="res_model">training.session</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <h1>
+                    Create Your First Session !
+                </h1>
+            </field>
+        </record>
+
+<!--        action for courses-->
+
+        <record id="action_training_course" model="ir.actions.act_window">
+                <field name="name">Course</field>
+                <field name="res_model">training.course</field>
+                <field name="view_mode">tree,form</field>
+                <field name="help" type="html">
+                    <h1>
+                        Create Your First Course !
+                    </h1>
+                </field>
+        </record>
+<!--    action for subject-->
+    <record id="action_training_subject" model="ir.actions.act_window">
+                <field name="name">Subject</field>
+                <field name="res_model">hr.training.subject</field>
+                <field name="view_mode">tree,form</field>
+                <field name="help" type="html">
+                    <h1>
+                        Create Your First Subject !
+                    </h1>
+                </field>
+        </record>
+
+<!--    action for coordinator-->
+    <record id="action_training_coordinator" model="ir.actions.act_window">
+                <field name="name">Coordinator</field>
+                <field name="res_model">hr.training.coordinator</field>
+                <field name="view_mode">tree,form</field>
+                <field name="help" type="html">
+                    <h1>
+                        Create Your First Coordinator !
+                    </h1>
+                </field>
+    </record>
+
+<!--    menuitems-->
+
+        <menuitem id="training_root" name="HR Training" sequence="0"/>
+        <menuitem id="training_session" name="Sessions" parent="training_root" action="action_training_session"/>
+        <menuitem id="training_course" name="Courses" parent="training_root" action="action_training_course"/>
+        <menuitem id="training_subject" name="Subjects" parent="training_root" action="action_training_subject"/>
+        <menuitem id="training_coordinator" name="Employees" parent="training_root" action="action_training_coordinator"/>
+</odoo>
