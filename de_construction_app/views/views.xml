@@ -1,0 +1,156 @@
+<odoo>
+  <data>
+ <record model="ir.ui.view" id="projeect_tree_vieww">
+      <field name="name">projects.projects.tree</field>
+      <field name="model">projects.projects</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+<!--          <field name="pateint_name"/>-->
+<!--          <field name="patient_age"/>-->
+        </tree>
+      </field>
+    </record>
+      <record model="ir.ui.view" id="notes_tree_view">
+      <field name="name">notes.notes.tree</field>
+      <field name="model">notes.notes</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="tags_note"/>
+<!--          <field name="pateint_name"/>-->
+<!--          <field name="patient_age"/>-->
+        </tree>
+      </field>
+    </record>
+       <record model="ir.ui.view" id="notes_form">
+      <field name="name">notes.notes.form</field>
+      <field name="model">notes.notes</field>
+<!--      <field name="view_mode">form</field>-->
+      <field name="arch" type="xml">
+        <form>
+
+            <sheet>
+                <group>
+              <field name="tags_note"/>
+              <field name="task_job_order"/>
+              <field name="construction_projecct"/>
+              <field name="responsible_user"/>
+              <field name="tes_note"/>
+                </group>
+            </sheet>
+        </form>
+      </field>
+    </record>
+     <record model="ir.ui.view" id="construction_management_form_project">
+      <field name="name">projects.projects.form</field>
+      <field name="model">projects.projects</field>
+<!--      <field name="view_mode">form</field>-->
+      <field name="arch" type="xml">
+        <form>
+             <header>
+                <button name="action_share" type="object" string="Share" class="oe_highlight"/>
+             </header>
+            <sheet>
+              <div class="oe_button_box" name="button_box">
+                    <button name="documents_task"
+                            type="object" class="oe_stat_button"  icon="fa-file-text-o">
+                        <field name="documents_count" string="Documents" widget="statinfo"/>
+                    </button>
+                       <button name="task_button"
+                            type="object" class="oe_stat_button"  icon="fa-tasks">
+                        <field name="task_count" string="Tasks" widget="statinfo"/>
+                    </button>
+                       <button name="material_requisition"
+                            type="object" class="oe_stat_button" string="Material Requisition" icon="fa-book">
+<!--                        <field name="documents_count" string="material" widget="statinfo"/>-->
+                    </button>
+                  <button name="notes_document"
+                            type="object" class="oe_stat_button" icon="fa-tasks">
+                        <field name="notes_count" string="Notes"  widget="statinfo"/>
+                    </button>
+                       <button name="timesheet_button"
+                            type="object" class="oe_stat_button" string="Timesheet" icon="fa-calendar">
+<!--                        <field name="notes_count" string="notes" widget="statinfo"/>-->
+                    </button>
+              </div>
+                <div>
+                    <h1>
+                         <field name="name"/>
+                    </h1>
+                </div>
+
+                <group>
+                 <field name="task_name"/>
+<!--                 <field name="pateint_name"/>-->
+<!--                 <field name="patient_age"/>-->
+                </group>
+                <notebook>
+                    <page string="Settings">
+                            <group>
+                                <group>
+                                    <field name="project_manager"/>
+                                    <field name="customer_name"/>
+                                </group>
+                                <group>
+                                    <field name="visibility"/>
+                                    <field name="sub_task_project"/>
+                                    <field name="company"/>
+                                </group>
+                            </group>
+
+
+                    </page>
+                    <page string="Construction Site Detail">
+
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+      </field>
+    </record>
+     <record id="action_project" model="ir.actions.act_window">
+            <field name="name">project</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">projects.projects</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+<!--            <field name="context">{"search_default_male":1}</field>-->
+<!--            <field name="view_id" ref="view_account_list"/>-->
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new project
+              </p>
+
+            </field>
+        </record>
+
+<record id="action_notes" model="ir.actions.act_window">
+            <field name="name">notes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">notes.notes</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+<!--            <field name="context">{"search_default_male":1}</field>-->
+<!--            <field name="view_id" ref="view_account_list"/>-->
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new project
+              </p>
+
+            </field>
+        </record>
+
+
+
+<!--    menu item here-->
+    <menuitem name="Construction" id="construction_root" sequence="3" web_icon="de_construction_app.static/description/icon.png"/>
+      <menuitem name="Construction" id="construction_menu" parent="construction_root" />
+      <menuitem name="Project" id="project_menu" parent="construction_menu" action="action_project"/>
+      <menuitem name="Notes" id="notes_menu" parent="construction_menu" action="action_notes"/>
+
+
+
+
+
+  </data>
+</odoo>
