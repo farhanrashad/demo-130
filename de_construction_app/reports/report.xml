@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <report
+            id="action_notes_project"
+            string="Notes"
+            model="notes.notes"
+            report_type="qweb-pdf"
+            file="de_construction_app.report_notes"
+            name="de_construction_app.report_notes" />
+
+    <report
+            id="action_project_report"
+            string="Project report"
+            model="projects.projects"
+            report_type="qweb-pdf"
+            file="de_construction_app.report_project"
+            name="de_construction_app.report_project" />
+    <report
+            id="action_job_order"
+            string="Job Order report"
+            model="order.job"
+            report_type="qweb-pdf"
+            file="de_construction_app.report_order_job"
+            name="de_construction_app.report_order_job" />
+
+<!--     <report-->
+<!--            id="action_report_student_xlx"-->
+<!--            string="Student record Excel"-->
+<!--            model="student.student"-->
+<!--            report_type="xlsx"-->
+<!--            file="modulename.report_student_xls"-->
+<!--            name="modulename.report_student_xls" />-->
+</odoo>

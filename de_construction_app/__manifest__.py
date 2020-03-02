@@ -28,6 +28,8 @@
         'views/views.xml',
         'views/materials_boq.xml',
         'views/job_order.xml',
+        'reports/report.xml',
+        'reports/template_notes.xml',
         'views/vendor.xml',
         'views/configuration.xml',
         'views/templates.xml',

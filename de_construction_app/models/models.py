@@ -42,11 +42,24 @@ class Projectcons(models.Model):
     notes_count = fields.Integer(compute='get_notes_count')
 
     project_manager = fields.Many2one('res.users', string='Project Manager')
+    image_hr = fields.Binary('image')
     customer_name = fields.Many2one('res.partner', string='customer')
     # analytic_account = fields.
-    visibility = fields.Char(string='Visibility', default='All employees')
+    visibility = fields.Selection([('invited_employee', 'Invited employee'),
+                                   ('all_employee', 'All eemployee'),
+                                   ('portal_user','Portal user')],'Visibility')
     sub_task_project = fields.Many2one('projects.projects', string='Sub-task Project')
     company = fields.Many2one('res.company', string='Company')
+    timesheet_f = fields.Boolean(string='Timesheet' , store=True)
+    customer_rating = fields.Selection([('changing_stage', 'Rating When changing stage'),
+                                   ('all_employee', 'Periodicaly Rating'),
+                                   ('portal_user', 'No rating')],'Customer Ratings')
+    construction_site = fields.Selection([('agriculture', 'Agriculture'),
+                                        ('residential', 'Residential'),
+                                        ('commercial', 'Commertial')] ,'Type of Construction')
+    construction_location = fields.Char(string='Location')
+
+    # time_schedule=fields.Many2one('timesh')
 
 
 class Projectlineitem(models.Model):
