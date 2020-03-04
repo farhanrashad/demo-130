@@ -9,6 +9,10 @@ class HrSession(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'name'
 
+    def action_quotation_approve(self):
+        self.state = 'done'
+        return True
+
     def apply_state(self):
         for rec in self:
             rec.state = 'confirm'
@@ -42,6 +46,6 @@ class HrSession(models.Model):
         ('confirm', 'Pending Approval'),
         ('done', 'Approved'),
         ('cancel', 'Cancelled'),
-    ], string='Status', readonly=True, default='draft')
+    ], string='Status', readonly=True, default='draft', track_visibility='onchange')
     session_seq = fields.Char(string='Session ID', required=True, Readonly=True, copy=False, index=True,
                               default=lambda self: _('name'))
