@@ -17,13 +17,9 @@ class HrCourse(models.Model):
             return result
 
     title = fields.Char(string='Title')
-    coordinator = fields.Many2one('hr.training.coordinator', string='Coordinator')
-    subunit = fields.Many2one('hr.training.subject', string='Subject')
-    version = fields.Char(string='Version')
-    # sub_version = fields.Selection([('zero', '0'), ('one', '1'), ('two', '2')], default='one', string='Sub Version')
-    company = fields.Char(string='Company')
-    currency = fields.Selection([('dollar', 'Dollar($)'), ('rupees', 'Rupees(PKR)')], default='dollar',
-                                string='Currency')
+    coordinator = fields.Many2one('hr.employee', string="Coordinator", required=True, index=True)
+    company = fields.Many2one('res.partner', string='Company')
+    currency = fields.Many2one('res.currency', string='Currency')
     cost = fields.Char(string='Cost')
     duration = fields.Float(string='Duration')
     description = fields.Text(string='Description')

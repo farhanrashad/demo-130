@@ -6,6 +6,7 @@ from odoo import models, fields, api, _
 class HrSession(models.Model):
     _name = 'training.session'
     _description = 'This is a model for Sessions in HR Training Module'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _rec_name = 'name'
 
     def apply_state(self):
@@ -43,4 +44,4 @@ class HrSession(models.Model):
         ('cancel', 'Cancelled'),
     ], string='Status', readonly=True, default='draft')
     session_seq = fields.Char(string='Session ID', required=True, Readonly=True, copy=False, index=True,
-                              default=lambda self: _('No ID'))
+                              default=lambda self: _('name'))
