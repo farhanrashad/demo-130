@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="stock_warehouse_transfer_ids" model="ir.ui.view">
+            <field name="name">picking.picking.wizards</field>
+            <field name="model">picking.picking</field>
+            <field name="arch" type="xml">
+                <form string="Picking Creation">
+                    <group class="oe_title">
+                        <field name="picking_id_ship"/>
+                        <field name="picking_creation_date"/>
+                        <field name="wareh_from"/>
+                        <field name="ware_to"/>
+                        <field name="from_loc"/>
+                        <field name="to_loc"/>
+                    </group>
+                    <footer>
+                        <button name="picking_count" string="Picking" type="object" class="btn-primary"/>
+                        <button name="get_data" string="Get Data" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="picking_stock_created" model="ir.actions.act_window">
+            <field name="name">Picking Created</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">picking.picking</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="stock_warehouse_transfer_ids"/>
+            <field name="target">new</field>
+        </record>
+</odoo>
