@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="whatsapp_send_msg_wizard" model="ir.ui.view">
+            <field name="name">whatsapp.message.wizard.invoicing.form</field>
+            <field name="model">whatsapp.message.wizard.invoicing</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Whatsapp Message">
+                    <group>
+                        <field name="user_id"/>
+                        <field name="mobile"/>
+                    </group>
+                    <group>
+                        <field name="message"/>
+                    </group>
+                    <footer>
+                        <button name="send_message" string="Send" type="object"/>
+                        <button name="cancel" string="Cancel" special="cancel"/>
+                        <button name="Done" string="Done" special="cancel"/>
+
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="whatsapp_send_msg_wizard_stock" model="ir.ui.view">
+            <field name="name">whatsapp.message.wizard.stock.form</field>
+            <field name="model">whatsapp.message.wizard.stock</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Whatsapp Message">
+                    <group>
+                        <field name="user_id_reciept"/>
+                        <field name="mobile_reciept"/>
+                        <field name="origin_reciept"/>
+                    </group>
+                    <group>
+                        <field name="message_reciept"/>
+                    </group>
+                    <footer>
+                        <button name="send_message" string="Send" type="object"/>
+                        <button name="cancel" string="Cancel" special="cancel"/>
+                        <button name="Done" string="Done" special="cancel"/>
+
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
