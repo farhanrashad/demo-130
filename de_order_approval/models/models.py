@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class SaleOrderApproval(models.Model):
@@ -10,26 +10,31 @@ class SaleOrderApproval(models.Model):
         for rec in self:
             rec.state = 'waiting_for_approval'
 
-    def approve_sale_order(self):
+    def action_cancel_sale_order(self):
         for rec in self:
-            rec.state = 'sale'
+            rec.state = 'draft'
 
+    def action_confirm(self):
+        self.message_post(body=_('Payment has approved and posted by %s,') % (self.env.user.name,),
+                          partner_ids=[self.env.user.partner_id.id])
+        res = super(SaleOrderApproval, self).action_confirm()
+        return res
+
+    cancel_reason = fields.Many2one('cancel.order.reason', string='Cancel Reason', index=True,
+                                    track_visibility='onchange')
     state = fields.Selection([
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),
         ('waiting_for_approval', 'Waiting For Approval'),
         ('sale', 'Sale Order'),
+        ('done', 'Done'),
+        ('cancel', 'Cancel'),
     ], readonly=True, string='Status')
-# class de_approval_state(models.Model):
-#     _name = 'de_approval_state.de_approval_state'
-#     _description = 'de_approval_state.de_approval_state'
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+
+class CancelReason(models.Model):
+    _name = "cancel.order.reason"
+    _description = 'Cancel sale order reason'
+
+    name = fields.Char('Description', required=True, translate=True)
+    active = fields.Boolean('Active', default=True)

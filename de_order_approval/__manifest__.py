@@ -3,11 +3,10 @@
     'name': "Sale Order Approval",
 
     'summary': """
-        Sale Order Approval
-        """,
+        Sale Order Approval""",
 
     'description': """
-        Sale Order Approval- Only users with particular group access will be able to approve the order.
+        Only users with particular type of access rights can approve sale orders
     """,
 
     'author': "Dynexcel",
@@ -17,17 +16,18 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'sale',
-    'version': '0.4',
+    'version': '0.3',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'sale'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         'security/security.xml',
+        'wizards/cancel_order.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
