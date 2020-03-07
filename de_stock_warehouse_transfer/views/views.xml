@@ -24,15 +24,19 @@
                             type="object" class="oe_stat_button" string="Transfer" icon="fa-archive">
 <!--                        <field name="courses_count" string="Courses" widget="statinfo"/>-->
                     </button>
-<!--                    <button name="action_view_picking"-->
-<!--                            type="object" class="oe_stat_button" string="Picking" icon="fa-truck">-->
-<!--                        <field name="picking_count" string="Courses" widget="statinfo"/>-->
-<!--                    </button>-->
+                    <button name="action_view_picking"
+                            type="object" class="oe_stat_button" string="Picking" icon="fa-truck">
+<!--                        <field name="picking_out" string="Picking" widget="statinfo"/>-->
+                    </button>
+                          <button name="action_validate"
+                            type="object" class="oe_stat_button" string="Validate" icon="fa-ban">
+<!--                        <field name="picking_out" string="Picking" widget="statinfo"/>-->
+                    </button>
 
-                  <button name="action_validate" type="object" string="Validate" />
+<!--                  <button name="action_validate" type="object" string="Validate" />-->
+
 <!--    <button name="action_picking" type="object" string="Shiping" icon="fa-truck" />-->
-
-               </div>
+              </div>
                     <div class="oe_title">
                     <h1>
                         <field name="name_seq" readonly="1"/>

@@ -8,6 +8,10 @@ class Stockwarehouse(models.Model):
     _description = 'this is warehouse transfer model'
     _rec_name = 'name_seq'
 
+    def get_picking_out_count(self):
+        count = self.env['stock.picking'].search_count([])
+        self.picking_out = count
+
     def action_validate(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'validate'}, context=context)
         return True
@@ -21,75 +25,50 @@ class Stockwarehouse(models.Model):
             rs.write({'state': 'validate'})
 
     def action_transfer_in(self):
-        # picking_incoming = self.env['stock.picking.type'].search([('code', '=', 'incoming')], limit=1)
-        # vals = {
-        #     'location_id': self.from_location_id.id,
-        #     'location_dest_id': self.to_location_id.id,
-        #     # 'stock_move_id': self.stock_move_id,
-        #     'picking_type_id': picking_incoming.id,
-        #     'warehouse_trasnfer_id': self.id,
-        # }
-        # picking = self.env['stock.picking'].create(vals)
-        # for line in self.stock_transfer_lines:
-        #     lines = {
-        #         'picking_id': picking.id,
-        #         'product_id': line.product_id.id,
-        #         'name': 'Transfer In',
-        #         'product_uom': line.product_id.uom_id.id,
-        #         'location_id': line.id,
-        #         'location_dest_id': line.id,
-        #         # 'bom_id': line.bom_id.id,
-        #         'product_uom_qty': line.product_uom_id,
-        #         'quantity_done': line.transfer_out_quantity,
-        #     }
-        #     stock_move = self.env['stock.move'].create(lines)
-        for rs in self:
-            rs.write({'state': 'transfer_in'})
-    #
-    # def action_transfer_out(self):
-    #     picking_outgoing = self.env['stock.picking.type'].search([('code', '=', 'outgoing')], limit=1)
-    #     vals = {
-    #         'location_id': self.from_location_id.id,
-    #         'location_dest_id': self.to_location_id.id,
-    #         # 'stock_move_id': self.stock_move_id,
-    #         'picking_type_id': picking_outgoing.id,
-    #         'warehouse_trasnfer_id': self.id,
-    #     }
-    #     picking = self.env['stock.picking'].create(vals)
-    #     for line in self.stock_transfer_lines:
-    #         lines = {
-    #             'picking_id': picking.id,
-    #             'product_id': line.product_id.id,
-    #             'name': 'Transfer Out',
-    #             'product_uom': line.product_id.uom_id.id,
-    #             'location_id': line.id,
-    #             'location_dest_id': line.id,
-    #             # 'bom_id': line.bom_id.id,
-    #             # 'product_uom_qty': line.product_uom_id,
-    #             'quantity_done': line.transfer_in_quantity,
-    #         }
-    #         stock_move = self.env['stock.move'].create(lines)
-    #
-    #         moves = {
-    #             'move_id': stock_move.id,
-    #             'product_id': line.product_id.id,
-    #             # 'product_uom': line.product_id.uom_id.id,
-    #             'location_id': line.id,
-    #             'location_dest_id': line.id,
-    #             # 'company_id': mv.id,
-    #             # 'date': line.date,
-    #             # 'lot_id':line.batch_id.id,
-    #             'product_uom_id': line.product_id.uom_id.id,
-    #             'product_uom_qty': line.id,
-    #             # 'bom_id': line.bom_id.id,
-    #             # 'product_uom_qty': line.product_uom_id,
-    #             # 'quantity_done': mv.id,
-    #         }
-    #         stock_move_line_id = self.env['stock.move.line'].create(moves)
-    #     # self.env.cr.commit()
-    #     # for rs in self:
-    #     #     rs.write({'state': 'transfer_in'})
-    #
+        picking_incoming = self.env['stock.picking.type'].search([('code', '=', 'incoming')], limit=1)
+        vals = {
+            'location_id': self.from_location_id.id,
+            'location_dest_id': self.to_location_id.id,
+            # 'stock_move_id': self.stock_move_id,
+            'picking_type_id': picking_incoming.id,
+            'warehouse_trasnfer_id': self.id,
+        }
+        picking = self.env['stock.picking'].create(vals)
+        for line in self.stock_transfer_lines:
+            lines = {
+                'picking_id': picking.id,
+                'product_id': line.product_id.id,
+                'name': 'Transfer Out',
+                'product_uom': line.product_id.uom_id.id,
+                'location_id': line.id,
+                'location_dest_id': line.id,
+                # 'bom_id': line.bom_id.id,
+                # 'product_uom_qty': line.product_uom_id,
+                'quantity_done': line.transfer_in_quantity,
+            }
+            stock_move = self.env['stock.move'].create(lines)
+
+            moves = {
+                'move_id': stock_move.id,
+                'product_id': line.product_id.id,
+                # 'product_uom': line.product_id.uom_id.id,
+                'location_id': line.id,
+                'location_dest_id': line.id,
+                # 'company_id': mv.id,
+                # 'date': line.date,
+                # 'lot_id':line.batch_id.id,
+                'product_uom_id': line.product_id.uom_id.id,
+                'product_uom_qty': line.id,
+                # 'bom_id': line.bom_id.id,
+                # 'product_uom_qty': line.product_uom_id,
+                # 'quantity_done': mv.id,
+            }
+            stock_move_line_id = self.env['stock.move.line'].create(moves)
+
+        # for rs in self:
+        #     rs.write({'state': 'transfer_in'})
+
+
     def action_transfer_out(self):
         picking_outgoing = self.env['stock.picking.type'].search([('code', '=', 'outgoing')], limit=1)
         vals = {
@@ -130,17 +109,7 @@ class Stockwarehouse(models.Model):
                 # 'quantity_done': mv.id,
             }
             stock_move_line_id = self.env['stock.move.line'].create(moves)
-        # self.env.cr.commit()
 
-        # stock_move_line_id = self.env['stock.move.line']
-        # for mv in self.stock_move_line_id:
-        #     moves = {
-        #         'product_id': mv.product_id,
-        #         'origin': mv.origin,
-        #         'qty_done': mv.picking_count,
-        #         # 'lot_id': mv.
-        #     }
-        # stock_move_id = self.env['stock.move.line'].create(moves)
 
         # for rs in self:
         #     rs.write({'state': 'transfer_out'})
@@ -183,6 +152,8 @@ class Stockwarehouse(models.Model):
     #         for line in data:
     #             if line.code == 'incoming':
     #                 return line
+    picking_out = fields.Integer(compute='get_picking_out_count')
+
     transfer_date = fields.Date(string='Transfer Date', default=fields.Datetime.now)
     user_id = fields.Many2one(
         'res.users', 'Responsible', tracking=True,
@@ -191,7 +162,7 @@ class Stockwarehouse(models.Model):
         default=lambda self: self.env.user)
     company_id = fields.Many2one(
         'res.company', 'Company', required=True,
-        default=lambda s: s.env.company.id, index=True)
+        default=lambda s: s.env.company.id, index=True, states={'validate': [('readonly', True)]})
     stock_transfer_lines = fields.One2many('stock.warehouse.transfer.line', 'stock_transfer_id',
                                      string='Stock Transfer Lines',
                                      # states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True,
