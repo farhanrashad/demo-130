@@ -40,9 +40,12 @@
         <form>
 
             <sheet>
-                <div  style="background-color:green;height=40px">
-                    <p style="color:white;"><h1>Add Disciplinary Case</h1></p>
+                <div>
+                    <h1>Add Disciplinary Action</h1>
                 </div>
+<!--                <div  style="background-color:green;height=40px">-->
+<!--                    <p style="color:white;"><h1>Add Disciplinary Case</h1></p>-->
+<!--                </div>-->
                  <div>
                     <h1>
                          <field name="name_seq"/>
@@ -87,11 +90,11 @@
                 <group>
                     <field name="description_page"/>
                 </group>
-                <div style="text-align:right;">
-                    <button name="test" string="CANCEL" style="background-color:orange;color:white;"/>
-                    <button name="test" string="VIEW DISCIPLINARY CASE" style="background-color:orange;color:white;"/>
-                    <button name="test" string="SAVE" style="background-color:green;color:white;"/>
-                </div>
+<!--                <div style="text-align:right;">-->
+<!--                    <button name="test" string="CANCEL" style="background-color:orange;color:white;"/>-->
+<!--                    <button name="test" string="VIEW DISCIPLINARY CASE" style="background-color:orange;color:white;"/>-->
+<!--                    <button name="test" string="SAVE" style="background-color:green;color:white;"/>-->
+<!--                </div>-->
             </sheet>
         </form>
       </field>

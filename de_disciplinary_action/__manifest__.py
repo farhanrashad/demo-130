@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "de_disciplinary_action",
+    'name': "Employee Disciplinary Action",
 
     'summary': """
-       desciplinary action define here
-        subtitle on modules listing or apps.openerp.com""",
+       Employee Disciplinary Action
+       """,
 
     'description': """
-        Long description of module's purpose
+           Employee Disciplinary Action
+           1- Disciplinary Action
+           2- Disciplinary Case
+           this is version 0.2 to improve some feature
+           like 
+           1- Remove Extra Added Button
+           2- Drop Down added for action type.
     """,
 
     'author': "Dynexcel",
@@ -17,7 +23,7 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Tools',
-    'version': '0.1',
+    'version': '0.2',
 
     # any module necessary for this one to work correctly
     'depends': ['base'],
