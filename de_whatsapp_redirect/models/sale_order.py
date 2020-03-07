@@ -3,24 +3,24 @@
 from odoo import models, fields, api, _
 
 
-class StockReceipt(models.Model):
-    _inherit = 'stock.picking'
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
 
     def send_msg(self):
         return {'type': 'ir.actions.act_window',
                 'name': _('Whatsapp Message'),
-                'res_model': 'whatsapp.message.wizard.stock',
+                'res_model': 'whatsapp.message.wizard.sale',
                 'target': 'new',
                 'view_mode': 'form',
                 'view_type': 'form',
-                'context': {'default_user_id_reciept': self.id},
+                'context': {'default_sale_order_id': self.id},
                 }
 
 
 class StockField(models.Model):
-    _inherit = 'stock.picking'
+    _inherit = 'sale.order'
 
-    mobile_reciept = fields.Char(string='Mobile', tracking=True, required=True)
+    mobile_sale = fields.Char(string='Mobile', tracking=True, required=True)
 
     # def send_message(self):
     #     # if self.message and self.mobile:

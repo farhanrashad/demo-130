@@ -30,7 +30,11 @@
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
+        # 'data/mail_template.xml',
         'views/templates.xml',
+        'wizard/stock_picking.xml',
+        'views/sale_order_whatsapp.xml',
+        'wizard/sale_order.xml',
         'views/invoicing_whatsapp_redirect.xml',
         'wizard/invoicing_wizard.xml',
         'views/inventory_receipt_whatsapp.xml',

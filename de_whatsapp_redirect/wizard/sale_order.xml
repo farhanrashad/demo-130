@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+         <record id="whatsapp_message_wizard_sale_order" model="ir.ui.view">
+            <field name="name">whatsapp.message.wizard.sale.form</field>
+            <field name="model">whatsapp.message.wizard.sale</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Whatsapp Message">
+                    <group>
+                        <field name="sale_order_id"/>
+                        <field name="mobile_sale"/>
+<!--                        <field name="message_sale"/>-->
+<!--                        <field name="partner_reciept"/>-->
+<!--                        <field name="picking_reciept"/>-->
+                    </group>
+                    <group>
+                        <field name="message_sale"/>
+                    </group>
+                    <footer>
+                        <button name="send_message" string="Send" type="object"/>
+                        <button name="cancel" string="Cancel" special="cancel"/>
+                        <button name="Done" string="Done" special="cancel"/>
+
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--Email template -->
+
+    </data>
+</odoo>
