@@ -11,6 +11,33 @@
             </field>
         </record>
 
+             <record id="sale_order_status_inherit_tree" model="ir.ui.view">
+            <field name="name">sale.order.inherit.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='invoice_status']" position="after">
+<!--                    <tree>-->
+                    <field name="sale_order_status"/>
+<!--                    </tree>-->
+                </xpath>
+            </field>
+        </record>
+        <record id="sale_order_status_inherit_qutation_tree" model="ir.ui.view">
+            <field name="name">sale.order.inherit.tree.qutation</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='company_id']" position="after">
+<!--                    <tree>-->
+                    <field name="sale_order_status"/>
+<!--                    </tree>-->
+                </xpath>
+            </field>
+        </record>
+
     <record id="sale_order_status_search_inherit" model="ir.ui.view">
     <field name="name">sale.order.search.inherit</field>
     <field name="model">sale.order</field>
@@ -26,5 +53,22 @@
 
     </field>
 </record>
+
+          <record id="sale_order_status_search_inherit_qutation" model="ir.ui.view">
+    <field name="name">sale.order.search.inherit.qutation</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+    <field name="arch" type="xml">
+          <xpath expr="//filter[@name='my_quotation']" position="after">
+          <separator/>
+          <filter string="In-process" name="in-process" domain="[('sale_order_status','=','in-process')]"/>
+          <filter string="Shipped" name="shipped" domain="[('sale_order_status','=','shipped')]"/>
+          <filter string="Pending" name="pending" domain="[('sale_order_status','=','pending')]"/>
+          <filter string="Cancelled" name="cancelled" domain="[('sale_order_status','=','cancelled')]"/>
+          </xpath>
+
+    </field>
+</record>
+
   </data>
 </odoo>
