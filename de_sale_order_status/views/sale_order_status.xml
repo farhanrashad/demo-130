@@ -21,6 +21,7 @@
           <filter string="In-process" name="in-process" domain="[('sale_order_status','=','in-process')]"/>
           <filter string="Shipped" name="shipped" domain="[('sale_order_status','=','shipped')]"/>
           <filter string="Pending" name="pending" domain="[('sale_order_status','=','pending')]"/>
+          <filter string="Cancelled" name="cancelled" domain="[('sale_order_status','=','cancelled')]"/>
           </xpath>
 
     </field>
