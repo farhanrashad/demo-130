@@ -3,11 +3,10 @@
     'name': "Sale Order Approval",
 
     'summary': """
-        Sale Order Approval
-        """,
+        Sale Order Approval""",
 
     'description': """
-        Sale Order Approval
+        Only users with particular type of access rights can approve sale orders
     """,
 
     'author': "Dynexcel",
@@ -24,10 +23,11 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         'security/security.xml',
+        'wizards/cancel_order.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

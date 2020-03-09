@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+  <data>
+      <record id="sale_order_approval_inherit" model="ir.ui.view">
+          <field name="name">sale.order.approval</field>
+          <field name="model">sale.order</field>
+          <field name="inherit_id" ref="sale.view_order_form"/>
+          <field name="arch" type="xml">
+              <xpath expr="//form[1]/header[1]/button[@name='action_confirm'][2]" position="attributes">
+                  <attribute name="groups">de_approval_state.approve_sale_order</attribute>
+                  <attribute name="attrs">{"invisible": ["|",["state","!=","draft"],["state","!=","waiting_for_approval"]]}</attribute>
+              </xpath>
+              <xpath expr="//form[1]/header[1]/button[@name='action_confirm'][1]" position="attributes">
+                    <attribute name="groups">de_approval_state.approve_sale_order</attribute>
+                    <attribute name="attrs">{"invisible": ["|",["state","!=","sent"],["state","!=","waiting_for_approval"]]}</attribute>
+              </xpath>
+              <xpath expr="//header" position="inside">
+                   <button name="submit_for_approval" string="Submit" type="object" class="oe_highlight" states="draft,sent"
+                        groups="sales_team.group_sale_salesman"/>
+                   <button name="action_confirm" string="Approve" type="object" class='oe_highlight'
+                           attrs="{'invisible': [('state', 'not in', ['waiting_for_approval'])]}"
+                           groups="de_approval_state.approve_sale_order"/>
+              </xpath>
+              <xpath expr="//header" position="inside">
+                   <button name="%(de_approval_state.cancel_order_wizard)d" string="Cancel"
+                            type="action" states="waiting_for_approval" groups="de_approval_state.approve_sale_order"/>
+              </xpath>
+             <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']" position="attributes">
+                <attribute name="attrs">{"readonly": [('state', 'in', ['done','cancel','waiting_for_approval','sent'])]}</attribute>
+            </xpath>
+              <xpath expr="/form/header/field[@name='state']"  position="replace">
+                  <field name="state" widget="statusbar" statusbar_visible="draft,sent,waiting_for_approval,sale"/>
+              </xpath>
+          </field>
+      </record>
+  </data>
+</odoo>

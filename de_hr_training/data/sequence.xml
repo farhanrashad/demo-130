@@ -13,17 +13,11 @@
             <field name="prefix">TC</field>
             <field name="padding">3</field>
         </record>
-        <record id="seq_training_subject" model="ir.sequence">
-            <field name="name">Subject Sequence</field>
-            <field name="code">hr.training.subject</field>
-            <field name="prefix">SUB</field>
-            <field name="padding">3</field>
-        </record>
-        <record id="seq_training_coordinator" model="ir.sequence">
-            <field name="name">Coordinator Sequence</field>
-            <field name="code">hr.training.coordinator</field>
-            <field name="prefix">CO</field>
-            <field name="padding">3</field>
-        </record>
+            <record id="subtype_xml" model="mail.message.subtype">
+            <field name="name">Relevant Fields</field>
+            <field name="res_model">training.session</field>
+            <field name="default" eval="True"/>
+            <field name="description">Session Cancelled</field>
+    </record>
     </data>
 </odoo>
