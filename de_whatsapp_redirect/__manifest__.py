@@ -24,21 +24,15 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock','sale'],
+    'depends': ['base','stock','sale','purchase'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/views.xml',
-        # 'data/mail_template.xml',
-        'views/templates.xml',
-        'wizard/stock_picking.xml',
-        'views/sale_order_whatsapp.xml',
-        'wizard/sale_order.xml',
-        'views/invoicing_whatsapp_redirect.xml',
-        'wizard/invoicing_wizard.xml',
-        'views/inventory_receipt_whatsapp.xml',
-        # 'views/inventory_deliver_order_whtsapp.xml',
+        # 'security/ir.model.access.csv',
+        'views/de_whatsapp_sale_order.xml',
+        'views/de_whatsapp_purchase_order.xml',
+        'views/de_whatsapp_invoicing_customer.xml',
+        'views/de_whatsapp_inventory_stock_picking.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,3 +1,1 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_whatsapp_message_wizard_stock,access.whatsapp.message.wizard.stock,model_whatsapp_message_wizard_stock,,1,1,1,1
-access_whatsapp_message_wizard_invoicing,access.whatsapp.message.wizard.invoicing,model_whatsapp_message_wizard_invoicing,,1,1,1,1

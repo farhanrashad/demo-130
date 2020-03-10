@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import invoicing_customer
-# from . import inventory_delivery_order
-from . import inventory_receipt
-from . import sale_order
+from . import de_whatsapp_invoicing_customer
+from . import de_whatsapp_inventory_stock_picking
+from . import de_whatsapp_sale_order
+from . import de_whatsapp_purchase_order
