@@ -84,7 +84,7 @@
     <field name="arch" type="xml">
           <xpath expr="//filter[@name='my_quotation']" position="after">
           <separator/>
-          <filter string="In-process" name="in-process" domain="[('sale_order_status','=','in-process')]"/>
+          <filter string="In Process" name="in-process" domain="[('sale_order_status','=','in-process')]"/>
           <filter string="Shipped" name="shipped" domain="[('sale_order_status','=','shipped')]"/>
           <filter string="Pending" name="pending" domain="[('sale_order_status','=','pending')]"/>
           <filter string="Cancelled" name="cancelled" domain="[('sale_order_status','=','cancelled')]"/>
