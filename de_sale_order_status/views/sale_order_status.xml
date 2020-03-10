@@ -45,7 +45,7 @@
             <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//field[@name='company_id']" position="after">
+                <xpath expr="//field[@name='state']" position="after">
 <!--                    <tree>-->
                     <field name="sale_order_status"/>
 <!--                    </tree>-->

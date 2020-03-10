@@ -7,4 +7,4 @@ class Saleorderstatus(models.Model):
                                     ('shipped', 'Shipped'),
                                     ('pending', 'Pending'),
                                     ('cancelled', 'Cancelled'),
-                                    ], default='in-process', string='Status')
+                                    ], default='in-process', string='Order Status')
