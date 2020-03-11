@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="whatsapp_purchase_purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="before">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="send_message" string="Whatsapp Message" type="object" class="oe_stat_button" icon="fa-whatsapp"/>
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="whatsapp_purchase_purchase_order_form_mobile" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="date_order" position="after">
+                         <field name="mobile_purchase" widget="phone"/>
+                </field>
+<!--               <xpath expr="/form/sheet/group/group/field[@name='origin']" position="after">-->
+
+
+<!--                </xpath>-->
+            </field>
+        </record>
+
+    </data>
+</odoo>

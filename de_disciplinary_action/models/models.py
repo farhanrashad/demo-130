@@ -26,7 +26,15 @@ class Addaction(models.Model):
     _rec_name = 'desciplinart_case'
 
     desciplinart_case = fields.Char(string='Desciplinary case')
-    action_type = fields.Char(string='Action Type')
+    action_type = fields.Selection([('give_verbal_warning', 'Give Verbal Warning'),
+                               ('written_warning', 'Give Written Warning'),
+                               ('disciplinary_hearing', 'Have Disciplinary hearing'),
+                               ('provide_counselling', 'Provide Counselling'),
+                               ('probation', 'Put On probation'),
+                               ('send_leave', 'Send on Administrative leave'),
+                               ('suspend', 'Suspend'),
+                               ('terminate', 'Terminate'),
+                               ], default='give_verbal_warning', string='Action Type')
     action_created_by = fields.Many2one('res.users', string='Action Created By')
     owner = fields.Char(string='Owner')
     due_date = fields.Date(string='Due Date', default =fields.Date.today)

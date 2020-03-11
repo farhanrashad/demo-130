@@ -1,0 +1,136 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+     <record model="ir.ui.view" id="stock_transfer_form_stockware">
+      <field name="name">stock.warehouse.transfer.form</field>
+      <field name="model">stock.warehouse.transfer</field>
+<!--      <field name="view_mode">form</field>-->
+      <field name="arch" type="xml">
+        <form>
+            <header>
+<!--                <button name="action_draft" type="object" string="draft" class="oe_highlight"/>-->
+                <button name="action_validate" type="object" string="validate" class="oe_highlight"/>
+                <button name="action_transfer_in" type="object" string="Transfer In" class="oe_highlight"/>
+                <button name="action_transfer_out" type="object" string="Transfer Out" class="oe_highlight"/>
+
+<!--                <button name="action_done" type="object" string="done" class="oe_highlight"/>-->
+
+                <field name="state" widget="statusbar" statusbar_visible="draft,validate,transfer_in,transfer_out,done" option="{'clickable':'1'}"/>
+            </header>
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button name="stock_transfer"
+                            type="object" class="oe_stat_button" string="Transfer" icon="fa-archive">
+<!--                        <field name="courses_count" string="Courses" widget="statinfo"/>-->
+                    </button>
+                    <button name="action_view_picking"
+                            type="object" class="oe_stat_button" string="Picking" icon="fa-truck">
+<!--                        <field name="picking_out" string="Picking" widget="statinfo"/>-->
+                    </button>
+                          <button name="action_validate"
+                            type="object" class="oe_stat_button" string="Validate" icon="fa-ban">
+<!--                        <field name="picking_out" string="Picking" widget="statinfo"/>-->
+                    </button>
+
+<!--                  <button name="action_validate" type="object" string="Validate" />-->
+
+<!--    <button name="action_picking" type="object" string="Shiping" icon="fa-truck" />-->
+              </div>
+                    <div class="oe_title">
+                    <h1>
+                        <field name="name_seq" readonly="1"/>
+                    </h1>
+                   </div>
+
+
+                <group>
+                <group>
+                 <field name="transfer_date"/>
+                 <field name="user_id"/>
+                 <field name="company_id"/>
+<!--                 <field name="picking_ids"/>-->
+<!--                 <field name="picking_ids"/>-->
+<!--                 <field name="test_id"/>-->
+<!--                 <field name="patient_age"/>-->
+                </group>
+              <group>
+                 <field name="from_warehouse_id"/>
+                 <field name="from_location_id"/>
+                 <field name="to_warehouse_id"/>
+                 <field name="to_location_id"/>
+<!--                 <field name="patient_age"/>-->
+                 </group>
+                </group>
+                <notebook>
+                <page string="stock transfer line">
+                    <field name="stock_transfer_lines">
+                        <tree editable="bottom">
+                            <field name="stock_transfer_id" invisible="1"/>
+                            <field name="product_id"/>
+                            <field name="product_uom_id"/>
+                            <field name="quantity"/>
+                            <field name="transfer_out_quantity"/>
+                            <field name="transfer_in_quantity"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+            </sheet>
+
+        </form>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="de_stock_transfer_stock_transfer_treestock">
+      <field name="name">Stock Transfer</field>
+      <field name="model">stock.warehouse.transfer</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="transfer_date"/>
+          <field name="user_id"/>
+            <field name="from_warehouse_id"/>
+                 <field name="from_location_id"/>
+                 <field name="to_warehouse_id"/>
+                 <field name="to_location_id"/>
+<!--          <field name="value2"/>-->
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="de_stock_transfer_action_stocktransfer">
+      <field name="name">Stock Transfer</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">stock.warehouse.transfer</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+     <record id="view_stock_transfer_form_inherit_inpicking" model="ir.ui.view">
+           <field name="name">stock.picking.form</field>
+           <field name="model">stock.picking</field>
+           <field name="inherit_id" ref="stock.view_picking_form"/>
+           <field name="arch" type="xml">
+               <field name="partner_id" position="after">
+                   <field name="warehouse_trasnfer_id"/>
+               </field>
+<!--            <xpath expr="/form/sheet/group/group/field[@name='partner_id']" position="after">-->
+<!--                <field name="warehouse_trasnfer_id" />-->
+<!--                </xpath>-->
+
+               </field>
+
+      </record>
+
+
+
+
+
+
+    <menuitem name="Stock Transfer" id="de_stock_transfer_stocktransfer" parent="stock.menu_stock_warehouse_mgmt"
+              action="de_stock_transfer_action_stocktransfer"/>
+
+  </data>
+</odoo>
