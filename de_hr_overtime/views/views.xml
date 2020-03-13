@@ -74,6 +74,25 @@
         </field>
     </record>
 
+<!-- payslips tree view      -->
+      <record id="hr_payroll_inherit" model="ir.ui.view">
+            <field name="name">hr.payroll.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page[@name='account_info']/group/group[@name='accounting']" position="after">
+                    <field name='payslip_overtime_ids' readonly="1">
+                            <tree name='overtime_tree'>
+                                <field name='date'/>
+                                <field name='based_on'/>
+                                <field name='ot_rate'/>
+                                <field name='overtime'/>
+                            </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
       <menuitem id="hr_employees_overtime" parent="hr.menu_hr_root" name="Overtime" action="hr_employees_overtime_action"/>
 
   </data>

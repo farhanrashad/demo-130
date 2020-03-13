@@ -20,6 +20,7 @@ class HrOvertime(models.Model):
             'view_id': False,
             'type': 'ir.actions.act_window',
         }
+
     weekday_ot_rate = fields.Float(string='Weekday OT Rate')
     weekend_ot_rate = fields.Float(string='Weekend OT Rate')
     overtime_count = fields.Integer(string='Overtime', compute='count_overtime_button')
@@ -46,6 +47,11 @@ class EmployeeOvertime(models.Model):
             else:
                 rec.ot_rate = rec.ot_weekend_rate
 
+    #     @api.onchange('employee_id')
+    #     def _show_employee_overtime(self):
+    #         for rec in self:
+    #             return{'domain':{'overtime_ids':[('name', 'in', rec.employee_id)]}}
+
     employee_id = fields.Many2one('hr.employee', string='Employee')
     date = fields.Date(string='Date')
     based_on = fields.Selection([('weekday', 'Weekday'), ('weekend', 'Weekend')])
@@ -60,10 +66,24 @@ class EmployeeOvertime(models.Model):
     ot_weekday_rate = fields.Float(string='OT Weekday Rate', related='employee_id.weekday_ot_rate')
     ot_weekend_rate = fields.Float(string='OT Weekend Rate', related='employee_id.weekend_ot_rate')
     ot_rate = fields.Float(string='OT Rate', compute='compute_ot_rate')
+    payslip_ids = fields.Many2one('hr.payslip', string='Payslip')
 
     worked_hours_id = fields.Many2one('hr.attendance', string='Worked Hours')
     ot_resource_calendar_id = fields.Many2one(related='employee_id.resource_calendar_id', string='Working Hours')
     ot_hours_per_day = fields.Float(related='ot_resource_calendar_id.hours_per_day', string='Hours per Day')
 
 
+class PaySlip(models.Model):
+    _inherit = 'hr.payslip'
 
+    payslip_overtime_ids = fields.One2many('hr.payslip.overtime', 'payslip_id', string='Payslip Overtime')
+
+
+class PaySlipOvertime(models.Model):
+    _name = 'hr.payslip.overtime'
+
+    payslip_id = fields.Many2one('hr.employees.overtime', string='Payslip')
+    date = fields.Date(related='payslip_id.date', string='Date')
+    based_on = fields.Selection(related='payslip_id.based_on', string='Based On')
+    overtime = fields.Char(related='payslip_id.overtime', string='Overtime')
+    ot_rate = fields.Float(related='payslip_id.ot_rate', string='OT Rate')
