@@ -26,9 +26,7 @@
                         <div class="col-md-5 col-sm-4" style="display:inline-block;" >
                             <input type="text" class="form-control" placeholder="Street" name="site_address" required="False"/>
                         </div>
-                        <div class="col-md-3 col-sm-4" style="display:inline-block;">
-                            <input type="text" class="form-control" placeholder="Region" name="region" required="False"/>
-                        </div>
+                       
                         <div class="col-md-3 col-sm-4" style="display:inline-block;">
                            <input type="text" class="form-control" placeholder="City" name="city" required="False"/>
                         </div>

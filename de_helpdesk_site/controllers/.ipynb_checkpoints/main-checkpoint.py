@@ -45,7 +45,6 @@ class HelpdeskTicketControllerSite(HelpdeskTicketController):
             'site_name': kw.get('site_name'),
             'contact_name': kw.get('contact_name'),
             'site_address': kw.get('site_address'),
-            'region': kw.get('region'),
             'city': kw.get('city'),
             'material': kw.get('material'),
             'barcode': kw.get('barcode'),

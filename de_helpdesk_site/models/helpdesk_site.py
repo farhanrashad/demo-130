@@ -10,7 +10,7 @@ class HelpdeskSite(models.Model):
     contact_name = fields.Char('Contact Name')
     contact_no = fields.Char('Contact no')
     site_address = fields.Char('Site Address')
-    region = fields.Char('Region')
+    
     city = fields.Char('City')
     
     reference = fields.Char('Reference')
