@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+        <report
+            id="mom_print_pdf_report"
+            model="calendar.event"
+            string="Print MOM"
+            report_type="qweb-pdf"
+            name="de_mom.report_mom_pdf"
+            file="file.report.mom.pdf"
+        />
+</odoo>

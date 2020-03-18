@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="mom_report_card">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="col-xs-8" style="margin:auto">
+                            <h1 t-field="o.name"></h1>
+                        </div>
+                        <div class="col-xs-8" style="margin:auto">
+                            <table class="table table-condensed" style="border: 3px solid black !important;">
+                                 <tr style="border-bottom: 3px solid black">
+                                    <td>
+                                        <strong><b>Meeting Date and Time</b></strong>
+                                    </td>
+                                     <td>
+                                         <p t-field="o.start_datetime"/>
+                                     </td>
+                                 </tr>
+                                <tr style="border-bottom: 3px solid black">
+                                    <td>
+                                        <strong><b>Meeting Location</b></strong>
+                                    </td>
+                                     <td>
+                                         <p t-field="o.location"/>
+                                     </td>
+                                </tr>
+                                <tr style="border-bottom: 3px solid black">
+                                    <td>
+                                        <strong><b>Meeting Duration</b></strong>
+                                    </td>
+                                     <td>
+                                         <p t-field="o.duration"/>
+                                     </td>
+                                 </tr>
+                                <tr style="border-bottom: 3px solid black">
+                                    <td>
+                                        <strong><b>Project</b></strong>
+                                    </td>
+                                     <td>
+                                         <p t-field="o.project_id"/>
+                                     </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-8" style="margin:auto">
+                            <table class="table table-condensed" style="border: 3px solid black !important;">
+                                <tr style="border-bottom: 3px solid black">
+                                    <td>
+                                        <h3>Meeting Attendees</h3>
+                                    </td>
+                                 </tr>
+                                <tr style="border-bottom: 3px solid black">
+                                   <td>
+                                        <p t-field="o.partner_ids"/>
+                                    </td>
+                                 </tr>
+                            </table>
+                            <table class="table table-condensed" style="border: 3px solid black !important;">
+                                <h2>Discussion</h2>
+                                <tr style="border-bottom: 3px solid black">
+                                   <td>
+                                        <p t-field="o.discussion"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table table-condensed" style="border: 3px solid black !important;">
+                                <h2>Action Items</h2>
+                                <tr style="border-bottom: 3px solid black">
+                                   <td>
+                                        <p t-field="o.action_items"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_mom_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="de_mom.mom_report_card" />
+            </t>
+        </t>
+    </template>
+</odoo>
