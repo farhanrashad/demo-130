@@ -7,6 +7,8 @@
                     <field name="arch" type="xml">
                     <xpath expr="//field[@name='partner_phone']" position="after">
                           <field name="applicant_city"/>
+                          <field name="applicant_education"/>
+                          <field name="applicant_position"/>
                     </xpath>
                     </field>
             </record>
