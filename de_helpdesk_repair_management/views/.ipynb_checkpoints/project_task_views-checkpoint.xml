@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_project_task_form_inherit" model="ir.ui.view">
+            <field name="name">view.project.task.form.inherit.heldpesk.repair</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_last_stage_update']" position="after">
+                    <field name="ticket_id" readonly="1" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
+                    <field name="is_diagnosys" readonly="1" />
+                    <field name="is_workorder" readonly="1" />
+                </xpath>
+                <xpath expr="//notebook/page[@name='description_page']" position="after">
+                    <page string="Product Repair Planning" id="product_planning_tab" attrs="{'invisible': [('is_diagnosys', '=', False)]}">
+                        <field name="repair_planning_lines" widget="one2many_list">
+                                <tree string="Order lines" editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="product_uom_id"/>
+                                    <field name="product_uom_category_id" invisible="1"/>
+                                </tree>
+                            </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_project_task_tree_inherit" model="ir.ui.view">
+            <field name="name">project.task.tree.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_tree2"/>
+            <field name="arch" type="xml">
+                <field name="project_id" position="after">
+                    <field name="ticket_id" readonly="1" />
+                    <field name="is_diagnosys" readonly="1" />
+                    <field name="is_workorder" readonly="1" />
+                </field>
+            </field>
+        </record>
+        
+    </data>
+</odoo>
