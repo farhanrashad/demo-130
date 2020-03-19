@@ -1,0 +1,38 @@
+<odoo>
+    <data>
+        <record id="part_invoices" model="ir.actions.act_window">
+            <field name="name">Create Part Invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">repair.order</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="repair.view_repair_order_tree"/>
+            <field name="binding_model_id" ref="model_repair_order"/>
+        </record>
+        <record id="part_invoices_operations" model="ir.actions.act_window">
+            <field name="name">Create Operations Invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">repair.order</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="repair.view_repair_order_tree"/>
+            <field name="binding_model_id" ref="model_repair_order"/>
+        </record>
+
+
+        <record id="repair_app_invoices_form_view_inherit" model="ir.ui.view">
+            <field name="name">repair.order.form.inherit</field>
+            <field name="model">repair.order</field>
+            <field name="inherit_id" ref="repair.view_repair_order_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_repair_invoice_create']" position="attributes">
+                          <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_repair_invoice_create']" position="after">
+                   <button name="action_repair_part_invoice_create" states="2binvoiced,ready" type="object" string="Create Part Invoice" class="oe_highlight" groups="account.group_account_invoice"/>
+                   <button name="action_repair_operations_invoice_create" states="2binvoiced,ready" type="object" string="Create Operation Invoice" class="oe_highlight"  groups="account.group_account_invoice"/>
+            </xpath>
+</field>
+</record>
+    </data>
+</odoo>
