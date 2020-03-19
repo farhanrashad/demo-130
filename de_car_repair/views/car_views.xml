@@ -1,0 +1,51 @@
+<odoo>
+     <!-- Car Tree View-->
+    <record id="car_list_view" model="ir.ui.view">
+        <field name="name">car.list.view</field>
+        <field name="model">car</field>
+        <field name="arch" type="xml">
+            <tree string="Car">
+                <field name="name"/>
+                <field name="brand_id"/>
+                <field name="category_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Car Brand Form View -->
+    <record id="car_form_view" model="ir.ui.view">
+        <field name="name">car.form.view</field>
+        <field name="model">car</field>
+        <field name="arch" type="xml">
+            <form string="Car">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="brand_id"/>
+                        <field name="category_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    
+    <!-- Car Brand View -->
+    <record id="action_car" model="ir.actions.act_window">
+        <field name="name">Car</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">car</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_commission_unpaid_filter': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new repair request, the first step of a new sale!
+            </p>
+            <p>
+                Once the request is confirmed by the customer, it becomes a repair order.<br/> You will be able to work on order and create an invoice and collect the payment.
+            </p>
+        </field>
+    </record>
+    
+    <menuitem name="Car" id="car_menu" parent="menu_car_repair_configuration"  action="action_car" sequence="10"/>
+</odoo>
