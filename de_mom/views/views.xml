@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="calendar_event_inherit">
+      <field name="name">calendar.event.inherit</field>
+      <field name="model">calendar.event</field>
+      <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+      <field name="arch" type="xml">
+          <xpath expr="/form/sheet" position="before">
+              <header>
+                  <button name="print_mom" string="Print MOM" type="object" class="oe_highlight"/>
+                  <button name="action_send_mail" string="Email MOM" type="object" class="oe_highlight"/>
+              </header>
+          </xpath>
+
+        <xpath expr="/form/sheet/notebook/page[@name='page_details']/group/group/field[@name='location']" position="after">
+          <field name="project_id"/>
+        </xpath>
+
+        <xpath expr="/form/sheet/notebook/page[@name='page_details']/field[@name='description']" position="after">
+             <div name="discussion">
+                 <label for="discussion"/>
+                 <field name="discussion" type="html"/>
+             </div>
+            <div name="action-items">
+                 <label for="action_items"/>
+                 <field name="action_items" type="html"/>
+            </div>
+        </xpath>
+
+        <xpath expr="/form/sheet/notebook/page[@name='page_details']/div[@name='action-items']" position="after">
+            <field name="mom_meetings_ids">
+                <tree editable="bottom">
+                    <field name="task_id"/>
+                    <field name="user_id"/>
+                    <field name="deadline"/>
+                    <field name="description"/>
+                    <field name="stage_id"/>
+                  </tree>
+            </field>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>
