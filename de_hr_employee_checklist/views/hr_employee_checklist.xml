@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+  <data>
+        <record id="hr_employee_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page[@name='hr_settings']" position="after">
+                    <page name="entry_checklist" string="Entry Checklist">
+                        <group>
+                            <group string="Entry Checklist">
+                                <field name="entry_checklist" widget="many2many_checkboxes"/>
+                            </group>
+                            <group string="Progress">
+                                <field name="entry_checklist_progress" widget="percentpie"/>
+                            </group>
+                        </group>
+
+                    </page>
+                    <page name="exit_checklist" string="Exit Checklist">
+                        <group>
+                            <group string="Exit Checklist">
+                                <field name="exit_checklist" widget="many2many_checkboxes"/>
+                            </group>
+                            <group string="Progress">
+                                <field name="exit_checklist_progress" widget="percentpie"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_employee_inherit_tree" model="ir.ui.view">
+            <field name="name">hr.employee.inherit.tree</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='department_id']" position="after">
+                    <field name="entry_checklist_progress" widget="progressbar"/>
+                    <field name="exit_checklist_progress" widget="progressbar"/>
+                </xpath>
+            </field>
+        </record>
+
+      <record id="hr_employee_inherit_kanban" model="ir.ui.view">
+            <field name="name">hr.employee.inherit.kanban</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='work_phone']" position="after">
+                    <field name="entry_checklist_progress" widget="progressbar">Entry Progress</field>
+                    <field name="exit_checklist_progress" widget="progressbar">Exit Progress</field>
+                </xpath>
+            </field>
+        </record>
+<!--      Entry Checklist-->
+      <record id="hr_employee_entry_checklist_tree" model="ir.ui.view">
+            <field name="name">hr.employee.entry.checklist.tree</field>
+            <field name="model">hr.employee.entry.checklist</field>
+            <field name="arch" type="xml">
+                   <tree string="Entry Checklist">
+                       <field name="entry_name" />
+                       <field name="desc" />
+                   </tree>
+            </field>
+      </record>
+      <record id="hr_employee_entry_checklist_form" model="ir.ui.view">
+            <field name="name">hr.employee.entry.checklist.form</field>
+            <field name="model">hr.employee.entry.checklist</field>
+            <field name="arch" type="xml">
+                   <form string="Entry Checklist">
+                       <sheet>
+                           <group>
+                               <group>
+                                   <field name="entry_name" />
+                               </group>
+                               <group>
+                                   <field name="desc" />
+                               </group>
+                           </group>
+                       </sheet>
+                   </form>
+            </field>
+      </record>
+      <record id="hr_employee_exit_checklist_tree" model="ir.ui.view">
+            <field name="name">hr.employee.exit.checklist.tree</field>
+            <field name="model">hr.employee.exit.checklist</field>
+            <field name="arch" type="xml">
+                   <tree string="Exit Checklist">
+                       <field name="exit_name" />
+                       <field name="desc" />
+                   </tree>
+            </field>
+      </record>
+      <record id="hr_employee_exit_checklist_form" model="ir.ui.view">
+            <field name="name">hr.employee.exit.checklist.form</field>
+            <field name="model">hr.employee.exit.checklist</field>
+            <field name="arch" type="xml">
+                   <form string="Exit Checklist">
+                       <sheet>
+                           <group>
+                               <group>
+                                   <field name="exit_name" />
+                               </group>
+                               <group>
+                                   <field name="desc" />
+                               </group>
+                           </group>
+                       </sheet>
+                   </form>
+            </field>
+      </record>
+      <record id="action_menu_human_resources_configuration_employee_entry_checklist" model="ir.actions.act_window">
+            <field name="name">Entry Checklist</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.employee.entry.checklist</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    Create Your First Entry Checklist !
+                </p>
+            </field>
+      </record>
+      <record id="action_menu_human_resources_configuration_employee_exit_checklist" model="ir.actions.act_window">
+            <field name="name">Exit Checklist</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.employee.exit.checklist</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                    Create Your First Exit Checklist !
+                </p>
+            </field>
+      </record>
+      <menuitem id="menu_human_resources_configuration_employee_entry_checklist" sequence="4" parent="hr.menu_human_resources_configuration"
+                name="Entry Checklist" action="action_menu_human_resources_configuration_employee_entry_checklist"/>
+      <menuitem id="menu_human_resources_configuration_employee_exit_checklist" sequence="5" parent="hr.menu_human_resources_configuration"
+                name="Exit Checklist" action="action_menu_human_resources_configuration_employee_exit_checklist"/>
+
+  </data>
+</odoo>
