@@ -17,6 +17,7 @@
                     </group>
                 </xpath>
 
+
             <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/form[1]/group[1]/group[1]/field[@name='tax_id']" position="after">
                 <field name="commission_percentage"/>
             </xpath>
@@ -31,17 +32,11 @@
             </xpath>
             
             <field name="amount_total" position="after">
-                <div>
                 <div class="oe_subtotal_footer_separator oe_inline o_td_label">
-                    <br/><br/>
-<!--                    <br/><br/>-->
                     <label for="commission_amount" />
                 </div>
-                <br/>
-                &#160; &#160; &#160; &#160;
                 <field name="commission_amount" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                  <div class="oe_clear"/>
-                </div>
             </field>
             
         </field>

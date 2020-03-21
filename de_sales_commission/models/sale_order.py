@@ -14,24 +14,24 @@ class SaleOrder(models.Model):
                                states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
                                help="To address a contact in care of someone else")
 
-    commission_amount = fields.Monetary(string='Commission Amount', readonly=True, store=True,
-                                        compute='_amount_commission')  #
+    commission_amount = fields.Monetary(string='Commission Amount', readonly=True,
+                                        compute='_amount_commission')  # store=True,
 
-    def test_commission(self):
-        commission = self.env['sale.commission'].create({
-            'name': self.id,
-            'agent_id': self.partner_id.id,
-            # 'user_id': self.user_id.id,
-            'company_id': self.company_id.id,
-            'currency_id': self.currency_id.id,
-            # 'product_id': self.product_id.id,
-            'commission_amount': self.commission_amount,
-            # 'currency_id': self.id,
-            'doc_date': self.date_order,
-            'sale_id': self.id,
-            'sale_amount': self.amount_total,
-        })
-        commission.action_confirm()
+    # def test_commission(self):
+    #     commission = self.env['sale.commission'].create({
+    #         'name': self.id,
+    #         'agent_id': self.partner_id.id,
+    #         # 'user_id': self.user_id.id,
+    #         'company_id': self.company_id.id,
+    #         'currency_id': self.currency_id.id,
+    #         # 'product_id': self.product_id.id,
+    #         'commission_amount': self.commission_amount,
+    #         # 'currency_id': self.id,
+    #         'doc_date': self.date_order,
+    #         'sale_id': self.id,
+    #         'sale_amount': self.amount_total,
+    #     })
+    #     commission.action_confirm()
 
 
     # ==================================================================
