@@ -65,8 +65,7 @@ class Stockwarehouse(models.Model):
             }
             stock_move_line_id = self.env['stock.move.line'].create(moves)
 
-        # for rs in self:
-        #     rs.write({'state': 'transfer_in'})
+        self.write({'state': 'transfer_in'})
 
 
     def action_transfer_out(self):
@@ -109,10 +108,7 @@ class Stockwarehouse(models.Model):
                 # 'quantity_done': mv.id,
             }
             stock_move_line_id = self.env['stock.move.line'].create(moves)
-
-
-        # for rs in self:
-        #     rs.write({'state': 'transfer_out'})
+        self.write({'state': 'transfer_out'})
 
     def action_done(self):
         for rs in self:
@@ -165,7 +161,7 @@ class Stockwarehouse(models.Model):
         default=lambda s: s.env.company.id, index=True, states={'validate': [('readonly', True)]})
     stock_transfer_lines = fields.One2many('stock.warehouse.transfer.line', 'stock_transfer_id',
                                      string='Stock Transfer Lines',
-                                     # states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True,
+                                     # copy=True,
                                      auto_join=True)
 
     from_warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse From')

@@ -20,18 +20,20 @@
             </header>
             <sheet>
                 <div class="oe_button_box" name="button_box">
-                    <button name="stock_transfer"
-                            type="object" class="oe_stat_button" string="Transfer" icon="fa-archive">
+<!--                    <button name="stock_transfer"-->
+<!--                            type="object" class="oe_stat_button" string="Transfer" icon="fa-archive">-->
 <!--                        <field name="courses_count" string="Courses" widget="statinfo"/>-->
-                    </button>
+<!--                    </button>-->
                     <button name="action_view_picking"
-                            type="object" class="oe_stat_button" string="Picking" icon="fa-truck">
+                            type="object" class="oe_stat_button" string="Picking" icon="fa-truck" attrs="{'invisible': ['|', ('state', 'not in', ('transfer_in', 'transfer_out'))]}">
 <!--                        <field name="picking_out" string="Picking" widget="statinfo"/>-->
                     </button>
-                          <button name="action_validate"
-                            type="object" class="oe_stat_button" string="Validate" icon="fa-ban">
+<!--       <button name="button_validate" attrs="{'invisible': ['|', ('state', 'not in', ('transfer_in', 'transfer_out')), ('show_validate', '=', False)]}" string="Validate" type="object" groups="stock.group_stock_user" class="o_btn_validate"/>-->
+
+<!--                          <button name="action_validate"-->
+<!--                            type="object" class="oe_stat_button" string="Validate" icon="fa-ban">-->
 <!--                        <field name="picking_out" string="Picking" widget="statinfo"/>-->
-                    </button>
+<!--                    </button>-->
 
 <!--                  <button name="action_validate" type="object" string="Validate" />-->
 

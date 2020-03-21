@@ -10,4 +10,6 @@ from odoo.addons import decimal_precision as dp
 class Picking(models.Model):
     _inherit = 'stock.picking'
 
-    warehouse_trasnfer_id = fields.Many2one("stock.warehouse.transfer", string="Warehouse Transfer", required=False)
+    warehouse_trasnfer_id = fields.Many2one("stock.warehouse.transfer", string="Warehouse Transfer", required=False,
+    states = {'cancel': [('readonly', True)], 'done': [('readonly', True)]}
+    )
