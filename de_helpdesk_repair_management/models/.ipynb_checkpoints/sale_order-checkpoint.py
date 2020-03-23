@@ -7,6 +7,6 @@ from odoo import api, fields, models, _
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
-    #task_id = fields.Many2one('project.task', string="Task", help="Related Project Task")
+    repair_task_id = fields.Many2one('project.task', string="Task", help="Related Project Task")
     
     

@@ -13,6 +13,60 @@ class ProjectTask(models.Model):
     is_repair_sale = fields.Boolean('Repair Sale',default=False)
     
     repair_planning_lines = fields.One2many('project.task.planning.line', 'task_id', string='Task Repair Planning Lines', readonly=False, copy=True, auto_join=True)
+    
+    sale_amount_total = fields.Float(compute='_compute_sale_data', string="Sum of Orders", help="Untaxed Total of Confirmed Orders", )
+    quotation_count = fields.Integer(compute='_compute_sale_data', string="Number of Quotations")
+    sale_order_count = fields.Integer(compute='_compute_sale_data', string="Number of Sale Orders")
+    order_ids = fields.One2many('sale.order', 'repair_task_id', string='Orders')
+    
+    @api.depends('order_ids.state', 'order_ids.currency_id', 'order_ids.amount_untaxed', 'order_ids.date_order', 'order_ids.company_id')
+    def _compute_sale_data(self):
+        for task in self:
+            total = 0.0
+            quotation_cnt = 0
+            sale_order_cnt = 0
+            company_currency = self.env.company.currency_id
+            for order in task.order_ids:
+                if order.state in ('draft', 'sent'):
+                    quotation_cnt += 1
+                if order.state not in ('draft', 'sent', 'cancel'):
+                    sale_order_cnt += 1
+                    total += order.currency_id._convert(
+                        order.amount_untaxed, company_currency, order.company_id, order.date_order or fields.Date.today())
+            task.sale_amount_total = total
+            task.quotation_count = quotation_cnt
+            task.sale_order_count = sale_order_cnt
+    
+    def action_view_sale_quotation(self):
+        action = self.env.ref('sale.action_quotations_with_onboarding').read()[0]
+        action['context'] = {
+            'search_default_draft': 1,
+            'search_default_partner_id': self.partner_id.id,
+            'default_partner_id': self.partner_id.id,
+            'default_repair_task_id': self.id
+        }
+        action['domain'] = [('repair_task_id', '=', self.id), ('state', 'in', ['draft', 'sent'])]
+        quotations = self.mapped('order_ids').filtered(lambda l: l.state in ('draft', 'sent'))
+        if len(quotations) == 1:
+            action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
+            action['res_id'] = quotations.id
+        return action
+
+    def action_view_sale_order(self):
+        action = self.env.ref('sale.action_orders').read()[0]
+        action['context'] = {
+            'search_default_partner_id': self.partner_id.id,
+            'default_partner_id': self.partner_id.id,
+            'default_repair_task_id': self.id,
+        }
+        action['domain'] = [('repair_task_id', '=', self.id), ('state', 'not in', ('draft', 'sent', 'cancel'))]
+        orders = self.mapped('order_ids').filtered(lambda l: l.state not in ('draft', 'sent', 'cancel'))
+        if len(orders) == 1:
+            action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
+            action['res_id'] = orders.id
+        return action
+    
+    
 
     def action_view_so(self):
         self.ensure_one()
@@ -51,7 +105,7 @@ class ProjectTask(models.Model):
             'analytic_account_id': self.project_id.analytic_account_id.id,
             'client_order_ref': self.project_id.name,
             'company_id': self.project_id.company_id.id,
-            #'task_id':self.id,
+            'repair_task_id':self.id,
             'order_line':lines_data,
         })
         self.update({
