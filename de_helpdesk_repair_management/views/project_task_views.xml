@@ -8,11 +8,12 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button string="New Quotation" name="action_create_sale_order" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('is_diagnosys', '=', False),('is_repair_sale', '=', True)]}"/>
-                    <div class="oe_button_box" position="inside">
+                    
+                    <button name="%(action_assign_task_technician)d" string="Assign Technician"
+                            type="action" class="oe_highlight" context="{'default_task_id': active_id}" attrs="{'invisible': [('is_diagnosys', '=', False)]}"/>
+                    <button name="%(action_assign_task_technician)d" string="Assign Technician"
+                            type="action" class="oe_highlight" context="{'default_task_id': active_id}" attrs="{'invisible': [('is_workorder', '=', False)]}"/>
                         
-                        
-                
-                    </div>
                     
                     
                 </xpath>
@@ -35,7 +36,21 @@
                     <field name="is_workorder" readonly="1" />
                     <field name="is_repair_sale" invisible="1" />
                 </xpath>
+                
+                <!--
+                <xpath expr="//notebook/page[@name='description_page']" position="attributes">
+                    <t t-if="is_diagnosys">
+                        <attribute name="string">Fault Diagnosys</attribute>
+                    </t>
+                </xpath>
+                -->
+                
                 <xpath expr="//notebook/page[@name='description_page']" position="after">
+                    <page name="description_page" string="Fault,Causes" attrs="{'invisible': [('is_diagnosys', '=', False)]}">
+                        <field name="description" type="html"/>
+                        <div class="oe_clear"/>
+                    </page>
+                    
                     <page string="Repair Estimation" id="repair_estimation_tab" attrs="{'invisible': [('is_diagnosys', '=', False)]}">
                         <field name="repair_planning_lines" widget="one2many_list">
                                 <tree string="Order lines" editable="bottom">
@@ -49,6 +64,18 @@
                             </field>
                     </page>
                 </xpath>
+                
+                <xpath expr="//notebook/page[@name='description_page']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('is_diagnosys', '!=', False)]}</attribute>
+                </xpath>
+                
+                <xpath expr="//notebook/page[@name='extra_info']" position="before">
+                    <page name="remarks_page" string="Technician Remarks" attrs="{'invisible': [('is_diagnosys', '=', False)]}">
+                        <field name="remarks" type="html"/>
+                        <div class="oe_clear"/>
+                    </page>
+                </xpath>
+                
             </field>
         </record>
         
@@ -66,6 +93,21 @@
                 </field>
             </field>
         </record>
+        
+         <record id="action_project_task_multi_assignment" model="ir.actions.server">
+            <field name="name">Assign Technician</field>
+            <field name="model_id" ref="model_project_task"/>
+            <field name="binding_model_id" ref="project.model_project_task"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+if record:
+    action_values = env.ref('de_helpdesk_repair_management.action_assign_task_technician').read()[0]
+    action_values.update({'context': env.context})
+    action = action_values
+            </field>
+        </record>
+        
         
     </data>
 </odoo>

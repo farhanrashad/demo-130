@@ -16,8 +16,8 @@ class HelpdeskTicket(models.Model):
     
     product_id = fields.Many2one('product.product', string='Product', domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", change_default=True, ondelete='restrict', check_company=True)  # Unrequired company
     product_template_id = fields.Many2one('product.template', string='Product Template',related="product_id.product_tmpl_id", domain=[('sale_ok', '=', True)])
-    product_uom_qty = fields.Float('Quantity', default=1.0, required=True)
-    product_uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=True, help="Unit of Measure (Unit of Measure) is the unit of measurement for the inventory control", domain="[('category_id', '=', product_uom_category_id)]")
+    product_uom_qty = fields.Float('Quantity', default=1.0, required=False)
+    product_uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=False, help="Unit of Measure (Unit of Measure) is the unit of measurement for the inventory control", domain="[('category_id', '=', product_uom_category_id)]")
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id')
     
     sale_id = fields.Many2one("sale.order", string="Sale Order", domain="[('company_id', '=', company_id)]")

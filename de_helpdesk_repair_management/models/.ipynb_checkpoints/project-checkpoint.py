@@ -19,6 +19,8 @@ class ProjectTask(models.Model):
     sale_order_count = fields.Integer(compute='_compute_sale_data', string="Number of Sale Orders")
     order_ids = fields.One2many('sale.order', 'repair_task_id', string='Orders')
     
+    repair_detail = fields.Html(string='Repair Details')
+    
     @api.depends('order_ids.state', 'order_ids.currency_id', 'order_ids.amount_untaxed', 'order_ids.date_order', 'order_ids.company_id')
     def _compute_sale_data(self):
         for task in self:
