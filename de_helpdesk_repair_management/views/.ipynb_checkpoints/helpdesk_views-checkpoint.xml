@@ -42,10 +42,16 @@
                 </button>
                 
             </div>
-            <xpath expr="//group/group[2]" position="inside">
+            <xpath expr="//group/group[1]" position="inside">
                 <field name='project_id'/>
                 <field name='analytic_account_id'/>
             </xpath>
+            <xpath expr="//field[@name='partner_email']" position="after">
+                <separator colspan="2" class="mt16"/>
+                <field name='sale_id'/>
+                <field name='product_id'/>
+            </xpath>
+            <!--
             <xpath expr="//group" position="after">
                 <group>
                     <group string="Product Information">
@@ -54,12 +60,10 @@
                         <field name="product_uom_qty" />
                         <field name="product_uom_category_id" />
                     </group>
-                    <group string="Sale Information">
-                        <field name="sale_id" />
-                        <field name="date_order" />
-                    </group>
+                   
                 </group>
             </xpath>
+-->
         </field>
     </record>
 

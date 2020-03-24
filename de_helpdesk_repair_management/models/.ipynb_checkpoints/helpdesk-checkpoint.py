@@ -14,14 +14,8 @@ class HelpdeskTicket(models.Model):
     
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', readonly=False, help="The analytic account related to a Ticket", copy=False,)
     
+    sale_id = fields.Many2one('sale.order',string='Sale Order', domain="[('company_id', '=', company_id)]")
     product_id = fields.Many2one('product.product', string='Product', domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", change_default=True, ondelete='restrict', check_company=True)  # Unrequired company
-    product_template_id = fields.Many2one('product.template', string='Product Template',related="product_id.product_tmpl_id", domain=[('sale_ok', '=', True)])
-    product_uom_qty = fields.Float('Quantity', default=1.0, required=False)
-    product_uom_id = fields.Many2one('uom.uom', 'Unit of Measure', required=False, help="Unit of Measure (Unit of Measure) is the unit of measurement for the inventory control", domain="[('category_id', '=', product_uom_category_id)]")
-    product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id')
-    
-    sale_id = fields.Many2one("sale.order", string="Sale Order", domain="[('company_id', '=', company_id)]")
-    date_order = fields.Datetime(related='sale_id.date_order', readonly=True)
     
     diagnosys_count = fields.Integer('diagnosys Count', compute='_compute_diagnosys_count', compute_sudo=True)
     diagnosys_ids = fields.One2many('project.task', 'ticket_id', string='diagnosys',  domain="[('is_diagnosys','=',True),('active','=',True),('project_id','=',project_id)]")

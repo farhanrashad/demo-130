@@ -6,6 +6,7 @@
             <field name="model">project.task</field>
             <field name="inherit_id" ref="project.view_task_form2"/>
             <field name="arch" type="xml">
+                
                 <xpath expr="//header" position="inside">
                     <button string="New Quotation" name="action_create_sale_order" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('is_diagnosys', '=', False),('is_repair_sale', '=', True)]}"/>
                     
@@ -17,12 +18,16 @@
                     
                     
                 </xpath>
-                  <xpath expr="//form[1]/sheet[1]/div[@name='button_box']" position="inside">
-                      <button class="oe_stat_button" type="object" name="action_view_sale_quotation" icon="fa-pencil-square-o" attrs="{'invisible': [('quotation_count', '=', 0)]}" >
-                            <field name="quotation_count" widget="statinfo" string="Quotations"/>
-                        </button>
+                <xpath expr="//header/button[@name='action_assign_to_me']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('is_diagnosys', '=', True),('is_workorder', '=', True)]}</attribute>
+                </xpath>
+                
+                <xpath expr="//form[1]/sheet[1]/div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" type="object" name="action_view_sale_quotation" icon="fa-pencil-square-o" attrs="{'invisible': [('quotation_count', '=', 0)]}" >
+                        <field name="quotation_count" widget="statinfo" string="Quotations"/>
+                    </button>
                         
-                        <button class="oe_stat_button" type="object" attrs="{'invisible': [('sale_order_count', '=', 0)]}" name="action_view_sale_order" icon="fa-usd">
+                    <button class="oe_stat_button" type="object" attrs="{'invisible': [('sale_order_count', '=', 0)]}" name="action_view_sale_order" icon="fa-usd">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_text"> Orders</span>
                             <field name="sale_order_count" invisible="1"/>
@@ -37,13 +42,7 @@
                     <field name="is_repair_sale" invisible="1" />
                 </xpath>
                 
-                <!--
-                <xpath expr="//notebook/page[@name='description_page']" position="attributes">
-                    <t t-if="is_diagnosys">
-                        <attribute name="string">Fault Diagnosys</attribute>
-                    </t>
-                </xpath>
-                -->
+                
                 
                 <xpath expr="//notebook/page[@name='description_page']" position="after">
                     <page name="description_page" string="Fault,Causes" attrs="{'invisible': [('is_diagnosys', '=', False)]}">
