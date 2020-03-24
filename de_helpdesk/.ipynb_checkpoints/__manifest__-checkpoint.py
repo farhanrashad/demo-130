@@ -4,10 +4,10 @@
     'name': 'Helpdesk',
     'summary': """
         Track Help Tickets""",
-    'version': '12.0.1.9.1',
+    'version': '13.0.1.1.1',
     'license': 'AGPL-3',
     'category': 'After-Sales',
-    'author': 'AdaptiveCity, '
+    'author': 'Dynexcel, AdaptiveCity, '
               'C2i Change 2 Improve, '
               'Domatix, '
               'Factor Libre, '
