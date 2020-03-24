@@ -22,6 +22,7 @@
         'views/helpdesk_sla_views.xml',
         'views/helpdesk_ticket_type_views.xml',
         'views/helpdesk_ticket_views.xml',
+        'views/helpdesk_team_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
