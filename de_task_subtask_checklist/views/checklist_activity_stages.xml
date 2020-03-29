@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="project_checklist_activity_stages_view_tree" model="ir.ui.view">
+        <field name="name">project.checklist.activity.stages.view.tree</field>
+        <field name="model">project.checklist.activity.stages</field>
+        <field name="arch" type="xml">
+           <tree string="Checklist Activity Stages">
+               <field name="name" />
+               <field name="sequence" />
+               <field name="default_stage"/>
+           </tree>
+        </field>
+    </record>
+    <record id="project_checklist_activity_stages_view_form" model="ir.ui.view">
+        <field name="name">project.checklist.activity.stages.view.form</field>
+        <field name="model">project.checklist.activity.stages</field>
+        <field name="arch" type="xml">
+            <form string="Checklist Activity Stages">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="sequence" />
+                        </group>
+                        <group>
+                            <field name="default_stage"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="project_checklist_activity_stages_action" model="ir.actions.act_window">
+        <field name="name">Checklist Activity Stages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.checklist.activity.stages</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+                Enter the first checklist !!!
+            </p>
+        </field>
+    </record>
+
+    <record id="project_checklist_task_checklist_view_tree" model="ir.ui.view">
+        <field name="name">project.checklist.task.checklist.view.tree</field>
+        <field name="model">project.checklist.task.checklist</field>
+        <field name="arch" type="xml">
+           <tree string="Task Checklist">
+               <field name="name"/>
+               <field name="description" />
+               <field name="project_id"/>
+           </tree>
+        </field>
+    </record>
+    <record id="project_checklist_task_checklist_view_form" model="ir.ui.view">
+        <field name="name">project.checklist.task.checklist.view.form</field>
+        <field name="model">project.checklist.task.checklist</field>
+        <field name="arch" type="xml">
+            <form string="Task Checklist">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="description" />
+                        </group>
+                        <group>
+                            <field name="project_id"/>
+                        </group>
+                    </group>
+                    <field name="checklist_item_ids">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="description"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="project_checklist_task_checklist_action" model="ir.actions.act_window">
+        <field name="name">Task Checklist</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">project.checklist.task.checklist</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+                Enter the first task checklist !!!
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="project_checklist_parent" name="Checklist" sequence="4" action="project_checklist_activity_stages_action"
+              parent="project.menu_project_config"/>
+    <menuitem id="project_checklist_activity_stages_menuitem" name="Checklist Activity Stages"
+              parent="project_checklist_parent" action="project_checklist_activity_stages_action" sequence="5"/>
+    <menuitem id="project_checklist_task_checklist_menuitem" name="Task Checklist"
+              parent="project_checklist_parent" action="project_checklist_task_checklist_action" sequence="6"/>
+</odoo>
