@@ -237,6 +237,7 @@ class AccountPaymentWHT(models.Model):
                         'partner_id': payment.partner_id.id,
                         'account_id': payment.wht_type_id.account_id.id,
                         'payment_id': payment.id,
+                        'is_wht_line': True,
                     }))
 
             if move_names:

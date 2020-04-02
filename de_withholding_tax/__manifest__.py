@@ -17,7 +17,7 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Accounting',
-    'version': '0.4',
+    'version': '0.5',
 
     # any module necessary for this one to work correctly
     'depends': ['base','account'],
@@ -29,6 +29,7 @@
         'views/withholding_tax_views.xml',
         #'views/invoice_withholding_views.xml',
         'views/account_payment_views.xml',
+        'views/account_move_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
