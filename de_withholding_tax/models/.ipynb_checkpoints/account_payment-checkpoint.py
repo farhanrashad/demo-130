@@ -19,7 +19,7 @@ class AccountPaymentWHT(models.Model):
         return True
     
     is_wht_liable = fields.Boolean(string='Withholding',default=True,)
-    wht_type_id = fields.Many2one('account.wht.type',string='Withholding Tax Type', required=True, domain='[('')]')
+    wht_type_id = fields.Many2one('account.wht.type',string='Withholding Tax Type', required=True, )
     #amount = fields.Monetary(string='Amount', required=False, readonly=True, tracking=True)
     #gross_amount = fields.Monetary(string='Gross Amount', required=True, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
     #base_amount = fields.Monetary(string='Base Amount', readonly='_compute_calculation_type', states={'draft': [('readonly', False)]}, )
