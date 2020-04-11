@@ -3,90 +3,36 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tools import float_is_zero, float_compare
 from itertools import groupby
 
-
-class AccountMoveLine(models.Model):
-    _inherit = 'account.move.line'
-
-    repair_ids = fields.Many2many(
-        'repair.line',
-        'repair_line_invoice_rel',
-        'invoice_line_id', 'operations_id',
-        string='operations Lines', readonly=True, copy=False)
-
-
-class InvoiceLines(models.Model):
-    _inherit = 'repair.line'
-
-    invoice_lines = fields.Many2many('account.move.line', 'repair_line_invoice_rel', 'operation_id',
-                                     'invoice_line_id', string='Invoice Lines', copy=False)
-
-
 class RepairInvoice(models.Model):
     _inherit = 'repair.order'
 
-    invoice_count = fields.Integer(string='Invoice Count', compute='_get_invoiced', readonly=True)
-    invoice_ids = fields.Many2many("account.move", string='Invoices', compute="_get_invoiced", readonly=True,
-                                   copy=False, search="_search_invoice_ids")
+    def get_invoice_count(self):
+        count = self.env['account.move'].search_count([('invoice_origin', '=', self.name)])
+        self.invoice_count = count
 
-    def _search_invoice_ids(self, operator, value):
-        return ['&', ('operations.invoice_lines.move_id.type', 'in', ('out_invoice', 'out_refund')),
-                ('operations.invoice_lines.move_id', operator, value)]
+    invoice_count = fields.Integer(compute="get_invoice_count")
+    # , copy = False, default = 0, store = True
 
-    @api.depends('operations.invoice_lines')
-    def _get_invoiced(self):
-        # The invoice_ids are obtained thanks to the invoice lines of the SO
-        # lines, and we also search for possible refunds created directly from
-        # existing invoices. This is necessary since such a refund is not
-        # directly linked to the SO.
-        for order in self:
-            invoices = order.operations.invoice_lines.move_id.filtered(
-                lambda r: r.type in ('Add'))
-            order.invoice_ids = invoices
-            order.invoice_count = len(invoices)
 
-    # smart button code to show out multiple invoices
-    # =========================================================
 
-    # def action_created_invoice(self):
-    #     self.ensure_one()
-    #     return {
-    #         'name': _('Invoice created'),
-    #         'type': 'ir.actions.act_window',
-    #         'view_mode': 'form',
-    #         'res_model': 'account.move',
-    #         'view_id': self.env.ref('account.view_invoice_tree').id,
-    #         'target': 'current',
-    #         'res_id': self.invoice_id.id,
-    #     }
+ #=======================================================
+    #this is invoice view code for multiple invoices
+#========================================================
+    def action_created_invoice(self):
+        self.ensure_one()
+        return {
+            'name': _('Invoice created'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'res_model': 'account.move',
+            # 'view_id': self.env.ref('account.view_move_form').id,
+            # 'target': 'current',
+            'domain': [('invoice_origin', '=', self.name)],
+            'res_id': self.invoice_id.id,
+            'context': dict(self._context, create=False, default_company_id=self.company_id.id,)
 
-    def action_view_invoice_multi(self):
-        invoices = self.mapped('invoice_ids')
-        action = self.env.ref('account.action_move_out_invoice_type').read()[0]
-        if len(invoices) > 1:
-            action['domain'] = [('id', 'in', self.invoice_id.ids)]
-        elif len(invoices) == 1:
-            form_view = [(self.env.ref('account.view_move_form').id, 'form')]
-            if 'views' in action:
-                action['views'] = form_view + [(state, view) for state, view in action['views'] if view != 'form']
-            else:
-                action['views'] = form_view
-            action['res_id'] = self.invoice_id.id
-        else:
-            action = {'type': 'ir.actions.act_window_close'}
-
-        context = {
-            'default_type': 'out_invoice',
         }
-        if len(self) == 1:
-            context.update({
-                'default_partner_id': self.partner_id.id,
-                'default_invoice_origin': self.mapped('name'),
-                'default_user_id': self.user_id.id,
-            })
-        action['context'] = context
-        return action
 
-    #     part invoice function
 
     # ==========================================================================
     def action_repair_part_invoice_create(self):
@@ -222,7 +168,7 @@ class RepairInvoice(models.Model):
         # repairs.mapped('fees_lines').write({'invoiced': True})
         return dict((repair.id, repair.invoice_id.id) for repair in repairs)
 
-    # this below method call in above operation page function
+    # this below method call in above operation page function in fee_lines in repair order
     # ===========================================================================
 
     def _create_invoices_operation(self, group=False):
@@ -336,7 +282,3 @@ class RepairInvoice(models.Model):
         return dict((repair.id, repair.invoice_id.id) for repair in repairs)
 
 
-class AccountMove(models.Model):
-    _inherit = 'account.move'
-
-    # repair_ids = fields.One2many('repair.order', 'invoice_id', readonly=True, copy=False)

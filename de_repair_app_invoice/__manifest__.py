@@ -12,6 +12,7 @@
           2- Add Create Part Invoice and Create Operation Invoice Button in header.
           3- Multiple Invoices Created In Which Part Page Data and Operation Page Data Show Separately 
           in draft invoices.
+          4- also multiple repair order select to create single invoice by using action button.
     """,
 
     'author': "Dynexcel",
@@ -29,9 +30,11 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'wizard/operation_make_invoice.xml',
         'views/views.xml',
         'views/repair_invoice_multiple.xml',
         'views/templates.xml',
+        'wizard/part_make_invoice.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
