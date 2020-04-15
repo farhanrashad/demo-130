@@ -66,7 +66,7 @@ class RepairInvoice(models.Model):
         repairs = self.filtered(lambda repair: repair.state not in ('draft', 'cancel')
          # below i will comment invoice_id which will prevent to create second invoice
            # ===========================================================================
-                                               # and not repair.invoice_id
+           #                                     and not repair.invoice_id
                                                and repair.invoice_method != 'none')
         for repair in repairs:
             partner_invoice = repair.partner_invoice_id or repair.partner_id
