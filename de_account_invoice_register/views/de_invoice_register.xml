@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Create menu to open wizard for report-->
+     Create menu to open wizard for report
     <menuitem
         id="sale_invoice_register"
         name="Sale Register"
