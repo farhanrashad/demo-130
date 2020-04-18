@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="sale_register">
+    <t t-call="web.html_container">
+    <t t-call="web.external_layout">
+        <t t-set="docs" t-value="docs.with_context()"/>
+        <div class="page">
+            <div class="oe_structure"/>
+            <div align="center"> 
+                <br/>                  
+                <h2> Sale Register</h2>
+            </div>
+            <br/>
+            <table border="1" class="table table-condensed" style="border-style:solid">
+                <tr style="height:30%">
+                    <td style="border: 1px solid black" align="center">From Date</td>
+                    <td style="border: 1px solid black" align="center"><span t-field="docs.start_date"/></td>
+                    <td style="border: 1px solid black" align="center">To Date</td>
+                    <td style="border: 1px solid black" align="center"> <span t-field="docs.end_date"/></td>                  
+                </tr>
+            </table>
+            <br/>
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid black" >INV NO</th>
+                        <th style="border: 1px solid black" >DATE</th>
+                        <th style="border: 1px solid black" >ITEM NAME</th>
+                        <th style="border: 1px solid black" >QUANTITY</th>
+                        <th style="border: 1px solid black" >EX- <br/>
+                        VALUE
+                        </th>
+                        <th style="border: 1px solid black" >SALES TAX</th>
+                        <th style="border: 1px solid black" >FURTHER TAX</th>
+                        <th style="border: 1px solid black" >TOTAL AMOUNT</th>
+                        <th style="border: 1px solid black" >PARTY NAME ADDRESS</th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+                    <t t-foreach="invoices" t-as="invoice">
+                        <t t-if="invoice.product_id">
+                        <tr>
+                            <td><span t-field="invoice.move_id"/></td>
+                            <td><span t-field="invoice.date"/></td>
+                            <td><span t-field="invoice.product_id"/></td>
+                            <td><span t-field="invoice.quantity"/></td>
+                            <td><span t-field="invoice.credit"/></td>
+                            <t t-set="tottax" t-value="0"/>
+                            <t t-foreach="invoice.tax_ids" t-as="tax">
+                            <td>
+                                <t t-set="tottax" t-value="((int(tax.amount) / 100) * invoice.credit)"/>
+                                <span t-esc="((int(tax.amount) / 100) * invoice.credit)"/>
+                            </td>
+
+                            <td>
+                                    <span t-esc="invoice.credit + tottax"/>
+<!--                                <span t-esc="invoice.credit + ((int(tax.amount) / 100) * invoice.credit)"/>-->
+                            </td>
+
+                                <td><span t-field="invoice.partner_id"/></td>
+                            </t>
+                        </tr>
+                        </t>
+		             </t>
+                </tbody>
+            </table>
+            <br/>
+            <br/>                  
+            <div>
+                <strong>Total Outstanding Amount:
+                    <span t-field="docs.total_amount_due"/>
+                </strong>
+            </div>
+        </div>
+    </t>
+    </t>
+</template>
+</odoo>

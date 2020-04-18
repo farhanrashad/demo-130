@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            id="action_purchase_invoice_register"
+            string="Purchase Register"
+            model="report.de_account_invoice_register.purchase_register"
+            report_type="qweb-pdf"
+            file="de_account_invoice_register.purchase_register"
+            name="de_account_invoice_register.purchase_register"
+        />
+    </data>
+</odoo>
