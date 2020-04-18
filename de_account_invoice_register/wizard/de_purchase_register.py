@@ -24,6 +24,6 @@ class InvoiceOutstanding(models.TransientModel):
 
     def _print_report(self, data):
         data['form'].update(self.read(['start_date', 'end_date'])[0])
-        return self.env.ref('de_account_invoice_register.action_sale_invoice_register').report_action(self, data=data, config=False)
+        return self.env.ref('de_account_invoice_register.action_purchase_invoice_register').report_action(self, data=data, config=False)
 
 

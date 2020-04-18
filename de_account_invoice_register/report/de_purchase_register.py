@@ -13,7 +13,7 @@ from odoo.exceptions import UserError
 
 class ReportInvoices(models.AbstractModel):
     _name = 'report.de_account_invoice_register.purchase_register'
-    _description = 'Sale Register Report'
+    _description = 'Purchase Register Report'
 
     '''Find Outstanding invoices between the date and find total outstanding amount'''
     @api.model

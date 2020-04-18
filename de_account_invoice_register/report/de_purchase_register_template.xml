@@ -32,12 +32,12 @@
                         EXC S.TAX
                         </th>
                         <th style="border: 1px solid black" >SALES TAX</th>
+                        <th style="border: 1px solid black" >FURTHER TAX</th>
+
                         <th style="border: 1px solid black" >VALUE
                           <br/>
                            INC S.TAX
                         </th>
-                        <th style="border: 1px solid black" >FURTHER TAX</th>
-                        <th style="border: 1px solid black" >TOTAL AMOUNT</th>
                     </tr>
                 </thead>
                 <tbody class="sale_tbody">
