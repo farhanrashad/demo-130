@@ -29,13 +29,11 @@ class ReportInvoices(models.AbstractModel):
             for total_amount in invoices:
                 quantity_due += total_amount.quantity
                 amount_due += total_amount.credit
-#                 for i in tax_ids:
-                    
-#                 tax_due += int(total_amount.tax_ids)
+                tax_due += int(total_amount.tax_ids)
 
             docs.total_quantity_due = quantity_due
             docs.total_amount_due = amount_due
-#             docs.total_tax_due = tax_due
+            docs.total_tax_due = tax_due
 
 
 

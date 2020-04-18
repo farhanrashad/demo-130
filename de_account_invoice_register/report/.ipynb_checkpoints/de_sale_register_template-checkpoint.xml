@@ -76,7 +76,9 @@
                                       <span t-esc="((int(tax.amount) / 100) * invoice.credit)"/>
                                     </td>
                                     </tr>
-                               
+                                <tr>
+                                    <td></td>
+                                </tr>
                             </t>
                             </table>
                             </td>
