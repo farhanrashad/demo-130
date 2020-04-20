@@ -33,4 +33,4 @@ class ReportInvoices(models.AbstractModel):
                 'invoices': invoices,
             }
         else:
-            raise UserError("There is not any Purchase invoice in between that dates")
+            raise UserError("There is not any Purchase invoice in between selected dates")

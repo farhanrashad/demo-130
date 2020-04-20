@@ -44,4 +44,4 @@ class ReportInvoices(models.AbstractModel):
                 'invoices': invoices,
             }
         else:
-            raise UserError("There is not any Outstanding invoice")
+            raise UserError("There is not any Sale invoice in between selected dates")

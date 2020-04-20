@@ -29,11 +29,13 @@ class ReportInvoices(models.AbstractModel):
             for total_amount in invoices:
                 quantity_due += total_amount.quantity
                 amount_due += total_amount.credit
-                tax_due += int(total_amount.tax_ids)
+#                 for i in tax_ids:
+                    
+#                 tax_due += int(total_amount.tax_ids)
 
             docs.total_quantity_due = quantity_due
             docs.total_amount_due = amount_due
-            docs.total_tax_due = tax_due
+#             docs.total_tax_due = tax_due
 
 
 
@@ -42,4 +44,4 @@ class ReportInvoices(models.AbstractModel):
                 'invoices': invoices,
             }
         else:
-            raise UserError("There is not any Outstanding invoice")
+            raise UserError("There is not any Sale invoice in between selected dates")

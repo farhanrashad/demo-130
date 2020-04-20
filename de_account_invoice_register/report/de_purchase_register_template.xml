@@ -23,6 +23,7 @@
             <table class="table table-condensed">
                     <t t-set="qtysum" t-value="0"/>
                     <t t-set="exvaluesum" t-value="0"/>
+                    <t t-set="tottaxsum" t-value="0"/>
                     <t t-set="totamountsum" t-value="0"/>
                 <thead>
                     <tr>
@@ -34,7 +35,7 @@
                         <th style="border: 1px solid black" >VALUE <br/>
                         EXC S.TAX
                         </th>
-                        <th style="border: 1px solid black" >TAX</th>
+                        <th style="border: 1px solid black" align="center">TAX</th>
                         <th style="border: 1px solid black" >VALUE
                           <br/>
                            INC S.TAX
@@ -56,11 +57,12 @@
                             <td style="border-bottom: 1px solid black"><span t-field="invoice.debit"/></td>
                             
                             <t t-set="exvaluesum" t-value="exvaluesum + invoice.debit"/>
+                           
+                            <t t-set="tottax" t-value="0"/>
 
                            <td style="border-bottom: 1px solid black">
-                            <t t-set="tottax" t-value="0"/>
                            
-                              <table class="table table-striped table-sm table-bordered">
+                              <table class="table table-sm table-bordered">
                             
                                  <t t-foreach="invoice.tax_ids" t-as="tax">
                                     <tr>
@@ -72,7 +74,9 @@
                                       <td>
                                           <span t-esc="round(((int(tax.amount) / 100) * invoice.debit),2)"/>
                                       </td>
-                                        
+                                          
+                                         <t t-set="tottaxsum" t-value="tottaxsum + ((int(tax.amount) / 100) * invoice.debit)"/>
+ 
                                      </tr>  
                                  </t>
                                </table>
@@ -111,7 +115,7 @@
   
                          <td style="border-top: 1px solid black">
                              
-                                 <span t-esc="tottax"></span> 
+                                 <span t-esc="round(tottaxsum,2)"></span>
 <!--                               <span t-esc="sum(line.credit for line in invoices)"/> -->
                          </td> 
                          <td style="border-top: 1px solid black">
