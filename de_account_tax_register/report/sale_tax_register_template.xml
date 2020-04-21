@@ -20,27 +20,23 @@
                 </tr>
             </table>
             
-            <table class="table table-sm table-condensed">
+            <table class="table table-sm table-striped table-bordered">
                     <t t-set="qty" t-value="0"/>
                     <t t-set="exvalue" t-value="0"/>
                     <t t-set="tottaxsum" t-value="0"/>
                     <t t-set="totamount" t-value="0"/>
-
-
-
-
                 <thead>
                     <tr>
-                        <th style="border: 1px solid black" >INV NO</th>
-                        <th style="border: 1px solid black" >DATE</th>
-                        <th style="border: 1px solid black" >ITEM NAME</th>
-                        <th style="border: 1px solid black" >QUANTITY</th>
-                        <th style="border: 1px solid black" >EX- <br/>
+                        <th >INV NO</th>
+                        <th >DATE</th>
+                        <th  >ITEM NAME</th>
+                        <th  >QUANTITY</th>
+                        <th  >EX- <br/>
                         VALUE
                         </th>
-                        <th style="border: 1px solid black" align="center">TAX</th>
-                        <th style="border: 1px solid black" >TOTAL AMOUNT</th>
-                        <th style="border: 1px solid black" >PARTY NAME ADDRESS</th>
+                        <th  align="center">TAX</th>
+                        <th  >TOTAL AMOUNT</th>
+                        <th >PARTY NAME ADDRESS</th>
                     </tr>
                 </thead>
                 <tbody class="sale_tbody">
@@ -57,12 +53,6 @@
                             <td><span t-field="invoice.credit"/></td>
                             
                             <t t-set="exvalue" t-value="exvalue + invoice.credit"/>
-
-                            
-<!--                             <t t-foreach="self.env['account.tax'].search()" t-as="t">
-                                 <t t-if="type_by_use='sale'">
-                                 </t>
-                                 </t>     -->
                             
                             <td>
                                 <table class="table table-sm">
@@ -106,12 +96,10 @@
                          <td style="border-top: 1px solid black">
                                  <span t-esc="qty"></span> 
 
-<!--                               <span t-esc="sum(line.quantity for line in invoices)"/> -->
                          </td> 
                          <td style="border-top: 1px solid black">
                                   <span t-esc="round(exvalue,2)"></span> 
 
-<!--                                <span t-esc="sum(line.credit for line in invoices)"/> -->
                          </td> 
   
                          <td style="border-top: 1px solid black">
@@ -119,12 +107,10 @@
                              
                                  <span t-esc="round(tottaxsum,2)"></span>
 
-<!--                               <span t-esc="sum(line.credit for line in invoices)"/> -->
                          </td> 
                          <td style="border-top: 1px solid black">
                                     <span t-esc="round(totamount,2)"></span> 
 
-<!--                                 <span t-esc="sum(line.credit for line in invoices)"/> -->
                          </td> 
                          <td style="border-top: 1px solid black"></td>
 
@@ -139,11 +125,7 @@
             <br/>
             <br/> 
             
-<!--             <div> 
-                <strong>Total Outstanding Amount:
-                    <span t-field="docs.total_amount_due"/>
-                </strong> -->
-<!--             </div> -->
+
         </div>
     </t>
     </t>

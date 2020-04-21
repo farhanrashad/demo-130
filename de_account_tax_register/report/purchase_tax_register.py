@@ -21,12 +21,17 @@ class PurchaseTaxRegister(models.AbstractModel):
         self.model = self.env.context.get('active_model')
         docs = self.env[self.model].browse(self.env.context.get('active_id'))
         outstanding_invoice = []       
-        invoices = self.env['account.move.line'].search([('date', '>=', docs.start_date),('date', '<=', docs.end_date),('journal_id.type','=', 'purchase')])
+        
+        if docs.target_move == 'posted':
+            invoices = self.env['account.move.line'].search([('date', '>=', docs.start_date),('date', '<=', docs.end_date),('journal_id.type','=', 'purchase'),('move_id.state','=', 'posted')])
+        else:
+            invoices = self.env['account.move.line'].search([('date', '>=', docs.start_date),('date', '<=', docs.end_date),('journal_id.type','=', 'purchase')])
+            
         if invoices:
-            amount_due = 0
-            for total_amount in invoices:
-                amount_due += total_amount.amount_residual
-            docs.total_amount_due = amount_due
+        #    amount_due = 0
+        #    for total_amount in invoices:
+        #        amount_due += total_amount.amount_residual
+        #    docs.total_amount_due = amount_due
 
             return {
                 'docs': docs,
@@ -34,3 +39,6 @@ class PurchaseTaxRegister(models.AbstractModel):
             }
         else:
             raise UserError("There is not any Purchase invoice in between selected dates")
+
+            
+    

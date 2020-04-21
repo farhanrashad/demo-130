@@ -11,7 +11,7 @@
                 <h2> Purchase Tax Register</h2>
             </div>
             <br/>
-            <table class="table table-condensed">
+            <table class="table table-sm table-striped table-bordered">
                 <tr style="height:30%">
                     <th  align="center">From Date</th>
                     <th  align="center"><span t-field="docs.start_date"/></th>
@@ -20,122 +20,83 @@
                 </tr>
             </table>
             <br/>
-            <table class="table table-condensed">
+            <table class="table table-sm table-striped table-bordered">
                     <t t-set="qtysum" t-value="0"/>
-                    <t t-set="exvaluesum" t-value="0"/>
-                    <t t-set="tottaxsum" t-value="0"/>
-                    <t t-set="totamountsum" t-value="0"/>
+                    <t t-set="exvsum" t-value="0"/>
+                    <t t-set="taxsum" t-value="0"/>
                 <thead>
                     <tr>
-                        <th style="border: 1px solid black" >DATE</th>
-                        <th style="border: 1px solid black" >SUPPLIER NAME</th>
-                        <th style="border: 1px solid black" >INVOICE NO</th>
-                        <th style="border: 1px solid black" >ITEM NAME</th>
-                        <th style="border: 1px solid black" >QUANTITY</th>
-                        <th style="border: 1px solid black" >VALUE <br/>
-                        EXC S.TAX
-                        </th>
-                        <th style="border: 1px solid black" align="center">TAX</th>
-                        <th style="border: 1px solid black" >VALUE
-                          <br/>
-                           INC S.TAX
-                        </th>
+                        <th>DATE</th>
+                        <th>SUPPLIER NAME</th>
+                        <th>INVOICE NO</th>
+                        <th>ITEM NAME</th>
+                        <th>QUANTITY</th>
+                        <th>VALUE EXC S.TAX </th>
+                       
+                            <t t-set="taxes" t-value="[]"/>
+                            <t t-foreach="invoices" t-as="inv">
+                                <t t-foreach="inv.tax_ids" t-as="t">
+                                    <t t-set="taxes" t-value="taxes+[t]"/>
+                                </t>
+                            </t>
+                            
+                       
+                        <t t-foreach="set(taxes)" t-as="t">
+                            <th><span t-field="t.description"/></th>
+                        </t>
+                        
+                        <th  >VALUE INC S.TAX</th>
                     </tr>
                 </thead>
                 <tbody class="sale_tbody">
                     <t t-foreach="invoices" t-as="invoice">
-                        <t t-if="invoice.product_id">
+                        <t t-if="invoice.tax_ids">
                         <tr>
-                            <td style="border-bottom: 1px solid black"><span t-field="invoice.date"/></td>
-                            <td style="border-bottom: 1px solid black"><span t-field="invoice.partner_id"/></td>
-                            <td style="border-bottom: 1px solid black"><span t-field="invoice.move_id"/></td>
-                            <td style="border-bottom: 1px solid black"><span t-field="invoice.product_id"/></td>
-                            <td style="border-bottom: 1px solid black"><span t-field="invoice.quantity"/></td>
-                            
+                            <td ><span t-field="invoice.date"/></td>
+                            <td ><span t-field="invoice.partner_id"/></td>
+                            <td ><span t-field="invoice.move_id"/></td>
+                            <td ><span t-field="invoice.product_id"/></td>
+                            <td ><span t-field="invoice.quantity"/></td>
                             <t t-set="qtysum" t-value="qtysum + invoice.quantity"/>
-
-                            <td style="border-bottom: 1px solid black"><span t-field="invoice.debit"/></td>
-                            
-                            <t t-set="exvaluesum" t-value="exvaluesum + invoice.debit"/>
-                           
-                            <t t-set="tottax" t-value="0"/>
-
-                           <td style="border-bottom: 1px solid black">
-                           
-                              <table class="table table-sm table-bordered">
-                            
-                                 <t t-foreach="invoice.tax_ids" t-as="tax">
-                                    <tr>
-                                   
-                                      <th>
-                                         <t t-set="tottax" t-value="tottax + ((int(tax.amount) / 100) * invoice.debit)"/>
-                                         <span t-field="tax.description"/>
-                                      </th>
-                                      <td>
-                                          <span t-esc="round(((int(tax.amount) / 100) * invoice.debit),2)"/>
-                                      </td>
-                                          
-                                         <t t-set="tottaxsum" t-value="tottaxsum + ((int(tax.amount) / 100) * invoice.debit)"/>
- 
-                                     </tr>  
-                                 </t>
-                               </table>
-                             </td>  
-                            
-                            <td style="border-bottom: 1px solid black">
-                                    <span t-esc="invoice.debit + tottax"/>
-                            </td>
-                            
-                            <t t-set="totamountsum" t-value="totamountsum + (invoice.debit + tottax)"/>
-
+                            <td><span t-field="invoice.debit"/></td>
+                            <t t-set="exvsum" t-value="exvsum + invoice.debit"/>
+                            <t t-set="taxsum" t-value="0"/>
+                            <t t-foreach="set(taxes)" t-as="t">
+                                <td>
+                                <t t-foreach="invoice.tax_ids" t-as="tax">                               
+                                    <t t-if="t.id==tax.id">
+                                        <t t-set="taxsum" t-value="taxsum + ((int(tax.amount) / 100) * invoice.debit)"/>
+                                        <span t-esc="round(((int(tax.amount) / 100) * invoice.debit),2)"/>
+                                    </t>
+                                </t>
+                                </td>
+                            </t>
+                            <td><span t-esc="invoice.move_id.amount_total"/></td>
                            </tr>
                          </t>
 		              </t>
-                      <br/>
-                      <br/>
-                    
                      <tr>
-                         <td style="border-top: 1px solid black"></td>
-                         <td style="border-top: 1px solid black">Total Invoices</td>
-                         <td style="border-top: 1px solid black">
-                             
-                             
-                         </td> 
-                         <td></td>
-                         <td style="border-top: 1px solid black">
-                                 <span t-esc="qtysum"></span> 
-
-<!--                               <span t-esc="sum(line.quantity for line in invoices)"/> -->
-                         </td> 
-                         <td style="border-top: 1px solid black">
-                                  <span t-esc="round(exvaluesum,2)"></span> 
-
-<!--                                <span t-esc="sum(line.credit for line in invoices)"/> -->
-                         </td> 
-  
-                         <td style="border-top: 1px solid black">
-                             
-                                 <span t-esc="round(tottaxsum,2)"></span>
-<!--                               <span t-esc="sum(line.credit for line in invoices)"/> -->
-                         </td> 
-                         <td style="border-top: 1px solid black">
-                                    <span t-esc="round(totamountsum, 2)"></span> 
-
-<!--                                 <span t-esc="sum(line.credit for line in invoices)"/> -->
-                         </td> 
-                         <td style="border-top: 1px solid black">
-                             
-                         </td>      
+                         <td colspan="4">Total</td>
+                         <td><span t-esc="qtysum"></span></td> 
+                         <td><span t-esc="round(exvsum,2)"></span></td>
+                         <t t-foreach="set(taxes)" t-as="t">
+                             <td>
+                                 <!--
+                                 <t t-esc="sum((l.tax_ids.amount/100)*l.debit for l in invoices.filtered(lambda x: x.tax_ids.id == t.id)) " />
+-->
+                            </td>
+                         </t>
+                         <td>
+                             <t t-esc="sum(l.move_id.amount_total for l in invoices)" />
+                        </td>
+                         
+                          
                     </tr>
                 </tbody>
             </table>
             <br/>
             <br/>                  
-<!--             <div>
-                <strong>Total Outstanding Amount:
-                    <span t-field="docs.total_amount_due"/>
-                </strong>
-            </div> -->
+
         </div>
     </t>
     </t>

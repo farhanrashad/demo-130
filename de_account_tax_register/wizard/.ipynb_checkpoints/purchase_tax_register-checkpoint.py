@@ -15,7 +15,9 @@ class PurchaseTaxRegisterWizard(models.TransientModel):
 
     start_date = fields.Date(string='From Date', required='1', help='select start date')
     end_date = fields.Date(string='To Date', required='1', help='select end date')
-    total_amount_due = fields.Integer(string='Total Outstanding Amount')
+    target_move = fields.Selection([
+        ('posted', "All Posted Entries"),
+        ('all', "All Entries")], default='posted', )
 
     def check_report(self):
         data = {}
@@ -24,6 +26,6 @@ class PurchaseTaxRegisterWizard(models.TransientModel):
 
     def _print_report(self, data):
         data['form'].update(self.read(['start_date', 'end_date'])[0])
-        return self.env.ref('de_account_tax_register.action_purchase_tax_register').report_action(self, data=data, config=False)
+        return self.env.ref('de_account_tax_register.open_purchase_tax_register_action').report_action(self, data=data, config=False)
 
 
