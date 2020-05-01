@@ -1,6 +1,6 @@
 <odoo>
     <record id="action_materials" model="ir.actions.act_window">
-            <field name="name">materials</field>
+            <field name="name">Purchase Requisitions</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">materials.materials</field>
 <!--            <field name="view_type">form</field>-->

@@ -22,7 +22,13 @@
             report_type="qweb-pdf"
             file="de_construction_app.report_order_job"
             name="de_construction_app.report_order_job" />
-
+        <report
+            id="action_job_order_xlx"
+            string="job order Excel"
+            model="order.job"
+            report_type="xlsx"
+            file="de_construction_app.order_job_xlx"
+            name="de_construction_app.order_job_xlx" />
 <!--     <report-->
 <!--            id="action_report_student_xlx"-->
 <!--            string="Student record Excel"-->

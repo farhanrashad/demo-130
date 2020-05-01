@@ -8,6 +8,7 @@ access_order_job,access.order.job,model_order_job,,1,1,1,1
 access_order_job_linea,access.order.job.linea,model_order_job_linea,,1,1,1,1
 access_order_job_linesm,access.order.job.linesm,model_order_job_linesm,,1,1,1,1
 access_order_job_linesubtask,access.order.job.linesubtask,model_order_job_linesubtask,,1,1,1,1
+access_order_job_linetimesheet,access.order.job.linetimesheet,model_order_job_linetimesheet,,1,1,1,1
 access_joborder_notes,access.joborder.notes,model_joborder_notes,,1,1,1,1
 access_contractor_contractor,access.contractor.contractor,model_contractor_contractor,,1,1,1,1
 access_stages_stages,access.stages.stages,model_stages_stages,,1,1,1,1

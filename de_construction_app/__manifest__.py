@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "de_construction_app",
+    'name': "Construction Project",
 
     'summary': """
-       this module is made for construction comany management.
-        """,
+          Construction Management System
+           """,
 
     'description': """
-        Long description of module's purpose
+          Construction Management System
+          1-Job Order 
+          2- Project have multiple task
     """,
 
     'author': "Dynexcel",
@@ -20,16 +22,16 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','report_xlsx', 'mail'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'views/views.xml',
+        'views/crm_lead_views.xml',
         'views/materials_boq.xml',
         'views/job_order.xml',
-        'reports/report.xml',
-        'reports/template_notes.xml',
+        # 'reports/performa_commercial_report.xml',
+        # 'reports/performa_invoice_template.xml',
         'views/vendor.xml',
         'views/configuration.xml',
         'views/templates.xml',

@@ -266,24 +266,24 @@
                                                    <h1>Stocks</h1>
                                       <table class="table table-condensed">
                                           <tr>
-                                                           <td>
+                                                           <th>
                                                             <strong><b>Expected Date</b></strong>
-                                                           </td>
-                                                           <td>
+                                                           </th>
+                                                           <th>
                                                             <strong><b>Date</b></strong>
-                                                           </td>
-                                                            <td>
+                                                           </th>
+                                                            <th>
                                                             <strong><b>Source Documents</b></strong>
-                                                           </td>
-                                                         <td>
+                                                           </th>
+                                                         <th>
                                                             <strong>Quantity</strong>
-                                                           </td>
-                                                           <td>
+                                                           </th>
+                                                           <th>
                                                             <strong><b>Unit of Measures</b></strong>
-                                                            </td>
-                                                          <td>
+                                                            </th>
+                                                          <th>
                                                               <strong><b>Status</b></strong>
-                                                             </td>
+                                                             </th>
 
                                          </tr>
                                          <t t-foreach="stockmove_list" t-as="i">

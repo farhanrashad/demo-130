@@ -5,7 +5,7 @@
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
-          <field name="project_name"/>
+          <field name="project_id"/>
             <field name="assign_to"/>
              <field name="starting_date"/>
              <field name="ending_date"/>
@@ -20,6 +20,10 @@
 <!--      <field name="view_mode">form</field>-->
       <field name="arch" type="xml">
         <form>
+            <header>
+                <button name="action_share" type="object" string="Share" class="oe_highlight"/>
+                <button name="create_subtask" type="object" string="Create Subtask" class="oe_highlight"/>
+             </header>
             <sheet>
                 <div class="oe_button_box" name="button_box">
                     <button name="sub_tasks_cal"
@@ -56,7 +60,7 @@
                 </group>
                 <group>
                     <group>
-                        <field name="project_name"/>
+                        <field name="project_id"/>
                         <field name="assign_to"/>
                         <field name="starting_date"/>
                         <field name="ending_date"/>
@@ -64,7 +68,7 @@
                     <group>
                         <field name="deadline"/>
                         <field name="customer_name"/>
-                        <field name="tags"/>
+                        <field name="tags" widget="many2many_tags"/>
                     </group>
                 </group>
                 <notebook>
@@ -121,6 +125,14 @@
                         </field>
                     </page>
                     <page string="Timesheet">
+                        <field name="sub_time_sheet">
+                            <tree editable="bottom">
+                                <field name="date_tmeshet"/>
+                                <field name="employee_name"/>
+                                <field name="description"/>
+                                <field name="duration"/>
+                            </tree>
+                        </field>
 
                     </page>
                     <page string="Extra Info">
