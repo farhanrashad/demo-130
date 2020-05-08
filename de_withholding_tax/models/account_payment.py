@@ -18,7 +18,7 @@ class AccountPaymentWHT(models.Model):
                 return False
         return True
     
-    is_wht_liable = fields.Boolean(string='Withholding',default=True,)
+    is_wht_liable = fields.Boolean(string='Withholding',default=False,)
     wht_type_id = fields.Many2one('account.wht.type',string='Withholding Tax Type', required=True, )
     #amount = fields.Monetary(string='Amount', required=False, readonly=True, tracking=True)
     #gross_amount = fields.Monetary(string='Gross Amount', required=True, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
@@ -105,10 +105,11 @@ class AccountPaymentWHT(models.Model):
         :return: A list of Python dictionary to be passed to env['account.move'].create.
         '''
         all_move_vals = []
+        wht_amount = 0
         for payment in self:
             company_currency = payment.company_id.currency_id
             move_names = payment.move_name.split(payment._get_move_name_transfer_separator()) if payment.move_name else None
-
+            
             # Compute tax amounts.
             if payment.is_wht_liable:
                 wht_amount = ((payment.wht_type_id.wht_rate/100) * payment.amount) or payment.wht_amount or 0.0
