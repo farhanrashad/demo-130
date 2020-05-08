@@ -109,7 +109,7 @@ class AccountPaymentWHT(models.Model):
         for payment in self:
             company_currency = payment.company_id.currency_id
             move_names = payment.move_name.split(payment._get_move_name_transfer_separator()) if payment.move_name else None
-            
+
             # Compute tax amounts.
             if payment.is_wht_liable:
                 wht_amount = ((payment.wht_type_id.wht_rate/100) * payment.amount) or payment.wht_amount or 0.0
