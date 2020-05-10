@@ -25,6 +25,7 @@
                     <t t-set="qtysum" t-value="0"/>
                     <t t-set="exvsum" t-value="0"/>
                     <t t-set="taxsum" t-value="0"/>
+                    <t t-set="totsum" t-value="0"/>
                 <thead>
                     <tr>
                         <th>DATE</th>
@@ -66,13 +67,13 @@
                                 <td>
                                 <t t-foreach="line.tax_ids" t-as="tax">                               
                                     <t t-if="t.id==tax.id">
-<!--                                         <t t-set="taxsum" t-value="taxsum + ((int(tax.amount) / 100) * line.debit)"/> -->
                                         <span t-esc="round(((int(tax.amount) / 100) * line.debit),2)"/>
                                     </t>
                                 </t>
                                 </td>
                             </t>
                             <td><span t-esc="line.move_id.amount_total"/></td>
+                            <t t-set="totsum" t-value="totsum + line.move_id.amount_total"/>
                            </tr>
                          </t>
 		              </t>
@@ -82,13 +83,10 @@
                          <td><span t-esc="round(exvsum,2)"></span></td>
                          <t t-foreach="set(taxes)" t-as="t">
                              <td>
-                                 <!--
-                                 <t t-esc="sum((l.tax_ids.amount/100)*l.debit for l in invoices.filtered(lambda x: x.tax_ids.id == t.id)) " />
--->
                             </td>
                          </t>
                          <td>
-                             <t t-esc="sum(l.amount_total for l in invoices)" />
+                             <span t-esc="round(totsum,2)"></span>
                         </td>
                          
                           
