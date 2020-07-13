@@ -3,6 +3,13 @@
 from odoo import api, fields, models, _
 from odoo.addons import decimal_precision as dp
 from odoo.exceptions import UserError, ValidationError, AccessError
+from collections import defaultdict
+
+
+class StockMoveExt(models.Model):
+    _inherit = 'stock.move'
+
+    de_quantity_done = fields.Float(string='Done')
 
 
 class MaintenanceOrder(models.Model):
@@ -19,40 +26,6 @@ class MaintenanceOrder(models.Model):
                 'warehouse_id.company_id', 'in',
                 [self.env.context.get('company_id', self.env.user.company_id.id), False])],
             limit=1).id
-
-    @api.model
-    def _get_default_location_src_id(self):
-        location = self.picking_type_id.default_location_src_id.id
-        # location = False
-        # if self._context.get('default_picking_type_id'):
-        #     location = self.env['stock.picking.type'].browse(
-        #         self.env.context['default_picking_type_id']).default_location_src_id
-        # if not location:
-        #     location = self.env.ref('stock.stock_location_stock', raise_if_not_found=False)
-        #     try:
-        #         location.check_access_rule('read')
-        #     except (AttributeError, AccessError):
-        #         location = self.env['stock.warehouse'].search([('company_id', '=', self.env.user.company_id.id)],
-        #                                                       limit=1).lot_stock_id
-        # return location and location.id or False
-        return location
-
-    @api.model
-    def _get_default_location_dest_id(self):
-        location = self.picking_type_id.default_location_dest_id
-        # location = False
-        # if self._context.get('default_picking_type_id'):
-        #     location = self.env['stock.picking.type'].browse(
-        #         self.env.context['default_picking_type_id']).default_location_dest_id
-        # if not location:
-        #     location = self.env.ref('stock.stock_location_stock', raise_if_not_found=False)
-        #     try:
-        #         location.check_access_rule('read')
-        #     except (AttributeError, AccessError):
-        #         location = self.env['stock.warehouse'].search([('company_id', '=', self.env.user.company_id.id)],
-        #                                                       limit=1).lot_stock_id
-        # return location and location.id or False
-        return location and location.id or False
 
     @api.depends('maintenance_part_ids.unit_cost', 'maintenance_part_ids.product_uom_qty',
                  'maintenance_part_ids.product_id',
@@ -107,9 +80,28 @@ class MaintenanceOrder(models.Model):
             'state': 'confirm',
             'date_order': fields.Datetime.now()
         })
+        supplier_line = {
+            'product_id': self.move_lines.product_id.id,
+            'product_uom_qty': self.move_lines.product_uom_qty,
+            'product_uom': self.move_lines.product_uom.id,
+            'name': self.name,
+            # 'quantity_done': self.move_lines.product_uom_qty,
+        }
+        record_line = {
+            'picking_type_id': self.picking_type_id.id,
+            'location_id': self.location_src_id.id,
+            'location_dest_id': self.location_dest_id.id,
+            'origin': self.name,
+            'move_ids_without_package': [(0, 0, supplier_line)],
+        }
+        record = self.env['stock.picking'].create(record_line)
+        return record
 
     def action_cancel(self):
         self.write({'state': 'cancel'})
+        ex_picking = self.env['stock.picking'].search([('origin', '=', self.name)])
+        if ex_picking:
+            ex_picking.state = 'cancel'
 
     def action_draft(self):
         self.write({'state': 'draft'})
@@ -124,30 +116,26 @@ class MaintenanceOrder(models.Model):
         if stock_moves.product_uom_qty > qty_available:
             raise ValidationError(_("Quantity is not available at current location."))
         else:
-            for line in self.move_lines:
-                line.quantity_done = line.product_uom_qty
-            supplier_line = {
-                'product_id': self.move_lines.product_id.id,
-                'product_uom_qty': self.move_lines.product_uom_qty,
-                'product_uom': self.move_lines.product_uom.id,
-                'name': self.name,
-                'quantity_done': self.move_lines.quantity_done,
-            }
-            record_line = {
-                'picking_type_id': self.picking_type_id.id,
-                'location_id': self.location_src_id.id,
-                'location_dest_id': self.location_dest_id.id,
-                'origin': self.name,
-                'move_ids_without_package': [(0, 0, supplier_line)],
-            }
-            record = self.env['stock.picking'].create(record_line)
-            print('done')
-
-        self.write({
-            'state': 'inprocess',
-            'start_date': fields.Datetime.now()
-        })
-        return record
+            ex_location = quant_obj.search([('location_id', '=', location.id),
+                                            ('product_id', '=', stock_moves.product_id.id)])
+            quantity = ex_location.quantity - stock_moves.product_uom_qty
+            new_quantity = (stock_moves.product_uom_qty) * -1
+            # self.env['stock.quant']._update_available_quantity(stock_moves.product_id, location, new_quantity)
+            self.write({
+                'state': 'inprocess',
+                'start_date': fields.Datetime.now()
+            })
+            for move in self.move_lines:
+                move.update({
+                    'de_quantity_done': move.product_uom_qty,
+                    # 'reserved_availability': move.product_uom_qty,
+                    # 'quantity_done': move.product_uom_qty,
+                    'state': 'done'
+                })
+            ex_lines = self.env['stock.picking'].search([('origin', '=', self.name)])
+            moves = self.env['stock.move'].search([('picking_id', '=', ex_lines.id)])
+            moves.quantity_done = self.move_lines.de_quantity_done
+        # return record
 
     def action_end_maintenance(self):
         for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
@@ -159,6 +147,19 @@ class MaintenanceOrder(models.Model):
             'state': 'done',
             'end_date': fields.Datetime.now()
         })
+        ex_lines = self.env['stock.picking'].search([('origin', '=', self.name)])
+        ex_lines.button_validate()
+        # self.env['stock.move.line'].create({
+        #     'date': fields.Date.today(),
+        #     'reference': self.name,
+        #     'product_id': self.move_lines.product_id.id,
+        #     'location_id': self.location_src_id.id,
+        #     'location_dest_id': self.location_dest_id.id,
+        #     'qty_done': self.move_lines.product_uom_qty,
+        #     'company_id': self.env.user.company_id.id,
+        #     'product_uom_id': self.move_lines.product_uom.id,
+        #     'state': 'done',
+        # })
 
     def action_create_delivery(self):
         warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.company_id.id)], limit=1)
@@ -199,8 +200,9 @@ class MaintenanceOrder(models.Model):
 
     @api.onchange('picking_type_id')
     def _onchange_picking_type(self):
-        self.location_src_id = self.picking_type_id.default_location_src_id.id
-        self.location_dest_id = self.picking_type_id.default_location_dest_id.id
+        for rec in self:
+            rec.location_src_id = rec.picking_type_id.default_location_src_id.id
+            rec.location_dest_id = rec.picking_type_id.default_location_dest_id.id
 
     maintenance_request_id = fields.Many2one('maintenance.request', string="Maintenance Request",
                                              help="Related Maintenance Request")
@@ -263,14 +265,12 @@ class MaintenanceOrder(models.Model):
         default=_get_default_picking_type, required=True)
     location_src_id = fields.Many2one(
         'stock.location', 'Raw Materials Location',
-        required=True, readonly=True,
-        default=_get_default_location_src_id,
+        readonly=True, required=True,
         states={'confirmed': [('readonly', False)]},
         help="Location where the system will look for components.")
     location_dest_id = fields.Many2one(
         'stock.location', 'Finished Products Location',
-        required=True, readonly=True,
-        default=_get_default_location_dest_id,
+        readonly=True, required=True,
         states={'confirmed': [('readonly', False)]},
         help="Location where the system will stock the finished products.")
 

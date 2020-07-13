@@ -81,7 +81,7 @@
                                 <field name="id" invisible="1"/>
                                 <field name="move_lines"
                                        context="{'default_picking_id': id, 'form_view_ref':'stock.view_move_picking_form', 'default_picking_type_id': picking_type_id, 'default_location_id': location_src_id, 'default_location_dest_id': location_dest_id}">
-                                    <tree decoration-danger="state != 'done' and quantity_done > reserved_availability and show_reserved_availability"
+                                    <tree decoration-danger="state != 'done'"
                                           decoration-muted="scrapped == True or state == 'cancel' or (state == 'done' )"
                                           string="Stock Moves" editable="bottom">
                                         <field name="name" invisible="1"/>
@@ -108,8 +108,9 @@
                                         <field name="product_uom_qty" string="Initial Demand"/>
                                         <field name="reserved_availability" string="Reserved"
                                                attrs="{'column_invisible': (['|','|', ('parent.state','=', 'done'),'&amp;',])}"/>
-                                        <field name="quantity_done" string="Done"
-                                               attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>
+<!--                                        <field name="quantity_done" string="Done"-->
+<!--                                               attrs="{'readonly': [('is_quantity_done_editable', '=', False)]}"/>-->
+                                        <field name="de_quantity_done"/>
                                         <field name="product_uom"
                                                attrs="{'readonly': [('state', '!=', 'draft'), ('additional', '=', False)]}"
                                                options="{'no_open': True, 'no_create': True}" string="Unit of Measure"
@@ -147,8 +148,8 @@
                                     </group>
                                     <group>
                                         <field name="picking_type_id"/>
-                                        <field name="location_src_id"/>
-                                        <field name="location_dest_id"/>
+                                        <field name="location_src_id" force_save="1"/>
+                                        <field name="location_dest_id" force_save="1"/>
                                     </group>
                                 </group>
                             </page>

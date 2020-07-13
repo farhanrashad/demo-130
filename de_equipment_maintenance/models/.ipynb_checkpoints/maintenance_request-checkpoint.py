@@ -20,8 +20,7 @@ class MaintenanceRequest(models.Model):
     def _compute_maintenance_order_ids(self):
         for order in self:
             order.maintenance_count = len(order.maintenance_order_ids)
-    
-    @api.multi
+
     def action_view_order(self):
         return {
             'type': 'ir.actions.act_window',
