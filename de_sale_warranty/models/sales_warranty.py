@@ -167,7 +167,7 @@ class wizard_stock(models.Model):
 #         return res
 # 
 class SalesSettings(models.Model):
-    _inherit = 'product.product'
+    _inherit = 'product.template'
 #      
 #     def write(self, vals):
 #         super(SalesSettings, self).write(vals) #--call parent class's method, you can also use, "super().write(vals)" in v13 no need to give class name and self
