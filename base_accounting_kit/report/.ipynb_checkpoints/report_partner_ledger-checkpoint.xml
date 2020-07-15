@@ -75,7 +75,7 @@
                                     <td>
                                         <span t-esc="line['a_code']"/>
                                     </td>
-                                     <td style="max-width:400px; word-wrap:break-word;">
+                                     <td style="max-width:300px; word-wrap:break-word;">
                                         <span t-esc="line['displayed_name']" />
                                     </td> 
                                     <td class="text-right">
