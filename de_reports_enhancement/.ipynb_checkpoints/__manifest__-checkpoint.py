@@ -34,6 +34,8 @@
         'views/mo_report_template.xml',
         'views/gatepass_report_template.xml',
         'views/invoice_report_template.xml',
+        'views/res_partner_view.xml',
+
     ],
     # only loaded in demonstration mode
     'demo': [
