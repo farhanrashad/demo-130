@@ -3,9 +3,9 @@
     <data noupdate="1">
 
         <!-- Sequences for sale.order -->
-        <record id="seq_con_requistions" model="ir.sequence">
-            <field name="name">Construction Requistions Sequence</field>
-            <field name="code">construction.requistions.sequence</field>
+        <record id="seq_con_requisitions" model="ir.sequence">
+            <field name="name">Construction Requisitions Sequence</field>
+            <field name="code">construction.requisitions.sequence</field>
             <field name="prefix">EPR</field>
             <field name="padding">5</field>
             <field eval="1" name="number_next"/>

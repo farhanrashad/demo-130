@@ -10,7 +10,7 @@
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Add a New Job Order
+                    Create New Job Order
                 </p>
 
             </field>
@@ -36,9 +36,7 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="action_share" type="object" string="Share" class="oe_highlight"/>
-                        <button name="%(de_construction_app.con_create_sub_task_action)d" type="action"
-                                string="Create Subtask" class="oe_highlight"/>
+                        <button name="action_sub_task_creation" type="object" string="Create SubTask" class="oe_highlight"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
@@ -51,10 +49,6 @@
                                 <field name="active" string="Active" widget="boolean_button"
                                        options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
                             </button>
-<!--                            <button name="stock_move_cal" type="object" class="oe_stat_button" string="Stock Moves"-->
-<!--                                    icon="fa-bars">-->
-<!--                                <field name="sub_task" string="Sub-tasks" widget="statinfo"/>-->
-<!--                            </button>-->
                             <button name="con_job_order_notes_button" type="object" class="oe_stat_button"
                                     icon="fa-tasks">
                                 <field name="notes_ad" string="Notes" widget="statinfo"/>
@@ -93,15 +87,15 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Subtasks">
+                            <page string="SubTasks">
                                 <field name="sub_task_line">
                                     <tree editable="bottom">
                                         <field name="title"/>
-                                        <field name="project_subtask"/>
+                                        <field name="project_sub_task"/>
                                         <field name="assign_to"/>
                                         <field name="planned_hours" sum="Total hours"/>
                                         <field name="remaining_hours" sum="Total"/>
-                                        <field name="stage_subtask"/>
+                                        <field name="stage_sub_task"/>
                                         <field name="progress"/>
                                     </tree>
                                 </field>
@@ -117,12 +111,12 @@
                                 </field>
                             </page>
                             <page string="Materials Requisition">
-                                <field name="material_requistion_line">
+                                <field name="material_requisition_line">
                                     <tree>
                                         <field name="name"/>
                                         <field name="partner_id"/>
                                         <field name="department_id"/>
-                                        <field name="requistion_date"/>
+                                        <field name="requisition_date"/>
                                         <field name="req_deadline"/>
                                         <field name="company_id"/>
                                         <field name="state"/>
@@ -137,12 +131,12 @@
                                         <field name="source_document"/>
                                         <field name="product_ids"/>
                                         <field name="initial_demand"/>
-                                        <field name="product_uom"/>
+                                        <field name="unit_of_measure"/>
                                         <field name="state_check"/>
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Timesheet">
+                            <page string="TimeSheet">
                                 <group>
                                     <group>
                                         <div class="oe_inline" name="planned_hours">
@@ -155,22 +149,22 @@
 
                                     </group>
                                     <group>
-                                        <div class="oe_inline" name="planned_progres">
-                                            <label for="planned_progres"/>
+                                        <div class="oe_inline" name="planned_progress">
+                                            <label for="planned_progress"/>
                                             <div style="display: inline;">
-                                                <field name="planned_progres" class="oe_inline"
-                                                       style="vertical-align:baseline"/>
+                                                <field name="planned_progress" class="oe_inline"
+                                                       widget="gauge"
+                                                       options="{'max_field': 'max_rate',  'style': 'width:120px; height: 90px;'}"/>
                                             </div>
                                         </div>
                                     </group>
                                 </group>
                                 <field name="time_sheet_line">
                                     <tree editable="bottom">
-                                        <field name="date_timesheet"/>
-                                        <field name="employee_name"/>
+                                        <field name="date_time_sheet"/>
+                                        <field name="employee_id"/>
                                         <field name="name"/>
-                                        <field name="analytic_account_id"/>
-                                        <field name="time_perioud"/>
+                                        <field name="time_period"/>
                                     </tree>
                                 </field>
 

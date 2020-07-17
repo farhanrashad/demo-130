@@ -6,7 +6,6 @@ from odoo.tools.safe_eval import safe_eval
 from odoo.tools.misc import format_date
 
 
-
 class MaterialsBoq(models.Model):
     _name = 'materials.boq'
     _description = 'this is materials model'

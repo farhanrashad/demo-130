@@ -22,19 +22,19 @@
     'version': '0.3',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail', 'stock', 'account'],
+    'depends': ['base', 'mail', 'stock', 'account', 'purchase'],
 
     # always loaded
     'data': [
 
         'security/ir.model.access.csv',
         'wizards/con_create_sub_tasks.xml',
-        'reports/con_job_order_notes.xml',
-        'reports/con_job_order_notes_template.xml',
-        'reports/con_job_order_report.xml',
-        'reports/con_job_order_template.xml',
-        'reports/con_projects_template.xml',
-        'reports/con_projects_report.xml',
+        # 'reports/con_job_order_notes.xml',
+        # 'reports/con_job_order_notes_template.xml',
+        # 'reports/con_job_order_report.xml',
+        # 'reports/con_job_order_template.xml',
+        # 'reports/con_projects_template.xml',
+        # 'reports/con_projects_report.xml',
         'views/con_project_task_type.xml',
         'views/con_config.xml',
         'data/sequence.xml',

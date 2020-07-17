@@ -5,10 +5,12 @@ from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.tools.safe_eval import safe_eval
 from odoo.tools.misc import format_date
 
+
 class ConStages(models.Model):
     _name = 'con.stages'
-    _description = 'this is staging process model'
+    _description = 'Project Stages'
+    _rec_name = 'name'
 
-    name = fields.Char(string='Name')
+    name = fields.Char(string='Name', required=True)
 
 
