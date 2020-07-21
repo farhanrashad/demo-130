@@ -30,12 +30,13 @@ class StockMove(models.Model):
     product_qty = fields.Float(
         'Quantity', compute='_compute_product_qty')
 
-    @api.depends('product_id', 'product_uom', 'product_uom_qty')
-    def _compute_product_qty(self):
-        self.ensure_one()
-        rounding_method = self._context.get('rounding_method', 'UP')
-        self.product_qty = self.product_uom._compute_quantity(self.product_uom_qty, self.product_id.uom_id,
-                                                              rounding_method=rounding_method)
+    # @api.depends('product_id', 'product_uom', 'product_uom_qty')
+    # def _compute_product_qty(self):
+    #     # self.ensure_one()
+    #     for rec in self:
+    #         rounding_method = self._context.get('rounding_method', 'UP')
+    #         rec.product_qty = rec.product_uom._compute_quantity(rec.product_uom_qty, rec.product_id.uom_id,
+    #                                                           rounding_method=rounding_method)
 
     @api.depends('move_line_ids.product_qty')
     def _compute_reserved_availability(self):

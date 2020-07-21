@@ -6,6 +6,24 @@ from odoo.exceptions import UserError, ValidationError, AccessError
 from collections import defaultdict
 
 
+class StockPickingExt(models.Model):
+    _inherit = 'stock.picking'
+
+    location_id = fields.Many2one(
+        'stock.location', "Source Location",
+        default=lambda self: self.env['stock.picking.type'].browse(
+            self._context.get('default_picking_type_id')).default_location_src_id,
+        check_company=True, readonly=True, required=False,
+        states={'draft': [('readonly', False)]})
+    location_dest_id = fields.Many2one(
+        'stock.location', "Destination Location",
+        default=lambda self: self.env['stock.picking.type'].browse(
+            self._context.get('default_picking_type_id')).default_location_dest_id,
+        check_company=True, readonly=True, required=False,
+        states={'draft': [('readonly', False)]})
+    requisition_po_id = fields.Many2one(comodel_name='maintenance.order', string='Purchase Requisition')
+
+
 class StockMoveExt(models.Model):
     _inherit = 'stock.move'
 
@@ -76,26 +94,73 @@ class MaintenanceOrder(models.Model):
         return res
 
     def action_confirm(self):
-        self.write({
+        stock_picking_obj = self.env['stock.picking']
+        stock_picking_line_obj = self.env['stock.move']
+        for line in self.maintenance_lines:
+            pur_order = stock_picking_obj.search(
+                [('requisition_po_id', '=', self.id)])
+            if pur_order:
+                supplier_line = {
+                    'product_id': line.product_id.id,
+                    'product_uom_qty': line.demand_qty,
+                    'product_uom': line.product_uom.id,
+                    'location_id': self.location_src_id.id,
+                    'location_dest_id': self.location_dest_id.id,
+                    'name': self.name,
+                    'picking_id': pur_order.id,
+                    'emm_order_id': self.id,
+                    # 'quantity_done': self.move_lines.product_uom_qty,
+                }
+                purchase_order_line = stock_picking_line_obj.create(supplier_line)
+            else:
+                vals = {
+                    'picking_type_id': self.picking_type_id.id,
+                    'location_id': self.location_src_id.id,
+                    'location_dest_id': self.location_dest_id.id,
+                    'origin': self.name,
+                    'requisition_po_id': self.id,
+                }
+                stock_picking = stock_picking_obj.create(vals)
+                po_line_vals = {
+                    'product_id': line.product_id.id,
+                    'product_uom_qty': line.demand_qty,
+                    'product_uom': line.product_uom.id,
+                    'location_id': self.location_src_id.id,
+                    'location_dest_id': self.location_dest_id.id,
+                    'name': self.name,
+                    'picking_id': stock_picking.id,
+                    'emm_order_id': self.id,
+                    # 'quantity_done': self.move_lines.product_uom_qty,
+                }
+                stock_lines = stock_picking_line_obj.create(po_line_vals)
+        res = self.write({
             'state': 'confirm',
             'date_order': fields.Datetime.now()
         })
-        supplier_line = {
-            'product_id': self.move_lines.product_id.id,
-            'product_uom_qty': self.move_lines.product_uom_qty,
-            'product_uom': self.move_lines.product_uom.id,
-            'name': self.name,
-            # 'quantity_done': self.move_lines.product_uom_qty,
-        }
-        record_line = {
-            'picking_type_id': self.picking_type_id.id,
-            'location_id': self.location_src_id.id,
-            'location_dest_id': self.location_dest_id.id,
-            'origin': self.name,
-            'move_ids_without_package': [(0, 0, supplier_line)],
-        }
-        record = self.env['stock.picking'].create(record_line)
-        return record
+        return res
+    # def action_confirm(self):
+    #     self.write({
+    #         'state': 'confirm',
+    #         'date_order': fields.Datetime.now()
+    #     })
+    #     supplier_line = {
+    #         'product_id': self.move_lines.product_id.id,
+    #         'product_uom_qty': self.move_lines.product_uom_qty,
+    #         'product_uom': self.move_lines.product_uom.id,
+    #         'location_id': self.location_src_id.id,
+    #         'location_dest_id': self.location_dest_id.id,
+    #         'name': self.name,
+    #         # 'quantity_done': self.move_lines.product_uom_qty,
+    #     }
+    #     record_line = {
+    #         'picking_type_id': self.picking_type_id.id,
+    #         'location_id': self.location_src_id.id,
+    #         'location_dest_id': self.location_dest_id.id,
+    #         'origin': self.name,
+    #         'move_ids_without_package': [(0, 0, supplier_line)],
+    #     }
+    #     record = self.env['stock.picking'].create(record_line)
+    #     return record
 
     def action_cancel(self):
         self.write({'state': 'cancel'})
@@ -107,39 +172,70 @@ class MaintenanceOrder(models.Model):
         self.write({'state': 'draft'})
 
     def action_start_maintenance(self):
-        for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
-            order.message_subscribe([order.partner_id.id])
-        stock_moves = self.env['stock.move'].search([('emm_order_id', '=', self.id)])
+        maintenance_lines = self.env['maintenance.order.line'].search([('maintenance_line', '=', self.id)])
+        print('maintenance_lines', maintenance_lines)
         location = self.env['stock.location'].search([('id', '=', self.location_src_id.id)])
         quant_obj = self.env['stock.quant']
-        qty_available = quant_obj._get_available_quantity(stock_moves.product_id, location)
-        if stock_moves.product_uom_qty > qty_available:
-            raise ValidationError(_("Quantity is not available at current location."))
-        else:
-            ex_location = quant_obj.search([('location_id', '=', location.id),
-                                            ('product_id', '=', stock_moves.product_id.id)])
-            quantity = ex_location.quantity - stock_moves.product_uom_qty
-            new_quantity = (stock_moves.product_uom_qty) * -1
-            # self.env['stock.quant']._update_available_quantity(stock_moves.product_id, location, new_quantity)
-            self.write({
-                'state': 'inprocess',
-                'start_date': fields.Datetime.now()
-            })
-            for move in self.move_lines:
-                move.update({
-                    'de_quantity_done': move.product_uom_qty,
+        for sm in maintenance_lines:
+            qty_available = quant_obj._get_available_quantity(sm.product_id, location)
+            print('qty', qty_available)
+            if sm.demand_qty > qty_available:
+                raise ValidationError(_("Quantity is not available at current location for " + str(sm.product_id.name)))
+            else:
+                # ex_lines = self.env['stock.picking'].search([('origin', '=', self.name)])
+                # moves = self.env['stock.move'].search([('picking_id', '=', ex_lines.id)])
+                # for m in moves:
+                #     m.quantity_done = m.product_uom_qty
+                ex_location = quant_obj.search([('location_id', '=', location.id),
+                                                ('product_id', '=', sm.product_id.id)])
+                quantity = ex_location.quantity - sm.demand_qty
+                new_quantity = (sm.demand_qty) * -1
+                # self.env['stock.quant']._update_available_quantity(sm.product_id, location, new_quantity)
+        self.write({
+            'state': 'inprocess',
+            'start_date': fields.Datetime.now()
+        })
+        for move in self.maintenance_lines:
+            move.update({
+                'done_qty': move.demand_qty,
+                'reserved_qty': move.demand_qty,
                     # 'reserved_availability': move.product_uom_qty,
                     # 'quantity_done': move.product_uom_qty,
-                    'state': 'done'
-                })
-            ex_lines = self.env['stock.picking'].search([('origin', '=', self.name)])
-            moves = self.env['stock.move'].search([('picking_id', '=', ex_lines.id)])
-            moves.quantity_done = self.move_lines.de_quantity_done
+                # 'state': 'done'
+            })
+        ex_lines = self.env['stock.picking'].search([('origin', '=', self.name)])
+        moves = self.env['stock.move'].search([('picking_id', '=', ex_lines.id)])
+        for move in moves:
+            # move.reserved_availability = move.product_uom_qty
+            move.quantity_done = move.product_uom_qty
+        # moves.quantity_done = self.move_lines.de_quantity_done
         # return record
 
     def action_end_maintenance(self):
-        for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
-            order.message_subscribe([order.partner_id.id])
+        stock_moves = self.env['maintenance.order.line'].search([('maintenance_line', '=', self.id)])
+        location = self.env['stock.location'].search([('id', '=', self.location_src_id.id)])
+        quant_obj = self.env['stock.quant']
+        for m in stock_moves:
+            ex_location = quant_obj.search([('location_id', '=', location.id),
+                                            ('product_id', '=', m.product_id.id)])
+            quantity = ex_location.quantity - m.demand_qty
+            new_quantity = (m.demand_qty) * -1
+            # self.env['stock.quant']._update_available_quantity(m.product_id, location, new_quantity)
+        ex_lines = self.env['stock.picking'].search([('origin', '=', self.name)])
+        moves = self.env['stock.move.line'].search([('reference', '=', ex_lines.name)])
+        for mv in moves:
+            mv.update({
+                'state': 'done'
+            })
+        # self.env['stock.move.line'].create({
+        #     'date': fields.Date.today(),
+        #     'reference': self.name,
+        #     'product_id': stock_moves.product_id.id,
+        #     'location_id': self.location_src_id.id,
+        #     'location_dest_id': self.location_dest_id.id,
+        #     'qty_done': stock_moves.product_uom_qty,
+        #     'product_uom_id': stock_moves.product_uom.id,
+        # })
         ex_pick_doc = self.env['stock.picking'].search([('origin', '=', self.name)])
         for ex in ex_pick_doc:
             ex.state = 'done'
@@ -148,6 +244,8 @@ class MaintenanceOrder(models.Model):
             'end_date': fields.Datetime.now()
         })
         ex_lines = self.env['stock.picking'].search([('origin', '=', self.name)])
+        ex_lines.action_confirm()
+        ex_lines.action_assign()
         ex_lines.button_validate()
         # self.env['stock.move.line'].create({
         #     'date': fields.Date.today(),
@@ -249,6 +347,7 @@ class MaintenanceOrder(models.Model):
 
     move_lines = fields.One2many('stock.move', 'emm_order_id', string="Maintenance Stock Moves", copy=True,
                                  readonly=True, states={'draft': [('readonly', False)]})
+    maintenance_lines = fields.One2many(comodel_name='maintenance.order.line', inverse_name='maintenance_line')
 
     maintenance_service_ids = fields.One2many('maintenance.order.service.lines', 'em_order_id',
                                               string='Maintenance Service Lines', copy=True, auto_join=True,
@@ -364,3 +463,16 @@ class MaintenanceOperations(models.Model):
     product_cost = fields.Float(string='Cost')
     has_tracking = fields.Selection(related='product_id.tracking', string='Product with Tracking', readonly=True)
     picking_id = fields.Many2one('stock.picking', 'Transfer Reference', index=True)
+
+
+class MaintenanceOrderLine(models.Model):
+    _name = 'maintenance.order.line'
+    _description = 'Maintenance Lines'
+
+    maintenance_line = fields.Many2one(comodel_name='maintenance.order')
+    product_id = fields.Many2one(comodel_name='product.product', string='Product', required=True)
+    demand_qty = fields.Float(string='Initial Demand')
+    reserved_qty = fields.Float(string='Reserved Quantity', readonly=True)
+    done_qty = fields.Float(string='Done', readonly=True)
+    product_uom = fields.Many2one(comodel_name='uom.uom', string='Unit of Measure', required=True,
+                                  related='product_id.uom_id')
