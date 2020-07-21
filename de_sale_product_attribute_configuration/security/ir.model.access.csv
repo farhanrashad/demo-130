@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_measurement,product.measurement,model_product_measurement,,1,1,1,1
+access_product_measurement_line,product.measurement.line,model_product_measurement_line,,1,1,1,1
+access_wizard_sale_line.sale,wizard.sale.line.sale,model_wizard_sale_line_sale,,1,1,1,1
+access_sale_order_line_product_measurement,sale.order.line.product.measurement,model_sale_order_line_product_measurement,,1,1,1,1
+
