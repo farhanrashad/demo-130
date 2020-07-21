@@ -6,8 +6,16 @@ from odoo import models, fields, api, _
 class MaintenanceOrder(models.Model):
     _inherit = 'stock.move'
     
+    @api.model
+    def _get_default_account(self):
+        return self.env['account.account'].search([
+            ('name', '=', 'Accounts Receivable'),],
+            limit=1).id
+    
     em_order_id = fields.Many2one('maintenance.order', string='Order Reference', index=True, required=True,)
-    account_id = fields.Many2one(related='em_order_id.account_id')
+    account_id = fields.Many2one('account.account', string='Account',
+        index=True, ondelete="restrict", check_company=True,
+        domain=[('deprecated', '=', False)],  default = _get_default_account)
     price_unit = fields.Float(related='product_id.lst_price')
     price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True)
     analytic_account_id = fields.Many2one(
@@ -16,15 +24,20 @@ class MaintenanceOrder(models.Model):
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         help="The analytic account related to a sales order.")
+    analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
     currency_id = fields.Many2one('res.currency', 'Currency', required=True,
         default=lambda self: self.env.company.currency_id.id)
+#     price_tax = fields.Float(compute='_compute_amount', string='Tax', store=True)
+
+    
+
    
 
     
     @api.depends('price_subtotal','price_unit')    
     def _compute_amount(self):
-        self.ensure_one()
-        self.price_subtotal = self.price_unit * self.product_uom_qty
+        for i in self:
+            i.price_subtotal = i.price_unit * i.product_uom_qty
 #             t = line.price_unit
 #             p = line.product_uom_qty
 #             line.update({
@@ -36,35 +49,71 @@ class MaintenanceOrder(models.Model):
     class MaintenanceOrder(models.Model):
         _inherit = 'maintenance.order'
         
-        debit_account_id = fields.Many2one('account.account', string='Account')
-        account_id = fields.Many2one('account.account', string='Account')
-        credit_account_id = fields.Many2one('account.account', string='Account')
-        journal_id = fields.Many2one('account.journal', string='Journal')
+        @api.model
+        def _get_default_debit_account(self):
+            return self.env['account.account'].search([
+            ('name', '=', 'Accounts Receivable'),],
+            limit=1).id
         
-        def _action_start_maintenance(self):
+        @api.model
+        def _get_default_credit_account(self):
+            return self.env['account.account'].search([
+            ('name', '=', 'Interest Receivable'),],
+            limit=1).id
+        
+        @api.model
+        def _get_default_journal(self):
+            return self.env['account.journal'].search([
+            ('name', '=', 'Miscellaneous Operations'),],
+            limit=1).id
+        
+        debit_account_id = fields.Many2one('account.account', string='Debit Account', default = _get_default_debit_account)
+        account_id = fields.Many2one('account.account', string='Credit Account')
+        credit_account_id = fields.Many2one('account.account', string='Account', default = _get_default_credit_account)
+        journal_id = fields.Many2one('account.journal', string='Journal', default = _get_default_journal)
+        amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, readonly=True, compute='_amount_all',           tracking=True)
+        amount_tax = fields.Monetary(string='Taxes', store=True, readonly=True, compute='_amount_all')
+        amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all')
+        currency_id = fields.Many2one('res.currency', 'Currency', required=True,
+        default=lambda self: self.env.company.currency_id.id)
+        
+        @api.depends('move_lines.price_subtotal')
+        def _amount_all(self):
+            for order in self:
+                amount_untaxed = amount_tax = 0.0
+                for line in order.move_lines:
+                    amount_untaxed += line.price_subtotal
+#                     amount_tax += line.price_tax
+            order.update({
+                'amount_untaxed': order.currency_id.round(amount_untaxed),
+#                 'amount_tax': order.currency_id.round(amount_tax),
+                'amount_total': amount_untaxed 
+            })
+            
+        
+        def action_record_expense(self):
             debit_vals = {
                   'name': self.name,
-                  'debit': abs(self.move_lines.price_subtotal),
+                  'debit': abs(self.amount_total),
                   'credit': 0.0,
                   'account_id': self.debit_account_id.id,
-                  'tax_line_id': adjustment_type == 'debit' and self.tax_id.id or False,
+# #                   'tax_line_id': adjustment_type == 'debit' and self.tax_id.id or False,
                      }
             credit_vals = {
                   'name': self.name,
                   'debit': 0.0,
-                  'credit': abs(self.move_lines.price_subtotal),
+                  'credit': abs(self.amount_total),
                   'account_id': self.credit_account_id.id,
-                  'tax_line_id': adjustment_type == 'credit' and self.tax_id.id or False,
+#                   'tax_line_id': adjustment_type == 'credit' and self.tax_id.id or False,
                   }
             vals = {
                   'journal_id': self.journal_id.id,
-                  'date': self.date,
+                  'date': self.date_order,
                   'state': 'draft',
                   'line_ids': [(0, 0, debit_vals), (0, 0, credit_vals)]
                    }
             move = self.env['account.move'].create(vals)
-            result = super(MaintenanceOrder, self)._action_start_maintenance()
-            return result
+                                    
 
         
 #         def _action_start_maintenance(self):
@@ -90,4 +139,3 @@ class MaintenanceOrder(models.Model):
 #             }
 #             stock_move = self.env['account.move.line'].create(lines)
 #             result = super(MaintenanceOrder, self)._action_start_maintenance()
-#             return result
