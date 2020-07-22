@@ -44,13 +44,13 @@ class MaintenanceOrder(models.Model):
     @api.depends('price_subtotal','price_unit')    
     def _compute_amount(self):
         for line in self:
-            line.price_subtotal = line.price_unit * line.demand_qty
+#             line.price_subtotal = line.price_unit * line.demand_qty
 #             t = line.price_unit
 #             p = line.product_uom_qty
-#             line.update({
-#                 'price_subtotal': line.price_unit * line.product_uom_qty
+            line.update({
+                'price_subtotal': line.price_unit * line.demand_qty
                 
-#             })
+            })
 
    
     class MaintenanceOrder(models.Model):
@@ -99,15 +99,15 @@ class MaintenanceOrder(models.Model):
             'view_mode': 'tree,form',
         }
         
-        @api.model
-        def _get_default_journal_entry(self):
-            test = self.env['account.move'].search([('name', 'in', self.name)],
-            limit=1).id
-            self.move_id = test
-            return test
+#         @api.model
+#         def _get_default_journal_entry(self):
+#             test = self.env['account.move'].search([('name', 'in', self.name)],
+#             limit=1).id
+#             self.move_id = test
+#             return test
         
         def get_bill_count(self):
-            count = self.env['account.move'].search_count([])
+            count = self.env['account.move'].search_count([('name', '=', self.name)])
             self.bill_count = count
         
         bill_count = fields.Integer(string='Sub Task', compute='get_bill_count')
@@ -120,8 +120,7 @@ class MaintenanceOrder(models.Model):
         amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all')
         currency_id = fields.Many2one('res.currency', 'Currency', required=True,
         default=lambda self: self.env.company.currency_id.id)
-        move_id = fields.Many2one('account.move',string='Journal Entry',  domain="['|', ('company_id', '=', False), ('name', '=', name)]", default = _get_default_journal_entry)
-#         invoice_count = fields.Integer(string='Invoice Count', compute='_get_invoiced', readonly=True)
+        move_id = fields.Many2one('account.move',string='Journal Entry',  domain="['|', ('company_id', '=', False), ('name', '=', name)]")
 
         
         

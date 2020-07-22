@@ -10,7 +10,6 @@
                 <div class="oe_button_box" name="button_box">
                         <button name="action_view_test" type="object" class="oe_stat_button" state='done' icon="fa-pencil-square-o"  attrs="{'invisible': [('bill_count', '=', 0)]}">
                             <field name="bill_count" widget="statinfo" string="Expense Bills"/>
-<!--                             attrs="{'invisible': [('invoice_count', '=', 0)]}"> -->
                         </button>
                     </div>
                 </xpath>
