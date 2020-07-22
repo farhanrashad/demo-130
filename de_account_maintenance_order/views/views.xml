@@ -4,8 +4,16 @@
  		<record id="maintenance_order_form_view" model="ir.ui.view">
 			<field name="name">maintenance.order.form.view</field>
 			<field name="model">maintenance.order</field>
-			<field name="inherit_id" ref="de_equipment_maintenance.maintenance_order_form_view"/>
+			<field name="inherit_id" ref="de_equipments_maintenance.maintenance_order_form_view"/>
 			<field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                <div class="oe_button_box" name="button_box">
+                        <button name="action_view_test" type="object" class="oe_stat_button" state='done' icon="fa-pencil-square-o"  attrs="{'invisible': [('bill_count', '=', 0)]}">
+                            <field name="bill_count" widget="statinfo" string="Expense Bills"/>
+<!--                             attrs="{'invisible': [('invoice_count', '=', 0)]}"> -->
+                        </button>
+                    </div>
+                </xpath>
                  <xpath expr="//button[@name='action_confirm']" position="after">
 				   <button string="Record Expense" name="action_record_expense" type="object" states="done" class="oe_highlight"/>
 				</xpath>
@@ -13,9 +21,10 @@
 					<field name="debit_account_id"/>
 					<field name="credit_account_id"/>
 					<field name="journal_id"/>
+                    <field name="move_id"/>
 
 				</xpath>
-                <xpath expr="//button[@name='put_in_pack']" position="before">
+                <xpath expr="//field[@name='maintenance_lines']" position="after">
                   <group class="oe_subtotal_footer">
 <!--                         <field name="amount_untaxed"/> -->
 <!--                         <field name="amount_by_group" widget="tax-group-custom-field" nolabel="1" colspan="2"/> -->
@@ -25,13 +34,14 @@
                    </group>
                 </xpath>
 
-				<xpath expr="//field[@name='move_lines']//tree//field[@name='product_id']" position="after">
+				<xpath expr="//field[@name='maintenance_lines']//tree//field[@name='product_id']" position="after">
 					<field name="account_id"/>
 					<field name="price_unit"/>
+					<field name="company_id" invisible="1"/>
 					<field name="analytic_account_id"/>
-                    <field name="analytic_tag_ids"/>
+                    <field name="analytic_tag_ids" widget="many2many_tags"/>
 				</xpath>
-				<xpath expr="//field[@name='move_lines']//tree//field[@name='de_quantity_done']" position="after">
+				<xpath expr="//field[@name='maintenance_lines']//tree//field[@name='product_uom']" position="after">
 					<field name="price_subtotal"/>
 				</xpath>
 			</field>

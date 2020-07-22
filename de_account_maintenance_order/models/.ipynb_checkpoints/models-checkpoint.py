@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 
 
 class MaintenanceOrder(models.Model):
-    _inherit = 'stock.move'
+    _inherit = 'maintenance.order.line'
     
     @api.model
     def _get_default_account(self):
@@ -15,15 +15,22 @@ class MaintenanceOrder(models.Model):
     em_order_id = fields.Many2one('maintenance.order', string='Order Reference', index=True, required=True,)
     account_id = fields.Many2one('account.account', string='Account',
         index=True, ondelete="restrict", check_company=True,
-        domain=[('deprecated', '=', False)],  default = _get_default_account)
+        domain=[('deprecated', '=', False)],  default = _get_default_account )
     price_unit = fields.Float(related='product_id.lst_price')
     price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True)
+    company_id = fields.Many2one('res.company', string='Company', required=True,
+        default=lambda self: self.env.company)
+    state = fields.Selection([('draft', 'Draft'),
+                              ('confirm', 'Confirm'),
+                              ('inprocess', 'Under Maintenance'),
+                              ('done', 'Done'),
+                              ('cancel', 'Cancel')], string="Status", default='draft', track_visibility='onchange')
     analytic_account_id = fields.Many2one(
         'account.analytic.account', 'Analytic Account',
-        readonly=True, copy=False, check_company=True,  # Unrequired company
-        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        readonly=False, copy=False, check_company=True,  # Unrequired company
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         help="The analytic account related to a sales order.")
+#     states={'draft': [('readonly', False)], 'done': [('readonly', False)]},
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
     currency_id = fields.Many2one('res.currency', 'Currency', required=True,
         default=lambda self: self.env.company.currency_id.id)
@@ -36,8 +43,8 @@ class MaintenanceOrder(models.Model):
     
     @api.depends('price_subtotal','price_unit')    
     def _compute_amount(self):
-        for i in self:
-            i.price_subtotal = i.price_unit * i.product_uom_qty
+        for line in self:
+            line.price_subtotal = line.price_unit * line.demand_qty
 #             t = line.price_unit
 #             p = line.product_uom_qty
 #             line.update({
@@ -67,21 +74,63 @@ class MaintenanceOrder(models.Model):
             ('name', '=', 'Miscellaneous Operations'),],
             limit=1).id
         
-        debit_account_id = fields.Many2one('account.account', string='Debit Account', default = _get_default_debit_account)
+
+#         @api.depends('order_line.invoice_lines')
+#         def _get_invoiced(self):
+#         # The invoice_ids are obtained thanks to the invoice lines of the SO
+#         # lines, and we also search for possible refunds created directly from
+#         # existing invoices. This is necessary since such a refund is not
+#         # directly linked to the SO.
+#             for order in self:
+#                 invoices = order.order_line.invoice_lines.move_id.filtered(lambda r: r.type in ('out_invoice', 'out_refund'))
+#                 order.invoice_ids = invoices
+#                 order.invoice_count = len(invoices)
+        
+        def action_view_test(self):
+            self.ensure_one()
+            return {
+            'type': 'ir.actions.act_window',
+            'binding_type': 'object',
+            'domain': [('name', '=', self.name)],   
+            'multi': False,
+            'name': 'Tasks',
+            'target': 'current',
+            'res_model': 'account.move',
+            'view_mode': 'tree,form',
+        }
+        
+        @api.model
+        def _get_default_journal_entry(self):
+            test = self.env['account.move'].search([('name', 'in', self.name)],
+            limit=1).id
+            self.move_id = test
+            return test
+        
+        def get_bill_count(self):
+            count = self.env['account.move'].search_count([])
+            self.bill_count = count
+        
+        bill_count = fields.Integer(string='Sub Task', compute='get_bill_count')
+        debit_account_id = fields.Many2one('account.account', related='maintenance_lines.account_id' )
         account_id = fields.Many2one('account.account', string='Credit Account')
-        credit_account_id = fields.Many2one('account.account', string='Account', default = _get_default_credit_account)
+        credit_account_id = fields.Many2one('account.account', string='Credit Account', default = _get_default_credit_account)
         journal_id = fields.Many2one('account.journal', string='Journal', default = _get_default_journal)
         amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, readonly=True, compute='_amount_all',           tracking=True)
         amount_tax = fields.Monetary(string='Taxes', store=True, readonly=True, compute='_amount_all')
         amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all')
         currency_id = fields.Many2one('res.currency', 'Currency', required=True,
         default=lambda self: self.env.company.currency_id.id)
+        move_id = fields.Many2one('account.move',string='Journal Entry',  domain="['|', ('company_id', '=', False), ('name', '=', name)]", default = _get_default_journal_entry)
+#         invoice_count = fields.Integer(string='Invoice Count', compute='_get_invoiced', readonly=True)
+
         
-        @api.depends('move_lines.price_subtotal')
+        
+
+        @api.depends('maintenance_lines.price_subtotal')
         def _amount_all(self):
             for order in self:
                 amount_untaxed = amount_tax = 0.0
-                for line in order.move_lines:
+                for line in order.maintenance_lines:
                     amount_untaxed += line.price_subtotal
 #                     amount_tax += line.price_tax
             order.update({
@@ -96,7 +145,7 @@ class MaintenanceOrder(models.Model):
                   'name': self.name,
                   'debit': abs(self.amount_total),
                   'credit': 0.0,
-                  'account_id': self.debit_account_id.id,
+                  'account_id': self.maintenance_lines.account_id.id,
 # #                   'tax_line_id': adjustment_type == 'debit' and self.tax_id.id or False,
                      }
             credit_vals = {
@@ -107,6 +156,7 @@ class MaintenanceOrder(models.Model):
 #                   'tax_line_id': adjustment_type == 'credit' and self.tax_id.id or False,
                   }
             vals = {
+                  'name': self.name, 
                   'journal_id': self.journal_id.id,
                   'date': self.date_order,
                   'state': 'draft',
