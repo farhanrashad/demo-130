@@ -16,7 +16,7 @@ class product_measure(models.Model):
     product_measure_line=fields.One2many("product.measurement.line","id_order")
 
     
-    name=fields.Char('Regular Measurement')
+    name=fields.Char('Name')
     
 class product_measure_line(models.Model):
     _name='product.measurement.line'
@@ -25,7 +25,7 @@ class product_measure_line(models.Model):
     id_order=fields.Many2one("product.measurement")   
 
     
-    name=fields.Char('Chest Size')
+    name=fields.Char('Name')
     
         
 class wizard_sale_line(models.Model):
@@ -51,17 +51,34 @@ class wizard_sale_line(models.Model):
 
     product_id=fields.Many2one('product.product',string="Product", default=compute_get_stock)
     
+    
+    def confirm(self):
+        a=[]
+        if self.sale_measure_line:
+            for s in self.sale_measure_line:
+                a.append(s.name+str(s.value))
+            js=self.env['sale.order.line'].search([('id','=',self._context.get('active_id'))]).name
+            aa=' '.join(map(str,a))
+            jss=js+''+aa
+            self.env['sale.order.line'].browse(self._context.get('active_id')).update({'name':jss}) 
+
+                
+    
     @api.onchange('product_id')
     def get_value_name(self):
         line=[(5,0,0)]
         if self.product_id:
-                    lines = self.env['product.product'].search([('id','=',self.product_id.id)])
-                    for lin in lines:
-                        if lin.categ_id.attribute_ids:
-                            for hh in lin.categ_id.attribute_ids:
-                                for hg in hh:
+            if self.product_id.categ_id.measurement==True:
+                    lines = self.env['product.measurement'].search([])
+                    liness=sorted(lines)
+                    linn=liness[-1]
+                    fd=self.env['product.measurement'].search([('id','=',linn.id)])
+                    for l in fd:
+                        if l.product_measure_line:
+                            for ll in l.product_measure_line:
+                                for hg in ll:
                                         vals = {
-                                                    'name':hh.id,
+                                                    'name':hg.name,
                                                 }
                                         
                                         
@@ -87,7 +104,7 @@ class sale_measure_line(models.Model):
     
     
     
-    name=fields.Many2one("product.attribute",string="Name",store=True)   
+    name=fields.Char(string="Name")   
     
     
     
@@ -105,23 +122,22 @@ class sale_order_wizard(models.Model):
 #             j=ast.literal_eval(z.context_id)
 #             if a==ast.literal_eval(z.context_id):
                 
-        po = self.env['sale.order.line.product.measurement'].search([('context_id', '=', str(a))])
-        if po:    
-
-
-            return {
-                'name': _('Measurement Operations'),
-                'type': 'ir.actions.act_window',
-                'view_mode': 'form',
-                'res_model': 'sale.order.line.product.measurement',
-                'res_id': po.id,
-                'target': 'new',
-            }
-        else:
-            return {
-                'name': _('Measurement Operations'),
-                'type': 'ir.actions.act_window',
-                'view_mode': 'form',
-                'res_model': 'sale.order.line.product.measurement',
-                'target': 'new',
-            }
+        po = self.env['sale.order.line.product.measurement'].search([('context_id', '=', str(a))])   
+        if self.product_id.categ_id.measurement==True:
+            if po: 
+                return {
+                    'name': _('Measurement Operations'),
+                    'type': 'ir.actions.act_window',
+                    'view_mode': 'form',
+                    'res_model': 'sale.order.line.product.measurement',
+                    'res_id': po.id,
+                    'target': 'new',
+                }
+            else:
+                return {
+                    'name': _('Measurement Operations'),
+                    'type': 'ir.actions.act_window',
+                    'view_mode': 'form',
+                    'res_model': 'sale.order.line.product.measurement',
+                    'target': 'new',
+                }
