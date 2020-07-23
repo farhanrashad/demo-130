@@ -17,7 +17,7 @@ class MaintenanceOrder(models.Model):
         index=True, ondelete="restrict", check_company=True,
         domain=[('deprecated', '=', False)],  default = _get_default_account )
     price_unit = fields.Float(related='product_id.lst_price')
-    price_subtotal = fields.Monetary(compute='_compute_amount', string='Subtotal', store=True)
+    price_subtotal = fields.Monetary(compute='_compute_amount_t', string='Subtotal')
     company_id = fields.Many2one('res.company', string='Company', required=True,
         default=lambda self: self.env.company)
     state = fields.Selection([('draft', 'Draft'),
@@ -42,7 +42,7 @@ class MaintenanceOrder(models.Model):
 
     
     @api.depends('price_subtotal','price_unit')    
-    def _compute_amount(self):
+    def _compute_amount_t(self):
         for line in self:
 #             line.price_subtotal = line.price_unit * line.demand_qty
 #             t = line.price_unit
@@ -51,6 +51,37 @@ class MaintenanceOrder(models.Model):
                 'price_subtotal': line.price_unit * line.demand_qty
                 
             })
+    
+#     @api.depends('product_qty', 'price_unit')
+#     def _compute_amount(self):
+#         for line in self:
+#             vals = line._prepare_compute_all_values()
+#             taxes = line.compute_all(
+#                 vals['price_unit'],
+#                 vals['currency_id'],
+#                 vals['product_qty'],
+#                 vals['product'],
+#                 vals['partner'])
+#             line.update({
+#                 'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
+#                 'price_total': taxes['total_included'],
+#                 'price_subtotal': taxes['total_excluded'],
+#             })
+
+#     def _prepare_compute_all_values(self):
+#         # Hook method to returns the different argument values for the
+#         # compute_all method, due to the fact that discounts mechanism
+#         # is not implemented yet on the purchase orders.
+#         # This method should disappear as soon as this feature is
+#         # also introduced like in the sales module.
+#         self.ensure_one()
+#         return {
+#             'price_unit': self.price_unit,
+#             'currency_id': self.currency_id,
+#             'product_qty': self.demand_qty,
+#             'product': self.product_id,
+#             'partner': self.order_id.partner_id,
+#         }
 
    
     class MaintenanceOrder(models.Model):
@@ -162,6 +193,26 @@ class MaintenanceOrder(models.Model):
                   'line_ids': [(0, 0, debit_vals), (0, 0, credit_vals)]
                    }
             move = self.env['account.move'].create(vals)
+            for line in self.maintenance_lines:
+                for analytic_acc in line.analytic_account_id:
+                    if  analytic_acc != '':
+#                         num = 0
+#                         for t in line.price_subtotal:
+#                             num = num + t
+                        analytic_vals = {
+                          'name': self.name,
+                          'amount': abs(line.price_subtotal),
+                          'date': self.date_order,
+                          'account_id': analytic_acc.id,
+                          }
+                        analytic = self.env['account.analytic.line'].create(analytic_vals)
+                    else:
+                        pass
+#                 for analaytic_tags in line.analytic_tag_ids:
+#                     if analaytic_tags.name != '':
+#                         for i in analytic_tag_ids.analytic_distribution_ids:
+
+                
                                     
 
         
