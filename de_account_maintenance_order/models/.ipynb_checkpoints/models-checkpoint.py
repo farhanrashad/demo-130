@@ -12,7 +12,7 @@ class MaintenanceOrder(models.Model):
             ('name', '=', 'Accounts Receivable'),],
             limit=1).id
     
-    em_order_id = fields.Many2one('maintenance.order', string='Order Reference', index=True, required=True,)
+#     em_order_id = fields.Many2one('maintenance.order', string='Order Reference', index=True, required=True,)
     account_id = fields.Many2one('account.account', string='Account',
         index=True, ondelete="restrict", check_company=True,
         domain=[('deprecated', '=', False)],  default = _get_default_account )
@@ -208,9 +208,22 @@ class MaintenanceOrder(models.Model):
                         analytic = self.env['account.analytic.line'].create(analytic_vals)
                     else:
                         pass
-#                 for analaytic_tags in line.analytic_tag_ids:
-#                     if analaytic_tags.name != '':
-#                         for i in analytic_tag_ids.analytic_distribution_ids:
+                for analaytic_tags in line.analytic_tag_ids:
+                    if analaytic_tags.name != '':
+                        for i in analaytic_tags.analytic_distribution_ids:
+                            for n in i.account_id:
+                                if n !='':
+                                    analytic_tags = {
+                                      'name': self.name,
+                                      'amount': abs((line.price_subtotal) / (n.percentage/100)),
+                                      'date': self.date_order,
+                                      'account_id': n.id,
+                                          }
+                                    analytic = self.env['account.analytic.line'].create(analytic_tags)
+                                else:
+                                    pass
+                    else:
+                        pass
 
                 
                                     
