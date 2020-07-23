@@ -17,19 +17,15 @@
 				   <button string="Record Expense" name="action_record_expense" type="object" states="done" class="oe_highlight"/>
 				</xpath>
                 <xpath expr="//field[@name='maintenance_request_id']" position="after">
-					<field name="debit_account_id"/>
+					<field name="debit_account_id" invisible="1"/>
 					<field name="credit_account_id"/>
 					<field name="journal_id"/>
-                    <field name="move_id"/>
+                    <field name="move_id" invisible="1"/>
 
 				</xpath>
                 <xpath expr="//field[@name='maintenance_lines']" position="after">
                   <group class="oe_subtotal_footer">
-<!--                         <field name="amount_untaxed"/> -->
-<!--                         <field name="amount_by_group" widget="tax-group-custom-field" nolabel="1" colspan="2"/> -->
                         <field name="amount_total" class="oe_subtotal_footer_separator"/>
-<!--                         <field name="invoice_payments_widget" colspan="2" nolabel="1" widget="payment"/> -->
-<!--                         <field name="amount_residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', '=', 'draft')]}"/> -->
                    </group>
                 </xpath>
 
