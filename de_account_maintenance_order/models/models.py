@@ -9,16 +9,15 @@ class MaintenanceOrder(models.Model):
     @api.model
     def _get_default_account(self):
         return self.env['account.account'].search([
-            ('name', '=', 'Accounts Receivable'),],
+            ('name', '=', 'Cost of Goods Sold'),],
             limit=1).id
     
     account_id = fields.Many2one('account.account', string='Account',
         index=True, ondelete="restrict", check_company=True,
         domain=[('deprecated', '=', False)],  default = _get_default_account )
-    price_unit = fields.Float(related='product_id.lst_price')
-    price_subtotal = fields.Monetary(compute='_compute_amount_t' , inverse='_compute_amount_t', string='Subtotal')
-    company_id = fields.Many2one('res.company', string='Company', required=True,
-        default=lambda self: self.env.company)
+    price_unit = fields.Float(related='product_id.standard_price')
+    price_subtotal = fields.Monetary(compute='_compute_amount_t', string='Subtotal')
+    company_id = fields.Many2one('res.company', string='Company')
     state = fields.Selection([('draft', 'Draft'),
                               ('confirm', 'Confirm'),
                               ('inprocess', 'Under Maintenance'),
@@ -26,25 +25,24 @@ class MaintenanceOrder(models.Model):
                               ('cancel', 'Cancel')], string="Status", default='draft', track_visibility='onchange')
     analytic_account_id = fields.Many2one(
         'account.analytic.account', 'Analytic Account',
-        readonly=False, copy=False, check_company=True,  # Unrequired company
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        readonly=False, copy=False, check_company=True, 
         help="The analytic account related to a sales order.")
     analytic_tag_ids = fields.Many2many('account.analytic.tag', string='Analytic Tags')
-    currency_id = fields.Many2one('res.currency', 'Currency', required=True,
-        default=lambda self: self.env.company)
+    currency_id = fields.Many2one('res.currency', 'Currency')
 
     
 
    
 
     
-    @api.depends('price_subtotal','price_unit')    
+    @api.depends('price_subtotal','price_unit', 'demand_qty')    
     def _compute_amount_t(self):
         for line in self:
-            line.update({
-                'price_subtotal': line.price_unit * line.demand_qty
+            line.price_subtotal = line.price_unit * line.demand_qty
+
+    
                 
-            })
+
     
 
    
@@ -54,13 +52,13 @@ class MaintenanceOrder(models.Model):
         @api.model
         def _get_default_debit_account(self):
             return self.env['account.account'].search([
-            ('name', '=', 'Accounts Receivable'),],
+            ('name', '=', 'Cost of Goods Sold'),],
             limit=1).id
         
         @api.model
         def _get_default_credit_account(self):
             return self.env['account.account'].search([
-            ('name', '=', 'Interest Receivable'),],
+            ('name', '=', 'Stock Valuation Account'),],
             limit=1).id
         
         @api.model
@@ -98,8 +96,7 @@ class MaintenanceOrder(models.Model):
         amount_untaxed = fields.Monetary(string='Untaxed Amount', store=True, readonly=True, compute='_amount_all',           tracking=True)
         amount_tax = fields.Monetary(string='Taxes', store=True, readonly=True, compute='_amount_all')
         amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all')
-        currency_id = fields.Many2one('res.currency', 'Currency', required=True,
-        default=lambda self: self.env.company.currency_id.id)
+        currency_id = fields.Many2one('res.currency', 'Currency')
         move_id = fields.Many2one('account.move',string='Journal Entry',  domain="['|', ('company_id', '=', False), ('name', '=', name)]")
 
         
@@ -118,11 +115,13 @@ class MaintenanceOrder(models.Model):
             
         
         def action_record_expense(self):
-            debit_vals = {
-                  'name': self.name,
-                  'debit': abs(self.amount_total),
-                  'credit': 0.0,
-                  'account_id': self.maintenance_lines.account_id.id,
+            for oline in self.maintenance_lines:                
+            	debit_vals = {
+                  	'name': self.name,
+                  	'debit': abs(self.amount_total),
+                  	'credit': 0.0,
+                  	'analytic_account_id': oline.analytic_account_id.id,   
+                  	'account_id': self.debit_account_id.id,
                      }
             credit_vals = {
                   'name': self.name,
