@@ -29,7 +29,7 @@
         # 'security/ir.model.access.csv',
         'reports/mrp_finished_product.xml',
         'reports/mrp_finished_product_template.xml',
-        'views/views.xml',
+        'views/res_partner_views.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode
