@@ -6,7 +6,7 @@
     'author': 'Dynexcel',
     'company': 'Dynexcel',
     'website': 'https://www.dynexcel.com',
-    'depends': ['hr', 'hr_employee_updation', 'mail'],
+    'depends': ['hr', 'de_hr_employee_updation', 'mail'],
     'category': 'Generic Modules/Human Resources',
     'maintainer': 'Dynexcel',
     'demo': ['data/demo_data.xml'],
