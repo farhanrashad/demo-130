@@ -10,6 +10,7 @@
              </xpath>
     
             <xpath expr="//field[@name='routing_id']" position="after">
+                        <field name="routing_f_id"/>
                         <field name="routing_s_id"/>
                         <field name="routing_t_id"/>
                         <field name="routing_fo_id"/>    

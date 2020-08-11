@@ -22,7 +22,7 @@ class MrpProduction(models.Model):
     product_t_qty = fields.Float(string='Quantity To Produce')
     product_fo_qty = fields.Float(string='Quantity To Produce')
     
-    def button_plan(self):
+    def button_plans(self):
         """ Create work orders. And probably do stuff, like things. """
         if routing_f_id != '':
             orders_to_plan = self.filtered(lambda order: order.routing_f_id)
