@@ -81,7 +81,7 @@
         </record>
         <menuitem id="employee_resignation" name="Resignation"
                   groups="base.group_user"
-                  web_icon="hr_resignation,static/description/resignation_web.png"
+                  web_icon="de_hr_resignation,static/description/resignation_web.png"
                   sequence="21"/>
         <menuitem id="employee_resignation_request" parent="employee_resignation" name="Resignation Request"
                   action="view_employee_resignation" groups="base.group_user" sequence="4"/>
