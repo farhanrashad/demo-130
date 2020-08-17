@@ -7,7 +7,8 @@
         [
             'base',
             'sale', 
-            'product',  
+            'product', 
+            'sale_product_configurator' ,
         ],
     'data':
         [    

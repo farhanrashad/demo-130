@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="open_job_creation_form" model="ir.ui.view">
+            <field name="name">Job Position Request</field>
+            <field name="model">hr.job.position.request</field>
+            <field name="arch" type="xml">
+                <form string="Job Position Request">
+                 <header>
+                    <button name="draft" string="Approved" type="object" class="btn-primary"
+                        attrs="{'invisible': [('state', 'not in', 'draft')]}" />
+                         />
+                          <button name="submit" string="Approved" type="object" class="btn-primary"
+                        attrs="{'invisible': [('state', 'not in', 'submit')]}" />
+                         />
+                         
+                          <button name="verify" string="Approved" type="object" class="btn-primary"
+                        attrs="{'invisible': [('state', 'not in', 'verify')]}" groups="open_hcm_job_position_request.l_m" />
+                         />
+                         
+                          <button name="co_approve" string="Approved" type="object" class="btn-primary"
+                        attrs="{'invisible': [('state', 'not in', 'co_approve')]}" groups="open_hcm_job_position_request.h_o_d" />
+                         />
+    
+                        
+                        <field name="state"  widget="statusbar" statusbar_visible="draft,submit,verify,co_approve,done"/>
+                  </header>
+                  <sheet>
+                        <group col="4">
+                        <field name="name" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="get_id" />
+                        <field name="no_of_person_request" attrs="{'readonly': [('state', 'in','done')]}"/>
+                        <field name="requested_by" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="department" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="gender_preference" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="budget" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="team" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="reported_to" attrs="{'readonly': [('state', 'in','done')]}"/>
+                         <field name="job_position" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="date" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="age_preference" attrs="{'readonly': [('state', 'in','done')]}" />
+
+                         </group>
+                    
+                    <notebook>
+                        <page string="Qualifications / Background / Skills Set">
+                            
+                                        <field name="qualification" widget="html" attrs="{'readonly': [('state', 'in','done')]}"/>
+                           
+                        </page>
+                    </notebook>
+                     <notebook>
+                        <page string="Education / Degree Required">
+                            
+                                        <field name="education" widget="html" attrs="{'readonly': [('state', 'in','done')]}"/>
+                           
+                        </page>
+                    </notebook>
+                     <notebook>
+                        <page string="Software Proficiency Requirements">
+                            
+                                        <field name="software" widget="html" attrs="{'readonly': [('state', 'in','done')]}"/>
+                           
+                        </page>
+                    </notebook>
+                     <notebook>
+                        <page string="Communications">
+                            
+                                        <field name="communication" widget="html" attrs="{'readonly': [('state', 'in','done')]}"/>
+                           
+                        </page>
+                    </notebook>
+                    
+                </sheet>
+            
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+               </form>
+            </field>
+            </record>
+            
+            <record id="open_job_creation_form_tree" model="ir.ui.view">
+                <field name="name">Job Position Request</field>
+                <field name="model">hr.job.position.request</field>
+                <field name="arch" type="xml">
+                    <tree string="Job Position Request Tree">
+                        <field name="name" />
+                        <field name="no_of_person_request" />
+                         <field name="requested_by"  />
+                         <field name="department"  />
+                        <field name="budget" />
+                        <field name="team" />
+                        <field name="reported_to" />
+                         <field name="job_position" />
+                        <field name="date"  />
+                        <field name="age_preference" />
+                        <field name="state"/>
+                    </tree>
+                </field>
+            </record>
+            
+            
+        
+         
+   
+               
+            <record id="open_job_request_creation_form" model="ir.actions.act_window">
+                <field name="name">Job Position Request</field>
+                <field name="res_model">hr.job.position.request</field>
+                <field name="binding_view_types">form</field>
+                <field name="view_mode">tree,form</field>
+                <field name="view_id" ref="open_job_creation_form_tree"/>
+            </record>
+            <menuitem action="open_job_request_creation_form" id="job_position request_menue"  parent="hr_recruitment.menu_crm_case_categ0_act_job" />
+            
+            
+            <record id="open_team_form_order" model="ir.ui.view">
+            <field name="name">Team Form</field>
+            <field name="model">hr.team</field>
+            <field name="arch" type="xml">
+                <form string="Team Form">
+                  <sheet>
+                    <group col="4">
+                        <field name="name" />
+                      
+                    </group>
+                    
+                </sheet>
+            
+             
+               </form>
+            </field>
+            </record>
+            
+            <record id="open_team_tree" model="ir.ui.view">
+                <field name="name">Team Tree</field>
+                <field name="model">hr.team</field>
+                <field name="arch" type="xml">
+                    <tree string="Team Tree">
+                        <field name="name"/>
+                      
+                    </tree>
+                </field>
+            </record>
+            
+          
+   
+            
+               
+            <record id="open_team_form_order_tree_form" model="ir.actions.act_window">
+                <field name="name">Team Form</field>
+                <field name="res_model">hr.team</field>
+                <field name="binding_view_types">form</field>
+                <field name="view_mode">tree,form</field>
+                <field name="view_id" ref="open_team_tree"/>
+            </record>
+            
+
+
+            <menuitem id="menu_view_team"
+            action="open_team_form_order_tree_form"
+            parent="hr_recruitment.menu_hr_recruitment_configuration"
+            />
+            
+            
+            
+            
+            
+            
+            
+            
+            </data>
+            </odoo>
+            
+            
