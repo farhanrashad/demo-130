@@ -3,7 +3,7 @@
 
 {
     "name" : "POS Orders Reprint",
-    "version" : "11.0.0.1",
+    "version" : "13.0.0.1",
     "category" : "Point of Sale",
     "depends" : ['base','sale','point_of_sale','pos_orders_list'],
     "author": "BrowseInfo",
