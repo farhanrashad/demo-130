@@ -15,9 +15,9 @@ from odoo.exceptions import UserError
 from datetime import datetime
 
 
-class EmployeeAttandanceWizard(models.Model):
-    _name = "employee.attendance.wizard"
-    _description = "Employee Wizard"
+class HelpdeskWizard(models.Model):
+    _name = "helpdesk.wizard"
+    _description = "Helpdesk Wizard"
     
     
     date_from = fields.Date('Date From:',default=time.strftime('%Y-%m-01'))
