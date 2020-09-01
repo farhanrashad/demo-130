@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_de_partner_modification_de_partner_modification,de_partner_modification.de_partner_modification,model_de_partner_modification_de_partner_modification,base.group_user,1,1,1,1
+access_partner_stages,access.partner.stages,model_partner_stages,,1,1,1,1
