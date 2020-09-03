@@ -36,7 +36,7 @@ class HrResignation(models.Model):
     state = fields.Selection(
         [('draft', 'Draft'), ('confirm', 'Confirm'), ('approved', 'Approved'), ('cancel', 'Rejected')],
         string='Status', default='draft', track_visibility="always")
-    resignation_type = fields.Selection(selection=RESIGNATION_TYPE, help="Select the type of resignation: normal "
+    resignation_type = fields.Selection(selection=RESIGNATION_TYPE, required=True,help="Select the type of resignation: normal "
                                                                          "resignation or fired by the company")
     read_only = fields.Boolean(string="check field")
     employee_contract = fields.Char(String="Contract")
@@ -171,8 +171,8 @@ class HrResignation(models.Model):
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
-
-    resign_date = fields.Date('Resign Date', readonly=True, help="Date of the resignation")
+    
+    resign_date = fields.Date('Resign Date', store=True, help="Date of the resignation")
     resigned = fields.Boolean(string="Resigned", default=False, store=True,
                               help="If checked then employee has resigned")
     fired = fields.Boolean(string="Fired", default=False, store=True, help="If checked then employee has fired")

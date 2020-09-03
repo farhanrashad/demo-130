@@ -28,7 +28,7 @@
                     <header>
                         <button string="Confirm" type="object" name="confirm_resignation" states='draft' class="oe_highlight"/>
                         <button string="Cancel" type="object" name="cancel_resignation" states='draft'/>
-                        <button string="Approve" type="object" groups="hr.group_hr_user" name="approve_resignation" states='confirm'/>
+                        <button string="Approve" type="object" groups="de_hr_resignation.group_approve_resignation" name="approve_resignation" states='confirm'/>
                         <button string="Reject" type="object" groups="hr.group_hr_user" name="reject_resignation" states='confirm'/>
                         <button string="Set to Draft" type="object" groups="hr.group_hr_manager" name="reset_to_draft" states='approved'/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
@@ -52,8 +52,8 @@
                                        readonly="1"
                                        attrs="{'invisible':[('resign_confirm_date','=',False)]}"/>
                                 <field name="expected_revealing_date" attrs="{'readonly': [('state','=','approved')]}"/>
-                                <field name="approved_revealing_date"
-                                        groups="hr.group_hr_user"/>
+<!--                                 <field name="approved_revealing_date"
+                                        groups="hr.group_hr_user"/> -->
                                 <field name="notice_period"/>
                             </group>
                             <group string="Resignation Details">
