@@ -9,7 +9,7 @@ If you have any question/queries/additional works on OpenHRMS or this module, Yo
 
 Contacts
 --------
-info - info@dynexcel.com
+info - info@dynexcel.co
 
 
 Website:

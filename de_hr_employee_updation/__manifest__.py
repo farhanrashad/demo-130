@@ -11,7 +11,7 @@
     'depends': ['base', 'hr', 'mail', 'hr_gamification', 'hr_contract'],
     'data': [
         'security/ir.model.access.csv',
-        'data/data.xml',
+#         'data/data.xml',
         'views/contract_days_view.xml',
         'views/updation_config.xml',
         'views/hr_employee_view.xml',
