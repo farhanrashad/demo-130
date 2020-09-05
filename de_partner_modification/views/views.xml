@@ -7,7 +7,7 @@
 			<field name="arch" type="xml">
 				<xpath expr="//sheet" position="before">
                     <header>
-					  <field name="stage_id" widget = "statusbar" options="{'clickable': '1'}"/>
+					  <field name="stage_id" widget = "statusbar" options="{'clickable': '1'}"       group='de_partner_modification.group_allow_to_change_stage'/>
                     </header>    
 				</xpath>      
             </field>
