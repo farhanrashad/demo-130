@@ -1,0 +1,43 @@
+<odoo>
+  <data>
+      
+      <!-- Withholdig Tax type form view-->
+    <record id="kra_form_view" model="ir.ui.view">
+        <field name="name">kra.form.view</field>
+        <field name="model">hr.kra</field>
+        <field name="arch" type="xml">
+            <form string="kra">
+                <sheet>
+                    <div class="oe_title">
+		                	<h1>
+	                            <field name="name"/>
+	                        </h1>
+		                </div>  
+                    <notebook>
+                        <page name="kra_items" string="Values">
+                           
+                        </page>
+                        
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+      
+
+      <record id="kra_list_action" model="ir.actions.act_window">
+        <field name="name">KRA List</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.kra</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new KRA List
+            </p>
+        </field>
+    </record>
+      
+      <menuitem id="menu_kra_configuration" parent="hr.menu_human_resources_configuration" name="KRA" sequence="100"/>
+      <menuitem id="menu_kra_items" name="KRA Items" parent="menu_kra_configuration" action="kra_list_action" groups="hr.group_hr_user"/>
+  </data>
+</odoo>
