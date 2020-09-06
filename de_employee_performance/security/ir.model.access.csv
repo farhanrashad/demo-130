@@ -1,5 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_kra,access.hr.kra,model_hr_kra,hr.group_hr_user,1,1,1,1
 access_hr_kra_line,access.hr.kra.line,model_hr_kra_line,hr.group_hr_user,1,1,1,1
-access_user_task_kra_line,access.user.task.kra.line,model_project_task_kra_line,project.group_project_user,1,0,0,0
-access_manager_task_kra_line,access.manager.task.kra.line,model_project_task_kra_line,project.group_project_manager,1,1,1,1
+access_user_task_kra_line,access.user.task.kra.line,model_hr_employee_kra_line,project.group_project_user,1,0,0,0
+access_manager_task_kra_line,access.manager.task.kra.line,model_hr_employee_kra_line,project.group_project_manager,1,1,1,1

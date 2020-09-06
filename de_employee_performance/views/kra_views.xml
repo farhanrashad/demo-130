@@ -1,7 +1,7 @@
 <odoo>
   <data>
       
-      <!-- Withholdig Tax type form view-->
+      <!-- KRA List Form-->
     <record id="kra_form_view" model="ir.ui.view">
         <field name="name">kra.form.view</field>
         <field name="model">hr.kra</field>
@@ -46,7 +46,69 @@
         </field>
     </record>
       
-      <menuitem id="menu_kra_configuration" parent="hr.menu_human_resources_configuration" name="KRA" sequence="100"/>
+      
+      <!-- Employee KRA Form-->
+    <record id="employee_kra_form_view" model="ir.ui.view">
+        <field name="name">employee.kra.form.view</field>
+        <field name="model">hr.employee.kra.line</field>
+        <field name="arch" type="xml">
+            <form string="kra">
+                <sheet>
+                    <group col="4">
+                        <field name="kra_date"/>
+                        <field name="kra_id" domain="[('is_task', '!=', True)]" />
+                        <field name="kra_line_id"/>
+                        <field name="score"/>
+                        <field name="name"/>
+                        <field name="employee_id" readonly="0"/>
+                        <field name="manager_id" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+      
+     <record id="employee_kra_tree_view" model="ir.ui.view">
+            <field name="name">employee.kra.tree.view</field>
+            <field name="model">hr.employee.kra.line</field>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <tree string="Employee KRAs">
+                    <field name="kra_date"/>
+                    <field name="kra_id"/>
+                    <field name="kra_line_id"/>
+                    <field name="score"/>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="manager_id"/>
+                </tree>
+            </field>
+        </record>  
+      
+      
+      
+      <record id="employee_kra_entries_action" model="ir.actions.act_window">
+        <field name="name">Employee KRA</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.employee.kra.line</field>
+        <field name="view_mode">tree</field>
+          <field name="domain">[('task_id','=',False)]</field>
+          <field name="view_id" ref="employee_kra_tree_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Employee KRA Entry
+            </p>
+        </field>
+    </record>
+      
+      
+      <menuitem id="menu_kra_configuration" parent="hr.menu_human_resources_configuration" name="KRA" sequence="600"/>
       <menuitem id="menu_kra_items" name="KRA Items" parent="menu_kra_configuration" action="kra_list_action" groups="hr.group_hr_user"/>
+      
+      <menuitem id="menu_hr_kra" parent="hr.menu_hr_root" name="KRA" sequence="30"/>
+      <menuitem id="menu_hr_employee_kra" name="KRA" parent="menu_hr_kra" action="employee_kra_action" groups="hr.group_hr_user"/>
+      <menuitem id="menu_hr_employee_kra_entries" name="KRA Entries" parent="menu_hr_kra" action="employee_kra_entries_action" groups="hr.group_hr_user"/>
+      
+      
   </data>
 </odoo>

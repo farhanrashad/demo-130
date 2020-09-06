@@ -8,12 +8,16 @@
             <field name="arch" type="xml">
                 <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                     <page name="task_kra" string="KRA">
-                        <field name="task_kra_line">
+                        <field name="task_kra_line" >
                                 <tree editable="bottom" >
-                                        <field name="kra_id" options="{'no_create':true, 'no_open':true}"/>
+                                    <field name="employee_id" />
+                                    <field name="kra_date"/>
+                                    <field name="kra_id" domain="[('is_task', '=', True)]" options="{'no_create':true, 'no_open':true}"/>
                                     <field name="kra_line_id" options="{'no_create':true, 'no_open':true}"/>
                                     <field name="name"/>
                                     <field name="score"/>
+                                    <field name="manager_id" invisible="1"/>
+                                    
                                 </tree>
                             </field>
                         <group class="oe_subtotal_footer oe_right" colspan="2" name="kra_total">
