@@ -32,17 +32,15 @@ class EmpoyeeKraLine(models.Model):
     kra_line_id = fields.Many2one('hr.kra.line', required=False, string='Result', domain="[('kra_id', '=', kra_id)]", change_default=True, ondelete='restrict')
     score = fields.Float(related='kra_line_id.score', string='Score', store=True,readonly=True)
     name = fields.Char(string='Description')
-    employee_id = fields.Many2one('hr.employee', "Employee", compute='_get_user_id', required=True, readonly=False, store=True,)
-    user_id = fields.Many2one('res.users',"User", compute='_get_user_id', readonly=True, store=True,)
+    employee_id = fields.Many2one('hr.employee', "Employee", compute='_get_employee', required=True, readonly=False, store=True,)
     manager_id = fields.Many2one('res.users', string='Manager', index=True, tracking=2, readonly=True, default=lambda self: self.env.user,)
     kra_date = fields.Date(string='Date', required=True, readonly=True, index=True, copy=False, default=fields.Date.today(), )
 
     
     @api.depends('task_id','kra_id','task_id.user_id')
-    def _get_user_id(self):
+    def _get_employee(self):
         for line in self:
             line.update({
-                'user_id': line.task_id.user_id.id,
                 'employee_id': line.task_id.user_id.employee_id.id,
             })
     

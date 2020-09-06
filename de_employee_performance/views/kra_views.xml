@@ -1,6 +1,19 @@
 <odoo>
   <data>
       
+      <record id="kra_group_action" model="ir.actions.act_window">
+        <field name="name">KRA Group</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.kra.group</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new KRA Group
+            </p>
+        </field>
+    </record>
+      
+      
       <!-- KRA List Form-->
     <record id="kra_form_view" model="ir.ui.view">
         <field name="name">kra.form.view</field>
@@ -12,6 +25,7 @@
 		                	<h1>
 	                            <field name="name"/>
 	                        </h1>
+                        <h3><field name="kra_group_id" options="{'no_create':true, 'no_open':true}"/></h3>
 		                </div>
                     <group col="2">
                           <field name="is_task"/>
@@ -101,8 +115,23 @@
         </field>
     </record>
       
+      <record id="employee_kra_action" model="ir.actions.act_window">
+        <field name="name">Employee KRA</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.employee.kra.line</field>
+        <field name="view_mode">tree</field>
+          <field name="domain">[('task_id','=',False)]</field>
+          <field name="view_id" ref="employee_kra_tree_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Employee KRA Entry
+            </p>
+        </field>
+    </record>
+      
       
       <menuitem id="menu_kra_configuration" parent="hr.menu_human_resources_configuration" name="KRA" sequence="600"/>
+      <menuitem id="menu_kra_group" name="KRA Group" parent="menu_kra_configuration" action="kra_group_action" groups="hr.group_hr_user"/>
       <menuitem id="menu_kra_items" name="KRA Items" parent="menu_kra_configuration" action="kra_list_action" groups="hr.group_hr_user"/>
       
       <menuitem id="menu_hr_kra" parent="hr.menu_hr_root" name="KRA" sequence="30"/>
