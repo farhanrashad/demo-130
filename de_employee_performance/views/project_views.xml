@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+
+        <record id="view_task_form2_inherit" model="ir.ui.view">
+            <field name="name">view.task.for.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                    <page name="task_kra" string="KRA">
+                        <field name="task_kra_line">
+                                <tree editable="bottom" >
+                                        <field name="kra_id" options="{'no_create':true, 'no_open':true}"/>
+                                    <field name="kra_line_id" options="{'no_create':true, 'no_open':true}"/>
+                                    <field name="name"/>
+                                    <field name="score"/>
+                                </tree>
+                            </field>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="kra_total">
+                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="kra_total_score" />
+                                    </div>
+                                    <field name="kra_total_score" nolabel="1" class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

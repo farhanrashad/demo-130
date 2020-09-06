@@ -12,15 +12,17 @@
 		                	<h1>
 	                            <field name="name"/>
 	                        </h1>
-		                </div>  
+		                </div>
+                    <group col="2">
+                          <field name="is_task"/>
+                    </group>
                     <notebook>
                         <page name="kra_items" string="Values">
-                           <field name="product_property_order_line">
-                                <tree string="Product Properties Form" editable="bottom" >
+                           <field name="kra_line">
+                                <tree editable="bottom" >
                                         <field name="name"/>
-                                        <field name="short_name"/>
-
-
+                                        <field name="score"/>
+                                  
                                 </tree>
                             </field>
                         </page>
