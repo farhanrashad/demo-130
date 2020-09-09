@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_de_project_phases_de_project_phases,de_project_phases.de_project_phases,model_de_project_phases_de_project_phases,base.group_user,1,1,1,1
+access_project_phases,access.project.phases,model_project_phases,,1,1,1,1
