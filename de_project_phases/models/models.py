@@ -2,11 +2,30 @@
 
 from odoo import models, fields, api, _
 
+class ProjectTasks(models.Model):
+    _inherit = 'project.task'
+   
+    phase_id = fields.Many2one('project.phases',String="Phase", store=True )
+    
+    
 
 class ProjectStages(models.Model):
     _name = 'project.phases'
     _description = 'This is Project Phases'
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
+    
+    
+    def task_action(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'binding_type': 'action',
+            'multi': False,
+            'name': 'Tasks',
+            'target': 'current',
+            'res_model': 'project.task',
+            'view_mode': 'kanban,form',
+        }
 
 
     name = fields.Char(String="Name", store=True ,required=True)
