@@ -8,9 +8,22 @@
 				<xpath expr="//field[@name='project_id']" position="after">
 					<field name="phase_id"/>
 				</xpath>
-<!-- 				<xpath expr="//field[@name='line_ids']//tree//field[@name='price_unit']" position="before">
-					<field name="sh_retail_price"/>
-				</xpath> -->
+
+			</field>
+		</record>
+      
+      <record id="project_project_form_view_inherit" model="ir.ui.view">
+			<field name="name">project.project.form.view</field>
+			<field name="model">project.project</field>
+			<field name="inherit_id" ref="project.edit_project"/>
+			<field name="arch" type="xml">
+				
+				<xpath expr="//div[@name='button_box']" position="inside">
+					 <button name="phase_action" type="object" string="Phases" class="oe_stat_button"
+                                    icon="fa-tasks">
+<!--                                 <field name="notes_ad" string="Notes" widget="statinfo"/> -->
+                            </button>
+				</xpath>
 			</field>
 		</record>
   </data>

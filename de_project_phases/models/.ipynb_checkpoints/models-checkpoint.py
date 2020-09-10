@@ -3,7 +3,25 @@
 from odoo import models, fields, api, _
 
 class ProjectTasks(models.Model):
+    _inherit = 'project.project'
+    
+    def phase_action(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'binding_type': 'action',
+            'multi': False,
+            'domain':[('project_id','=',self.name)],
+            'name': 'Tasks',
+            'target': 'current',
+            'res_model': 'project.phases',
+            'view_mode': 'kanban,form',
+        }
+
+class ProjectTasks(models.Model):
     _inherit = 'project.task'
+    
+    
    
     phase_id = fields.Many2one('project.phases',String="Phase", store=True )
     
@@ -21,6 +39,7 @@ class ProjectStages(models.Model):
             'type': 'ir.actions.act_window',
             'binding_type': 'action',
             'multi': False,
+            'domain':[('phase_id','=', self.name)],
             'name': 'Tasks',
             'target': 'current',
             'res_model': 'project.task',
