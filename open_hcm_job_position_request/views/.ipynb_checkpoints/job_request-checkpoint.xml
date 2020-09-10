@@ -26,6 +26,13 @@
                         <field name="stage_id"  widget="statusbar"/>
                   </header>
                   <sheet>
+                       <div class="oe_button_box" name="button_box">
+                
+                            <button name="job_position_action" type="object" string="Job Position" class="oe_stat_button"
+                                    icon="fa-tasks">
+<!--                                 <field name="notes_ad" string="Notes" widget="statinfo"/> -->
+                            </button>
+                        </div>
                          <div class="oe_title">
                         <h1>
                             <field name="get_id" readonly="1"/>
@@ -50,7 +57,7 @@
                          </group>
                     
                     <notebook>
-                        <page string="Qualifications / Background / Skills Set">
+                        <page string="Skills">
                             
                                         <field name="qualification" widget="html"/>
                            
@@ -66,7 +73,7 @@
                             </field>  
                            
                         </page>
-                        <page string="Education / Degree Required">
+                        <page string="Job Description">
                             
                                         <field name="education" widget="html"/>
                            

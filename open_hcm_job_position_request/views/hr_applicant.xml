@@ -12,6 +12,7 @@
                           <field name='skill_id'>  
                           <tree  editable='bottom'>    
                            <field name="pref_name"/>
+                           <field name="skill_level"/>   
                            <field name="pref_value"/>
    
                           </tree>                                

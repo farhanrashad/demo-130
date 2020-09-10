@@ -9,6 +9,19 @@ class JobPositionRequest(models.Model):
     _name='hr.job.position.request'
     _description="Job Position Request"
     
+    def job_position_action(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'binding_type': 'action',
+            'multi': False,
+#             'domain':[('project_id','=',self.name)],
+            'name': 'Tasks',
+            'target': 'current',
+            'res_model': 'hr.job',
+            'view_mode': 'tree,form',
+        }
+    
 
  
     state = fields.Selection([

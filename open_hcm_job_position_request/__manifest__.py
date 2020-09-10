@@ -18,7 +18,8 @@
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'views/job_request.xml',
-        'views/hr_applicant.xml'
+        'views/hr_applicant.xml',
+        'views/hr_job_view.xml',
     ],
     
 }
