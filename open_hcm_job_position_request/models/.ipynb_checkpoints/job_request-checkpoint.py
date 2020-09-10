@@ -27,10 +27,10 @@ class Job_MenuForm(models.Model):
         stage_ids = self.env['job.position.stages'].search([])
         return stage_ids
 
-    stage_id = fields.Many2one('job.position.stages', string='Stage', ondelete='restrict', tracking=True, index=True,copy=False)
-        # group_expand='_read_group_stage_ids',
-         # default=_get_default_stage_id,
-         
+    stage_id = fields.Many2one('job.position.stages', string='Stage', ondelete='restrict', tracking=True, index=True,
+         group_expand='_read_group_stage_ids',
+          default=_get_default_stage_id,
+         copy=False)
     
     
     def unlink(self):

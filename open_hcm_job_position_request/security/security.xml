@@ -17,5 +17,10 @@
         <field name="name">Head of Department</field>
         <field name="category_id" ref="module_open_hcm_job_position_request"/>
     </record>
+    
+     <record id="h_r" model="res.groups">
+        <field name="name">Human Resource</field>
+        <field name="category_id" ref="module_open_hcm_job_position_request"/>
+    </record>
 
 </odoo>
