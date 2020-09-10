@@ -8,18 +8,18 @@
                 <form string="Job Position Request">
                  <header>
                     <button name="draft" string="Send Job Request" type="object" class="btn-primary"
-                        attrs="{'invisible': [('state', 'not in', 'draft')]}" />
+                        />
                          />
                           <button name="submit" string="Line Manager Approval" type="object" class="btn-primary"
-                        attrs="{'invisible': [('state', 'not in', 'submit')]}" groups="open_hcm_job_position_request.l_m"/>
+                         groups="open_hcm_job_position_request.l_m"/>
                          />
                          
                           <button name="verify" string="HOD Approval" type="object" class="btn-primary"
-                        attrs="{'invisible': [('state', 'not in', 'verify')]}" groups="open_hcm_job_position_request.h_o_d" />
+                         groups="open_hcm_job_position_request.h_o_d" />
                          />
                          
                           <button name="co_approve" string="HR Approval" type="object" class="btn-primary"
-                        attrs="{'invisible': [('state', 'not in', 'co_approve')]}" groups="open_hcm_job_position_request.h_r" />
+                         groups="open_hcm_job_position_request.h_r" />
                          />
     
                         
@@ -33,14 +33,14 @@
                     </div>
                         
                          <group col="4">
-                        <field name="name" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="name"/>
                         
-                        <field name="no_of_person_request" attrs="{'readonly': [('state', 'in','done')]}"/>
-                        <field name="requested_by" attrs="{'readonly': [('state', 'in','done')]}" />
-                        <field name="date" attrs="{'readonly': [('state', 'in','done')]}" />
-                        <field name="department" attrs="{'readonly': [('state', 'in','done')]}" />
+                        <field name="no_of_person_request" />
+                        <field name="requested_by"  />
+                        <field name="date"  />
+                        <field name="department" />
 <!--                         <field name="gender_preference" attrs="{'readonly': [('state', 'in','done')]}" /> -->
-                        <field name="budget" attrs="{'readonly': [('state', 'in','done')]}" invisible="1"/>
+                        <field name="budget" invisible="1"/>
 <!--                         <field name="team" attrs="{'readonly': [('state', 'in','done')]}" /> -->
 <!--                         <field name="reported_to" attrs="{'readonly': [('state', 'in','done')]}"/> -->
 <!--                          <field name="job_position" attrs="{'readonly': [('state', 'in','done')]}" />
@@ -52,31 +52,33 @@
                     <notebook>
                         <page string="Qualifications / Background / Skills Set">
                             
-                                        <field name="qualification" widget="html" attrs="{'readonly': [('state', 'in','done')]}"/>
+                                        <field name="qualification" widget="html"/>
                            
                         </page>
                          <page string="Pereferences">
+                             <field name="preferences_ids">
                              <tree>
                             
-                               <field name="pref_name"  attrs="{'readonly': [('state', 'in','done')]}"/>
-                               <field name="pref_value"  attrs="{'readonly': [('state', 'in','done')]}"/>
+                               <field name="pref_name"/>
+                               <field name="pref_value"/>
 
-                             </tree>  
+                             </tree> 
+                            </field>  
                            
                         </page>
                         <page string="Education / Degree Required">
                             
-                                        <field name="education" widget="html" attrs="{'readonly': [('state', 'in','done')]}"/>
+                                        <field name="education" widget="html"/>
                            
                         </page>
                          <page string="Software Proficiency Requirements">
                             
-                                        <field name="software" widget="html" attrs="{'readonly': [('state', 'in','done')]}"/>
+                                        <field name="software" widget="html"/>
                            
                         </page>
                          <page string="Communications">
                             
-                                        <field name="communication" widget="html" attrs="{'readonly': [('state', 'in','done')]}"/>
+                                        <field name="communication" widget="html"/>
                            
                         </page>
                        
@@ -92,6 +94,49 @@
                </form>
             </field>
             </record>
+        
+        <record id="view_job_request_kanban" model="ir.ui.view">
+            <field name="name">hr.job.position.request.kanban</field>
+            <field name="model">hr.job.position.request</field>
+            <field name="arch" type="xml">
+                <kanban  default_group_by='stage_id'>
+                    <field name="name"/>
+                    <field name="get_id"/>
+                    <field name="date"/>
+                    <field name="requested_by"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="row mb4">
+                                    <div class="col-6 o_kanban_record_headings">
+                                        <strong><span><field name="name"/></span></strong>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <strong><i class="fa fa-clock-o" aria-label="Date" role="img" title="Date"/> <t t-esc="record.date.value"/></strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span><field name="get_id"/></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span><field name="requested_by"/></span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="float-right">
+<!--                                             <field name="user_id" widget="label_selection" options="{'classes': {'draft': 'default', 'close': 'success'}}"/> -->
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
             
             <record id="open_job_creation_form_tree" model="ir.ui.view">
                 <field name="name">Job Position Request</field>
@@ -102,9 +147,9 @@
                         <field name="no_of_person_request" />
                          <field name="requested_by"  />
                          <field name="department"  />
-                        <field name="team" />
-                        <field name="reported_to" />
-                         <field name="job_position" />
+<!--                         <field name="team" /> -->
+<!--                         <field name="reported_to" /> -->
+<!--                          <field name="job_position" /> -->
                         <field name="date"  />
                         <field name="age_preference" />
                         <field name="state"/>
@@ -121,7 +166,7 @@
                 <field name="name">Job Position Request</field>
                 <field name="res_model">hr.job.position.request</field>
                 <field name="binding_view_types">form</field>
-                <field name="view_mode">tree,form</field>
+                <field name="view_mode">kanban,tree,form</field>
                 <field name="view_id" ref="open_job_creation_form_tree"/>
             </record>
             <menuitem action="open_job_request_creation_form" id="job_position request_menue"  parent="hr_recruitment.menu_crm_case_categ0_act_job" />

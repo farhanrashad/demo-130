@@ -4,7 +4,7 @@ from datetime import datetime
 from odoo.exceptions import Warning
 
    
-class Job_MenuForm(models.Model):
+class JobPositionRequest(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
     _name='hr.job.position.request'
     _description="Job Position Request"
@@ -28,8 +28,8 @@ class Job_MenuForm(models.Model):
         return stage_ids
 
     stage_id = fields.Many2one('job.position.stages', string='Stage', ondelete='restrict', tracking=True, index=True,
-         group_expand='_read_group_stage_ids',
-          default=_get_default_stage_id,
+        group_expand='_read_group_stage_ids',
+         default=_get_default_stage_id,
          copy=False)
     
     
@@ -38,7 +38,7 @@ class Job_MenuForm(models.Model):
             if leave.state in ('done','verify','co_approve'):
                 raise UserError(_('You cannot delete an order form  which is not draft or cancelled. '))
      
-            return super(Job_MenuForm, self).unlink()
+            return super(JobPositionRequest, self).unlink()
     
    
 
@@ -65,20 +65,20 @@ class Job_MenuForm(models.Model):
     
     date=fields.Date("Request On" ,default=datetime.today())
     no_of_person_request=fields.Integer('Expected new employee',default="1")
-    gender_preference=fields.Selection([
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('trans', 'Transgender'),
-        ], string='Gender Preferences',required=True)
+#     gender_preference=fields.Selection([
+#         ('male', 'Male'),
+#         ('female', 'Female'),
+#         ('trans', 'Transgender'),
+#         ], string='Gender Preferences')
     budget=fields.Boolean('Budgeted')
     department=fields.Many2one('hr.department',"Department",required=True)
-    team=fields.Many2one('hr.team','Team',required=True)
+#     team=fields.Many2one('hr.team','Team')
         
     requested_by=fields.Many2one('res.users','Requested By',  default=lambda self: self.env.user,readonly=True)
-    reported_to=fields.Many2one('res.users','Reporting To',required=True)
+#     reported_to=fields.Many2one('res.users','Reporting To')
 
     reason = fields.Text('Reason')
-    job_position=fields.Many2one('hr.job','Job Position',required=True)
+#     job_position=fields.Many2one('hr.job','Job Position')
     age_preference=fields.Integer('Age Preference',default="0")
     get_id=fields.Char('Order', readonly=True, copy=False,)
     name= fields.Char('Name', required=True)
@@ -95,10 +95,10 @@ class Job_MenuForm(models.Model):
         if 'get_id' not in vals or vals['get_id'] == False:
             sequence = self.env.ref('open_hcm_job_position_request.get_id')
             vals['get_id'] = sequence.next_by_id()
-        return super(Job_MenuForm, self).create(vals)
+        return super(JobPositionRequest, self).create(vals)
     
     
-class team_form(models.Model):
+class HrTeam(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
     _name='hr.team'
     _description="Team Form"
@@ -106,7 +106,7 @@ class team_form(models.Model):
 
     name=fields.Char('Name',required=True)
     
-class team_form(models.Model):
+class Preferences(models.Model):
     _name='hr.preferences'
     _description="Preferences Form"
 
