@@ -14,10 +14,10 @@ class PartnerModification(models.Model):
         stage_ids = self.env['partner.stages'].search([])
         return stage_ids
 
-    stage_id = fields.Many2one('partner.stages', string='Stage', ondelete='restrict', tracking=True, index=True,
-        group_expand='_read_group_stage_ids',
-         default=_get_default_stage_id,
-         copy=False)
+    stage_id = fields.Many2one('partner.stages', string='Stage', ondelete='restrict', tracking=True, index=True,copy=False)
+        #group_expand='_read_group_stage_ids',
+         #default=_get_default_stage_id,
+         
     
     
 class PartnerStages(models.Model):
