@@ -20,12 +20,12 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr'.'mail'],
+    'depends': ['base','hr','mail'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'data/salary_seq.xml'
+        'data/salary_seq.xml',
         'views/views.xml',
         'views/templates.xml',
     ],
