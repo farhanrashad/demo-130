@@ -10,22 +10,83 @@
                                  <table class="table table-bordered" style="table-layout: fixed">
                                     <thead>
                                         <tr>
-                                            <th>Demand Document</th>
-                                            <th>Date</th>
-                                            <th>Manual Demand</th>
+                                            <th><span t-field="o.name"/></th>
+                                            <td> </td>
+                                            <th> </th>
+                                            <th> </th>
+                                            
                                         </tr>
                                     </thead>
                                     
                                     <tbody>
                                         <tr>
+                                            <th>
+                                                Employee
+                                            </th>
                                             <td>
-                                                <span t-field="o.name"/>
+                                                <span t-field="o.employee_id.name"/>
                                             </td>
+                                            <th>
+                                                Department
+                                            </th>
                                             <td>
-                                                <span t-field="o.date"/>
+                                                <span t-field="o.department_id.name"/>
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                Job Title
+                                            </th>
                                             <td>
-                                                <span t-field="o.manual_input"/>
+<!--                                                 <span t-field="o.employee_id.name"/> -->
+                                            </td>
+                                            <th>
+                                                Manager
+                                            </th>
+                                            <td>
+                                                <span t-field="o.manager_id.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                Request Date
+                                            </th>
+                                            <td>
+                                                <span t-field="o.employee_id.name"/>
+                                            </td>
+                                            <th>
+                                                Confirm Date
+                                            </th>
+                                            <td>
+                                                <span t-field="o.department_id.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                Request Amount
+                                            </th>
+                                            <td>
+                                                <span t-field="o.employee_id.name"/>
+                                            </td>
+                                            <th>
+                                                Confirm Manager
+                                            </th>
+                                            <td>
+                                                <span t-field="o.department_id.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                Reason
+                                            </th>
+                                            <td>
+                                                <span t-field="o.note"/>
+                                            </td>
+                                            <th>
+<!--                                                 Department -->
+                                            </th>
+                                            <td>
+<!--                                                 <span t-field="o.department_id.name"/> -->
                                             </td>
                                         </tr>
                                     </tbody>
@@ -33,29 +94,29 @@
                                 <table class="table table-bordered" style="table-layout: fixed">
                                     <thead>
                                         <tr>
-                                            <th>Product</th>
-                                            <th>Quantity</th>
-                                            <th>Analytic Tags</th>
-                                            <th>Vendor</th>
+                                            <th>Employee</th>
+                                            <th>Manager</th>
+<!--                                             <th>Analytic Tags</th> -->
+                                            <th>HR Manager</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      <t t-foreach="o.sheet_ids" t-as="line">
+<!--                                       <t t-foreach="o.sheet_ids" t-as="line"> -->
                                         <tr>
                                             <td>
-                                                <span t-field="line.product_id"/>
+<!--                                                 <span t-field="line.product_id"/> -->
                                             </td>
                                             <td>
-                                                <span t-field="line.product_quantity"/>
+<!--                                                 <span t-field="line.product_quantity"/> -->
                                             </td>
-                                             <td>
+<!--                                              <td>
                                                  <span t-field="line.analytic_tag_ids"/> 
-                                            </td>
+                                            </td> -->
                                             <td>
-                                                <span t-field="line.vendor_id"/>
+<!--                                                 <span t-field="line.vendor_id"/> -->
                                             </td>
                                         </tr>
-                                      </t>
+<!--                                       </t> -->
                                     </tbody>
                                 </table>
 

@@ -25,13 +25,13 @@
 
                 <br/>
 
-                <p>Employee ${object.partner_id.name} require your Approval for Advance Salary</p>
+                <p>Employee ${object.employee_id.name} require your Approval for Advance Salary</p>
 
                 <br/> 
                <p><strong>Reason:</strong>${object.note}</p>
                <br/>
                Regards,<br/>
-               ${object.partner_id.name}
+               ${object.employee_id.name}
            </field>
 
        </record>
@@ -58,7 +58,7 @@
 
                 <br/>
 
-                <p>Employee ${object.partner_id.name} require your Approval for Advance Salary.</p>
+                <p>Employee ${object.employee_id.name} require your Approval for Advance Salary.</p>
 
                 <br/> 
                <p><strong>Reason:</strong>${object.note}</p>
@@ -87,7 +87,7 @@
 
            <field name="body_html">
 
-                <p>Dear ${object.partner_id.name}</p>
+                <p>Dear ${object.employee_id.name}</p>
 
                 <br/>
 
@@ -120,7 +120,7 @@
 
            <field name="body_html">
 
-                <p>Dear ${object.partner_id.name}</p>
+                <p>Dear ${object.employee_id.name}</p>
 
                 <br/>
 

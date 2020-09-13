@@ -72,9 +72,9 @@
                                 <field name="request_date"/>
                                 <field name="confirm_date"/>
                                 <field name="conf_manager_id"/>
-                                <field name="emp_partner_id" attrs="{'invisible':[('state','!=',hrconfirm)]}"/>
-                                <field name="payment_method" attrs="{'invisible':[('state','!=',hrconfirm)]}"/>
-                                <field name="paid_amount" attrs="{'invisible':[('state','!=',hrconfirm)]}"/>
+                                <field name="emp_partner_id" attrs="{'invisible':[('state','!=', 'hrconfirm')]}"/>
+                                <field name="payment_method" attrs="{'invisible':[('state','!=', 'hrconfirm')]}"/>
+                                <field name="paid_amount" attrs="{'invisible':[('state','!=', 'hrconfirm')]}"/>
 
                             </group>
                         </group>

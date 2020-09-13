@@ -30,9 +30,9 @@ class EmployeeAdvanceSalary(models.Model):
     
     
     def action_send_email(self):
-       self.ensure_one()
-       ir_model_data = self.env['ir.model.data']
-       try:
+        self.ensure_one()
+        ir_model_data = self.env['ir.model.data']
+        try:
            template_id = \
                ir_model_data.get_object_reference('test_email', 'email_template')[1]
        except ValueError:
