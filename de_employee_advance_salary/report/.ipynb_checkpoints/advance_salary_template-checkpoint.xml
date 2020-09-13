@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_advance_salary_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <div class="row justify-content-end">
+                            <div class="col-12">
+                                 <table class="table table-bordered" style="table-layout: fixed">
+                                    <thead>
+                                        <tr>
+                                            <th>Demand Document</th>
+                                            <th>Date</th>
+                                            <th>Manual Demand</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span t-field="o.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.date"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.manual_input"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered" style="table-layout: fixed">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Analytic Tags</th>
+                                            <th>Vendor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      <t t-foreach="o.sheet_ids" t-as="line">
+                                        <tr>
+                                            <td>
+                                                <span t-field="line.product_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.product_quantity"/>
+                                            </td>
+                                             <td>
+                                                 <span t-field="line.analytic_tag_ids"/> 
+                                            </td>
+                                            <td>
+                                                <span t-field="line.vendor_id"/>
+                                            </td>
+                                        </tr>
+                                      </t>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="advance_salary_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="de_employee_advance_salary.report_advance_salary_template"/>
+            </t>
+        </t>
+    </template>
+</odoo>

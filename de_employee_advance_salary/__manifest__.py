@@ -24,6 +24,8 @@
 
     # always loaded
     'data': [
+        'report/advance_salary_report.xml',
+        'report/advance_salary_template.xml',
         'security/ir.model.access.csv',
         'data/salary_seq.xml',
         'views/views.xml',
