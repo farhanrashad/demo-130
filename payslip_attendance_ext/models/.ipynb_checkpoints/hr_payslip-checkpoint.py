@@ -25,14 +25,13 @@ class HrPayslip(models.Model):
 #                 self.env['hr.payslip.worked_days'].create({'name': '%s Attendances'%(res.employee_id.name),'number_of_days':result[0], 'code' : 'Attendance', 'payslip_id':res.id,'contract_id':res.contract_id.id})
 #         return res
     @api.onchange('employee_id','date_from', 'date_to')
-    def onchange_employee(self):
-# ,('check_in','<=', self.date_from),('check_out','<=', self.date_to)        
-        user_obj = self.env['hr.attendance'].search([('employee_id.name','=', self.employee_id.name)])
+    def onchange_employee(self):       
+        user_obj = self.env['hr.attendance'].search([('employee_id.name','=', self.employee_id.name),('check_in', '>=', self.date_from),('check_out', '<=', self.date_to)])
 #         contract = self.contract_id
 #         if contract.resource_calendar_id:
         if self.employee_id:
             hours = 0.0
-            days = 5.0
+            days = 0.0
             paid_amount = self._get_contract_wage()
             days = round(hours / 160, 5)
 
@@ -45,7 +44,7 @@ class HrPayslip(models.Model):
                         'work_entry_type_id': 1,
                         'number_of_days': round((hours/8),0),
                         'number_of_hours': hours,
-                        'amount': hours * paid_amount / hours,
+                        'amount': paid_amount,
                         }))
             self.worked_days_line_ids = data
             
