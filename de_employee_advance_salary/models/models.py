@@ -15,7 +15,12 @@ class EmployeeInherit(models.Model):
             'res_model': 'hr.employee.advance.salary',
             'view_mode': 'tree,form',
         }
-
+    
+    def get_advance_salary_count(self):
+        count = self.env['hr.employee.advance.salary'].search_count([('employee_id', '=', self.name)])
+        self.sal_request = count
+        
+    advance_sal_req = fields.Integer(string='Salary Request', compute='get_advance_salary_count')
     sal_limit = fields.Float(string='Advance Salary Request', store =True)
     sal_req_limit = fields.Integer(string='Advance Salary Limit', store=True, required=True)
     
@@ -285,13 +290,13 @@ class EmployeeAdvanceSalary(models.Model):
     request_date = fields.Date(string='Request Date', store=True, required=True)
     confirm_date = fields.Date(string='Confirm Date', store=True)
     amount = fields.Float(string='Request Amount', store=True, required=True)
-    manager_id = fields.Many2one('hr.employee',string='Department Manager', store=True, required=True)
+    manager_id = fields.Many2one('hr.employee',string='Department Manager', store=True, readonly=True,related='employee_id.parent_id')
     conf_manager_id = fields.Many2one('hr.employee',string='Confirm Manager', store=True)
     emp_partner_id = fields.Many2one('hr.employee', string='Employee Partner', store=True)
     payment_method = fields.Many2one('account.journal', string='Payment Method', store=True)
     paid_amount = fields.Char(string='Paid Amount', store=True)
 
-    note = fields.Char(string="Reason" , required = True)
+    note = fields.Html(string="Reason" , required = True)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('request', 'Request'),
@@ -299,7 +304,7 @@ class EmployeeAdvanceSalary(models.Model):
         ('hrconfirm', 'HR Confirm'),        
         ('paid', 'Paid'),
     ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
-    department_id = fields.Many2one('hr.department', string='Department')
+    department_id = fields.Many2one('hr.department', string='Department', readonly=True ,related='employee_id.department_id')
     
     @api.model
     def create(self,values):

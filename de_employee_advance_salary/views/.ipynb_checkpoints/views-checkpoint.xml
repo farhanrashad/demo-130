@@ -6,9 +6,9 @@
 			<field name="inherit_id" ref="hr.view_employee_form"/>
 			<field name="arch" type="xml">
                 <xpath expr="//div[@name='button_box']" position="inside">
-					<button name="salary_request" type="object" string='Salary Request' class="oe_stat_button"
+					<button name="salary_request" type="object" class="oe_stat_button"
                                     icon="fa-tasks">
-<!--                                 <field name="sub_task" string="Sub-tasks" widget="statinfo"/> -->
+                                <field name="advance_sal_req" string="Salary Request" widget="statinfo"/>
                       </button>
 				</xpath>      
 				<xpath expr="//group[@name='active_group']" position="after">
@@ -44,14 +44,14 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="action_send_email" states="draft" string="Send Request" type="object"/>
-                        <button name="action_send_email_approve" states="request" string="Approve Request" type="object"/>
-                        <button name="action_send_email_reject" states="request" string="Reject Request" type="object"/>
-                        <button name="action_send_email_confirm" states="approval" string="Confirm" type="object"/>
-                        <button name="action_paid" states="hrconfirm" string="Paid" type="object"/>
+                        <button name="action_send_email" states="draft" class="oe_highlight" string="Send Request" type="object"/>
+                        <button name="action_send_email_approve" class="oe_highlight" states="request" string="Approve Request" type="object"/>
+                        <button name="action_send_email_reject" class="oe_highlight" states="request" string="Reject Request" type="object"/>
+                        <button name="action_send_email_confirm" class="oe_highlight" states="approval" string="Confirm" type="object"/>
+                        <button name="action_paid" states="hrconfirm" class="oe_highlight" string="Paid" type="object"/>
 
-                        <button name="action_close_case" states="waiting,response" string="Close Case" type="object"/>
-
+<!--                         <button name="action_close_case" states="waiting,response" class="oe_highlight" string="Close Case" type="object"/>
+ -->
                         <field name="state" widget="statusbar" statusbar_visible="draft,request,approval.hrconfirm,paid"/>
                     </header>
                     <sheet>
@@ -84,9 +84,13 @@
 
                             </group>
                         </group>
+                        <notebook>
+                            <page string='Reason'>
+                                <field name="note"/>
+                            </page>    
+                        </notebook>    
                         <div class="oe_title">
                             <h1>
-                                <field name="note" placeholder="Reason..."/>
                             </h1>
                         </div>
                         
