@@ -29,32 +29,49 @@ class EmployeeAdvanceSalary(models.Model):
     _order = 'name desc'
     
     
+    def payment_button(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'binding_type': 'action',
+            'multi': False,
+            'domain': [('communication','=', self.name)],
+            'name': 'Tasks',
+            'target': 'current',
+            'res_model': 'account.payment',
+            'view_mode': 'tree,form',
+        }
+    
+    
     def action_send_email(self):
         self.ensure_one()
         ir_model_data = self.env['ir.model.data']
         try:
-           template_id = \
+            template_id = \
                ir_model_data.get_object_reference('test_email', 'email_template')[1]
-       except ValueError:
-        template_id = False
-       try:
-           compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
-       except ValueError:
-           compose_form_id = False
-       ctx = {
+        except ValueError:
+            template_id = False
+        try:
+            compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+        except ValueError:
+            compose_form_id = False
+        ctx = {
 
            'default_model': 'hr.employee.advance.salary',
 
            'default_res_id': self.ids[0],
 
            'default_use_template': bool(template_id), 
-       'default_template_id': template_id,
+        'default_template_id': template_id,
 
-       'default_composition_mode': 'comment',
+        'default_composition_mode': 'comment',
 
-       }
+        }
+        self.write({
+            'state': 'request',
+        }) 
 
-       return {
+        return {
 
            'name': _('Compose Email'),
 
@@ -72,38 +89,39 @@ class EmployeeAdvanceSalary(models.Model):
 
            'context': ctx,
 
-       }
-       self.write({
-            'state': 'request',
-        }) 
+        }
+        
         
     
     def action_send_email_approve(self):
-       self.ensure_one()
-       ir_model_data = self.env['ir.model.data']
-       try:
-           template_id = \
+        self.ensure_one()
+        ir_model_data = self.env['ir.model.data']
+        try:
+            template_id = \
                ir_model_data.get_object_reference('test_email', 'email_template_approve')[1]
-       except ValueError:
-        template_id = False
-       try:
-           compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
-       except ValueError:
-           compose_form_id = False
-       ctx = {
+        except ValueError:
+            template_id = False
+        try:
+            compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+        except ValueError:
+            compose_form_id = False
+        ctx = {
 
            'default_model': 'hr.employee.advance.salary',
 
            'default_res_id': self.ids[0],
 
            'default_use_template': bool(template_id), 
-       'default_template_id': template_id,
+          'default_template_id': template_id,
 
        'default_composition_mode': 'comment',
 
-       }
+        }
+        self.write({
+            'state': 'approval',
+        }) 
 
-       return {
+        return {
 
            'name': _('Compose Email'),
 
@@ -121,39 +139,37 @@ class EmployeeAdvanceSalary(models.Model):
 
            'context': ctx,
 
-       }
-       self.write({
-            'state': 'approval',
-        }) 
+        }
+        
         
     
     
     def action_send_email_reject(self):
-       self.ensure_one()
-       ir_model_data = self.env['ir.model.data']
-       try:
-           template_id = \
+        self.ensure_one()
+        ir_model_data = self.env['ir.model.data']
+        try:
+            template_id = \
                ir_model_data.get_object_reference('test_email', 'email_template_reject')[1]
-       except ValueError:
-        template_id = False
-       try:
-           compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
-       except ValueError:
-           compose_form_id = False
-       ctx = {
+        except ValueError:
+            template_id = False
+        try:
+            compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+        except ValueError:
+            compose_form_id = False
+        ctx = {
 
            'default_model': 'hr.employee.advance.salary',
 
            'default_res_id': self.ids[0],
 
            'default_use_template': bool(template_id), 
-       'default_template_id': template_id,
+           'default_template_id': template_id,
 
-       'default_composition_mode': 'comment',
+          'default_composition_mode': 'comment',
 
-       }
+        }
 
-       return {
+        return {
 
            'name': _('Compose Email'),
 
@@ -174,31 +190,34 @@ class EmployeeAdvanceSalary(models.Model):
        }
     
     def action_send_email_confirm(self):
-       self.ensure_one()
-       ir_model_data = self.env['ir.model.data']
-       try:
-           template_id = \
+        self.ensure_one()
+        ir_model_data = self.env['ir.model.data']
+        try:
+            template_id = \
                ir_model_data.get_object_reference('test_email', 'email_template_confirm')[1]
-       except ValueError:
-        template_id = False
-       try:
-           compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
-       except ValueError:
-           compose_form_id = False
-       ctx = {
+        except ValueError:
+            template_id = False
+        try:
+            compose_form_id = ir_model_data.get_object_reference('mail', 'email_compose_message_wizard_form')[1]
+        except ValueError:
+            compose_form_id = False
+        ctx = {
 
            'default_model': 'hr.employee.advance.salary',
 
            'default_res_id': self.ids[0],
 
            'default_use_template': bool(template_id), 
-       'default_template_id': template_id,
+           'default_template_id': template_id,
 
-       'default_composition_mode': 'comment',
+           'default_composition_mode': 'comment',
 
-       }
+        }
+        self.write({
+            'state': 'hrconfirm',
+         })  
 
-       return {
+        return {
 
            'name': _('Compose Email'),
 
@@ -216,10 +235,8 @@ class EmployeeAdvanceSalary(models.Model):
 
            'context': ctx,
 
-       }
-       self.write({
-            'state': 'hrconfirm',
-        })  
+        }
+        
               
 
 
@@ -244,11 +261,13 @@ class EmployeeAdvanceSalary(models.Model):
         vals = {
             'payment_type': 'outbound',
             'partner_type': 'customer',
-            'partner_id': self.partner_id.id,
+            'partner_id': self.employee_id.id,
             'amount': self.amount,
             'payment_date': self.confirm_date,
             'communication': self.name,
             'journal_id': self.payment_method.id,
+            'payment_method_id': self.payment_method.id,
+
         }
         self.env['account.payment'].create(vals)
         self.write({
@@ -261,15 +280,15 @@ class EmployeeAdvanceSalary(models.Model):
         })    
         
 
-    name = fields.Char(string='Reference',  copy=False,  index=True, default=lambda self: _('New'))
+    name = fields.Char(string='Reference', readonly=True, copy=False,  index=True, default=lambda self: _('New'))
     employee_id = fields.Many2one('hr.employee', string='Employee', store=True, required=True)
     request_date = fields.Date(string='Request Date', store=True, required=True)
     confirm_date = fields.Date(string='Confirm Date', store=True)
     amount = fields.Float(string='Request Amount', store=True, required=True)
     manager_id = fields.Many2one('hr.employee',string='Department Manager', store=True, required=True)
     conf_manager_id = fields.Many2one('hr.employee',string='Confirm Manager', store=True)
-    emp_partner_id = fields.Many2one('res.users', string='Employee Partner', store=True)
-    payment_method = fields.Many2one('account.jounal', string='Payment Method', store=True)
+    emp_partner_id = fields.Many2one('hr.employee', string='Employee Partner', store=True)
+    payment_method = fields.Many2one('account.journal', string='Payment Method', store=True)
     paid_amount = fields.Char(string='Paid Amount', store=True)
 
     note = fields.Char(string="Reason" , required = True)
@@ -294,31 +313,45 @@ class EmployeeAdvanceSalary(models.Model):
         test_here = self.env['hr.employee.advance.salary'].search([('employee_id.name','=', self.employee_id.name),('state','=', 'draft')])
         for rec in test_here:
             if rec.employee_id.name == self.employee_id.name:
-                raise exceptions.ValidationError('You Have Already Create' + self.name + 'Salary Request which is in draft.')
+                raise exceptions.ValidationError('You Have Already Create' +' '+ self.name + ' ' + 'Salary Request which is in draft.')
             else:
                 pass
-        
-    
-    @api.onchange('employee_id')
-    def onchange_employee(self):
-#         user_obj = self.env['hr.attendance'].search([('employee_id.name','=', self.employee_id.name)])
-        if self.employee_id.sal_limit == 0:
-            raise exceptions.ValidationError('Plaese define' + self.employee_id + 'Advance Salary Limit Amount')
-        elif self.employee_id.sal_limit < self.amount:
-            raise exceptions.ValidationError('Advance Salary Amount Must be less than' + self.employee_id.sal_limit)
-        else:
-            pass
-            
-    @api.onchange('employee_id')
-    def onchange_employee(self):
+        if self.employee_id:    
+            if self.employee_id.sal_limit == 0:
+                raise exceptions.ValidationError('Plaese define' +' '+ str(self.employee_id.name) +' '+'Advance Salary Limit Amount.') 
         user_obj = self.env['hr.employee.advance.salary'].search([('employee_id.name','=', self.employee_id.name)])
         sum = 0
         for count in user_obj:
             sum = sum + 1
         if sum > self.employee_id.sal_req_limit:
-            raise exceptions.ValidationError('You can create maximum'+ self.employee_id.sal_limit + 'Advance Salary request Per Year.')
+            raise exceptions.ValidationError('You can create maximum'+ ' ' + str(self.employee_id.sal_limit) + ' ' + 'Advance Salary request Per Year.')
+        else:
+            pass    
+        
+    
+#     @api.onchange('employee_id')
+#     def onchange_employee(self):
+#         if self.employee_id.sal_limit == 0:
+#             raise exceptions.ValidationError('Plaese define' + self.employee_id + 'Advance Salary Limit Amount')
+        
+    
+    @api.onchange('amount')
+    def onchange_amount(self):
+        if self.employee_id.sal_limit < self.amount:
+            raise exceptions.ValidationError('Advance Salary Amount Must be less than' + ' ' +str(self.employee_id.sal_limit))
         else:
             pass
+            
+#     @api.onchange('employee_id')
+#     def onchange_employee(self):
+#         user_obj = self.env['hr.employee.advance.salary'].search([('employee_id.name','=', self.employee_id.name)])
+#         sum = 0
+#         for count in user_obj:
+#             sum = sum + 1
+#         if sum > self.employee_id.sal_req_limit:
+#             raise exceptions.ValidationError('You can create maximum'+ str(self.employee_id.sal_limit) + 'Advance Salary request Per Year.')
+#         else:
+#             pass
             
             
             

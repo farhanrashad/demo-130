@@ -20,14 +20,14 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','mail'],
+    'depends': ['base','hr','mail','account'],
 
     # always loaded
     'data': [
+        'data/salary_seq.xml',
         'report/advance_salary_report.xml',
         'report/advance_salary_template.xml',
         'security/ir.model.access.csv',
-        'data/salary_seq.xml',
         'views/views.xml',
         'views/templates.xml',
     ],

@@ -3,7 +3,7 @@
     <template id="report_advance_salary_template">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="web.internal_layout">
+                <t t-call="web.external_layout">
                     <div class="page">
                         <div class="row justify-content-end">
                             <div class="col-12">
@@ -52,13 +52,13 @@
                                                 Request Date
                                             </th>
                                             <td>
-                                                <span t-field="o.employee_id.name"/>
+                                                <span t-field="o.request_date"/>
                                             </td>
                                             <th>
                                                 Confirm Date
                                             </th>
                                             <td>
-                                                <span t-field="o.department_id.name"/>
+                                                <span t-field="o.confirm_date"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -66,13 +66,13 @@
                                                 Request Amount
                                             </th>
                                             <td>
-                                                <span t-field="o.employee_id.name"/>
+                                                <span t-field="o.amount"/>
                                             </td>
                                             <th>
                                                 Confirm Manager
                                             </th>
                                             <td>
-                                                <span t-field="o.department_id.name"/>
+                                                <span t-field="o.conf_manager_id.name"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -127,11 +127,11 @@
             </t>
         </t>
     </template>
-    <template id="advance_salary_report">
+<!--     <template id="advance_salary_report">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="de_employee_advance_salary.report_advance_salary_template"/>
             </t>
         </t>
-    </template>
+    </template> -->
 </odoo>
