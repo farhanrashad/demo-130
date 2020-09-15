@@ -13,8 +13,9 @@
 				</xpath>      
 				<xpath expr="//group[@name='active_group']" position="after">
 					<group string="Advance Salary">
-                        <field name="sal_limit"/>
-                        <field name="sal_req_limit"/>
+                        <field name="ad_check"/>
+                        <field name="sal_limit"  attrs="{'required': ['|',('ad_check','=', True)]}"/>
+                        <field name="sal_req_limit" attrs="{'required': ['|',('ad_check','=', True)]}"/>
                         
                      </group>
 				</xpath>      
@@ -68,25 +69,25 @@
                         </div>
                         <group>
                             <group>
-                                <field name="employee_id"/>
+                                <field name="employee_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                                 <field name="department_id"/>
                                 <field name="manager_id"/>
-                                <field name="amount"/>                                
+                                <field name="amount" attrs="{'readonly':[('state','!=', 'draft')]}"/>                                
                                 
                             </group>
                             <group>
-                                <field name="request_date"/>
-                                <field name="confirm_date"/>
-                                <field name="conf_manager_id"/>
-                                <field name="emp_partner_id" attrs="{'invisible':[('state','!=', 'hrconfirm')]}"/>
-                                <field name="payment_method" attrs="{'invisible':[('state','!=', 'hrconfirm')]}"/>
-                                <field name="paid_amount" attrs="{'invisible':[('state','!=', 'hrconfirm')]}"/>
+                                <field name="request_date" attrs="{'readonly':[('state','!=', 'draft')]}" />
+                                <field name="confirm_date" attrs="{'readonly':[('state','!=', 'draft')]}" />
+                                <field name="conf_manager_id" attrs="{'readonly':[('state','!=', 'draft')]}"/>
+                                <field name="emp_partner_id"  attrs="{'invisible':[('state','!=', 'hrconfirm','paid')]}"/>
+                                <field name="payment_method"  attrs="{'invisible':[('state','!=', 'hrconfirm','paid')]}"/>
+                                <field name="paid_amount"  attrs="{'invisible':[('state','!=', 'hrconfirm','paid')]}"/>
 
                             </group>
                         </group>
                         <notebook>
                             <page string='Reason'>
-                                <field name="note"/>
+                                <field name="note" attrs="{'readonly':[('state','!=', 'draft')]}"/>
                             </page>    
                         </notebook>    
                         <div class="oe_title">
