@@ -7,11 +7,14 @@
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='amount_untaxed']" position="after">
 					<field name="discount"/>
-                    <field name="tot"/>
+                    <field name="tot_after_discount"/>
 				</xpath>
-<!-- 				<xpath expr="//field[@name='line_ids']//tree//field[@name='price_unit']" position="before">
-					<field name="sh_retail_price"/>
-				</xpath> -->
+				<xpath expr="//field[@name='order_line']//tree//field[@name='tax_id']" position="after">
+					<field name="disc"/>
+				</xpath>
+                <xpath expr="//field[@name='amount_total']" position="after">
+					<field name="total_disc"/>
+				</xpath>
 			</field>
 		</record>
   </data>

@@ -2,30 +2,51 @@
 
 from odoo import models, fields, api
 
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    disc = fields.Float(string='Discount', store=True)
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+    
+    @api.depends('order_line.disc')
+    def _discount_tot(self):
+        for order in self:
+            discs = 0.0
+            for line in order.order_line:
+                discs += line.disc
+            order.update({
+                'discount': round(discs,2),
+            })
+    
+    
+    
+   
 
-    discount = fields.Float(string='Disc.%', store=True)
-    tot = fields.Char(string='Total After Discount', compute='_amount_after_discount', store=True)
+    discount = fields.Monetary(string='Disc.%', compute='_discount_tot', store=True)
+    tot_after_discount = fields.Monetary(string='Total After Discount', compute='_amount_after_discount')
+    total_disc = fields.Monetary(string='Total', compute='_disount_grand_tot')
     
     
-    @api.depends('amount_untaxed', 'discount')
+    @api.depends('discount')
     def _amount_after_discount(self):
         test = self.amount_untaxed * (self.discount/100)
-        self.tot = self.amount_untaxed - test
-#             order.update({
-#                 'amount_untaxed': amount_untaxed,
-#                 'amount_tax': amount_tax,
-#                 'amount_total': amount_untaxed + amount_tax,
-#             })
-
+        self.tot_after_discount = self.amount_untaxed - test
+       
     
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    
+    @api.depends('tot_after_discount')
+    def _disount_grand_tot(self):
+        for order in self:
+            order.update({
+                'total_disc': order.tot_after_discount + order.amount_tax
+            })
+   
+    
+    
+    
+    
+    
+
+
