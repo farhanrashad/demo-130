@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
-    structure_lines = fields.One2many('hr.payroll.structure.line', string='Structure Lines')
+    contract_lines = fields.One2many('hr.contract.line', string='Structure Lines')
 
 
 class HrPayrollStructureExt(models.Model):
@@ -13,15 +13,21 @@ class HrPayrollStructureExt(models.Model):
 
     structure_lines = fields.One2many('hr.payroll.structure.line', string='Structure Lines')
 
-
 class HrPayrollStructureLine(models.Model):
     _name = 'hr.payroll.structure.line'
     _description = 'This is Structure Lines'
 
     name = fields.Many2one('hr.payroll.input.type', string='Description')
     struct_id = fields.Many2one('hr.payroll.structure.type', string='Structure')
-#     value = fields.Integer()
+
+class HrContractLine(models.Model):
+    _name = 'hr.contract.line'
+    _description = 'This is Structure Lines'
+
+    name = fields.Many2one('hr.payroll.input.type', string='Description')
+    contract_id = fields.Many2one('hr.contract', string='Structure')
     amount = fields.Float(string='Amount', store=True)
+
 #     description = fields.Text()
 #
 #     @api.depends('value')
