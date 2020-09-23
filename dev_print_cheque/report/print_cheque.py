@@ -10,13 +10,12 @@
 
 from odoo import models, fields, api
 from num2words import num2words
-from datetime import datetime, time
 
 class print_check(models.AbstractModel): 
     _name = 'report.dev_print_cheque.report_print_cheque'
 
     def get_date(self,date):
-        date = date.strftime("%m/%d/%Y")
+        date = date.split('-')
         return date
 
     def get_partner_name(self,obj,p_text):
@@ -59,10 +58,7 @@ class print_check(models.AbstractModel):
         second_line = second_line.replace(",", "")
 
         return [first_line, second_line]
-
-
-
-
+    @api.model
     def _get_report_values(self, docids, data=None):
         docs = self.env['account.payment'].browse(docids)
         return {
@@ -78,7 +74,7 @@ class print_cheque_wizard(models.AbstractModel):
     _name = 'report.dev_print_cheque.cheque_report'
 
     def get_date(self, date):
-        date = date.strftime("%m/%d/%Y")
+        date = date.split('-')
         return date
 
     def amount_word(self, obj):
@@ -117,8 +113,7 @@ class print_cheque_wizard(models.AbstractModel):
         second_line = second_line.replace(",", "")
         return [first_line, second_line]
 
-
-
+    @api.model
     def _get_report_values(self, docids, data=None):
         docs = self.env['cheque.wizard'].browse(data['form'])
         return {
