@@ -56,7 +56,7 @@ Cheque print, check print, check writing, bank check print, check dynamic, bank 
         'security/ir.model.access.csv',
         'views/report_print_cheque.xml',
         'views/report_menu.xml',
-        # 'views/cheque_setting_view.xml',
+        'views/cheque_setting_view.xml',
         'views/account_vocher_view.xml',
     ],
     'demo': [],
