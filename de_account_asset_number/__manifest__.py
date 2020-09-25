@@ -21,12 +21,14 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','account_asset'],
+    'depends': ['base','account','account_asset','hr'],
 
     # always loaded
     'data': [
         'data/sequence.xml',
         # 'security/ir.model.access.csv',
+        'security/asset_groups.xml',
+        'views/res_config_settings.xml',
         'views/account_asset_views.xml',
     ],
     # only loaded in demonstration mode

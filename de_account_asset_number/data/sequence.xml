@@ -3,10 +3,10 @@
     <data noupdate="1">
 
         <!-- Sequences for sale.order -->
-        <record id="seq_con_requisitions" model="ir.sequence">
+        <record id="seq_account_assets" model="ir.sequence">
             <field name="name">Account Assets Sequence</field>
             <field name="code">account.asset</field>
-            <field name="prefix">As</field>
+            <field name="prefix">AS/</field>
             <field name="padding">4</field>
             <field eval="1" name="number_next"/>
             <field eval="1" name="number_increment"/>
