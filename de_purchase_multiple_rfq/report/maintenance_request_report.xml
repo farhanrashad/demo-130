@@ -1,0 +1,11 @@
+<odoo>
+  <data>
+     <report
+            id="maintenance_request_report"
+            string="Maintenance Request"
+            model="maintenance.request"
+            report_type="qweb-pdf"
+            file="de_purchase_multiple_rfq.report_maintenance_request_template"
+            name="de_purchase_multiple_rfq.report_maintenance_request_template" /> 
+  </data>
+</odoo>
