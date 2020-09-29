@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<template id="report_insurance">
+			<t t-call="web.html_container">
+				<t t-call="web.external_layout">
+					<div class="page">
+						<br />
+						<div t-foreach="docs" t-as="doc">
+							
+							<h1 align="center"><t t-esc="doc.insurance_type.name" /></h1>
+							<h1 align="center"><t t-esc="doc.name" /></h1>
+							<br/><br/>
+							
+							
+							<span style="margin:0;float:left">
+								<b>Date From :</b>
+								<t t-esc="doc.date_from" />
+							</span>
+							<span style="margin:0;float:right">
+								<b>Date To :</b>
+								<t t-esc="doc.date_to" />
+							</span>
+							<br />
+							<table align="right" class="table table-condensed" style="border: 1px solid black;">								<tr>
+									<th>Employee</th>
+									<th><t t-esc="doc.employee_id.name" /></th>
+									
+									<th>Insurance Type</th>
+									<th><t t-esc="doc.insurance_type.name" /></th>
+								</tr>
+								<tr>
+									<th>Company</th>
+									<th><t t-esc="doc.company_id.name" /></th>
+									
+									<th>Amount</th>
+									<th><t t-esc="doc.amount" /></th>
+								</tr>
+							</table>
+							<br />
+								<t t-raw="doc.description" />
+								
+
+							<style>
+								table {
+								border-collapse: collapse;
+								}
+								table, td, th {
+								border: 1px solid black;
+								}
+								
+							</style>
+						</div>
+					</div>
+
+
+				</t>
+			</t>
+		</template>
+	</data>
+</openerp>

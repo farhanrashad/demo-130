@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- insurance type form,tree,search -->
+	<record id="view_employee_insurance_type_form" model="ir.ui.view">
+			<field name="name">hr.employee.insurance.type.form</field>
+			<field name="model">hr.employee.insurance.type</field>
+			<field name="arch" type="xml">
+				<form string="Employee Insurance Type">
+					<sheet>
+						<group>
+							<field name="name" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<record id="view_employee_insurance_type_tree" model="ir.ui.view">
+			<field name="name">hr.employee.insurance.type.tree</field>
+			<field name="model">hr.employee.insurance.type</field>
+			<field name="arch" type="xml">
+				<tree string="Insurance Type Tree">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_employee_insurance_type_search" model="ir.ui.view">
+			<field name="name">hr.employee.insurance.type.search</field>
+			<field name="model">hr.employee.insurance.type</field>
+			<field name="arch" type="xml">
+				<search string="Insurance Type search">
+					<field name="name"/>
+				</search>
+			</field>
+		</record>
+
+
+		<record id="action_view_employee_insurance_type" model="ir.actions.act_window">
+            <field name="name">Employee Insurance Type</field>
+            <field name="res_model">hr.employee.insurance.type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_employee_insurance_type_search"/>
+            <field name="view_id" ref="view_employee_insurance_type_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                   Employee Insurance Type
+                </p>
+            </field>
+        </record>
+
+
+
+		<!-- insurance form,tree,search -->
+		<record id="view_employee_insurance_form" model="ir.ui.view">
+			<field name="name">hr.employee.insurance.form</field>
+			<field name="model">hr.employee.insurance</field>
+			<field name="arch" type="xml">
+				<form string="Employee Insurance">
+					<header>
+                    <button name='action_activate' string="Activate" type="object" class='oe_highlight' states="draft" groups="de_employee_insurance.group_insurance_activation"/>
+                    <button name='action_expired' string="Expired" type="object" class='oe_highlight' states="running"
+                            groups="de_employee_insurance.group_insurance_expiry" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,running,expired"/>
+                </header>
+				
+				
+					<sheet>
+						<div>
+							<h1>
+								<field name="name" readonly="1"/>
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="employee_id" required="True" attrs="{'readonly': [('state','!=','draft')]}"/>
+								<field name="date_from" required="True" attrs="{'readonly': [('state','!=','draft')]}"/>
+								<field name="date_to" required="True" attrs="{'readonly': [('state','!=','draft')]}"/>
+							</group>
+							<group>
+								<field name="insurance_type" required="True" attrs="{'readonly': [('state','!=','draft')]}" />
+								<field name="amount" required="True" attrs="{'readonly': [('state','!=','draft')]}"/>
+								<field name="company_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+							</group>
+						</group>
+						
+						<notebook>
+							<page string="Description">
+								<field name="description" attrs="{'readonly': [('state','!=','draft')]}"/>
+							</page>
+						</notebook>
+
+					</sheet>
+
+				</form>
+			</field>
+		</record>
+
+
+		<record id="view_employee_insurance_tree" model="ir.ui.view">
+			<field name="name">hr.employee.insurance.tree</field>
+			<field name="model">hr.employee.insurance</field>
+			<field name="arch" type="xml">
+				<tree string="Employee Insurance Tree">
+					<field name="name"/>
+					<field name="employee_id"/>
+					<field name="insurance_type"/>
+					<field name="date_from"/>
+					<field name="date_to"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_employee_insurance_search" model="ir.ui.view">
+			<field name="name">hr.employee.insurance.search</field>
+			<field name="model">hr.employee.insurance</field>
+			<field name="arch" type="xml">
+				<search string="Employee Insurance search">
+					<field name="name"/>
+					<field name="employee_id"/>
+					<field name="insurance_type"/>
+					<field name="state"/>
+				</search>
+			</field>
+		</record>
+
+
+		<record id="action_view_employee_insurance" model="ir.actions.act_window">
+            <field name="name">Employee Insurance</field>
+            <field name="res_model">hr.employee.insurance</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_employee_insurance_search"/>
+            <field name="view_id" ref="view_employee_insurance_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                   Employee Insurance
+                </p>
+            </field>
+        </record>
+        
+        
+        
+        
+        
+        <!-- hr employee inherited form view -->
+	  <record id="hr_employee_form_view_inh1" model="ir.ui.view">
+			<field name="name">hr.employee.form.inh.ins</field>
+			<field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//page[@name='hr_settings']" position='after'>
+				 <page string="Insurance">
+					 <field name="insurance_ids">
+							<tree>
+								<field name="name"/>
+								<field name="insurance_type"/>
+								<field name="date_from"/>
+								<field name="date_to"/>
+								<field name="amount"/>
+								<field name="state"/>
+							</tree>
+					 </field>
+				 </page>
+                </xpath>
+            </field>
+     </record>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+</odoo>
+
+
