@@ -8,7 +8,7 @@
             report_type="qweb-pdf"
             name="dev_print_cheque.report_print_cheque"
             file="dev_print_cheque.report_print_cheque"
-            menu="False"
+            menu="True"
         />
         <record id="paperformat_cheque" model="report.paperformat">
             <field name="name">cheque A4</field>

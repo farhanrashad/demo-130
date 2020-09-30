@@ -15,7 +15,9 @@ class print_check(models.AbstractModel):
     _name = 'report.dev_print_cheque.report_print_cheque'
 
     def get_date(self,date):
-        date = date.split('-')
+        print('=========================',date)
+        date = str(date).split('-')
+        print('=========================',date)
         return date
 
     def get_partner_name(self,obj,p_text):
