@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "de_contact_township",
+    'name': "Contact Townships",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Townships field on Contact Form
+""",
 
     'description': """
-        Long description of module's purpose
+         Townships field on Contact Form
+         1- Township  menu in Purchase app
     """,
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': "Dynexcel",
+    'website': "http://www.dynexcel.co",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Uncategorized',
+    'category': 'Contact',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
@@ -24,7 +25,7 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/res_township_views.xml',
         'views/res_partner.xml',
     ],
