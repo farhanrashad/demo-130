@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+      <record id="res_township_move_form_view" model="ir.ui.view">
+			<field name="name">res.partner.form.view</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='category_id']" position="after">
+					<field name="township_id"/>
+				</xpath>
+			</field>
+		</record>
+      
+      
+     
+    </data>
+</odoo>
