@@ -1,226 +1,260 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models,_
+from odoo.exceptions import UserError, ValidationError
+import datetime
+from datetime import date, datetime
+gloabal_list = []
+
 
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
-    
-    sale_commission_account = fields.Many2one('account.account',string="Commission Account")
-    
-    commission_pay_by = fields.Selection([('sal','Salary'),('inv','Invoice')],string="Commission Pay By")
+    sale_commission_account = fields.Many2one(comodel_name='account.account', string='Commission Account')
+    commission_pay_by = fields.Selection([
+        ('sal', 'Salary'),
+        ('inv', 'Invoice')],
+        string='Commission Pay By')
 
-class commission_Form(models.Model):
+
+class CommissionForm(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
-    _name='commission.rule'
-    _description="Commission Rule Group"
-    
+    _name = 'commission.rule'
+    _description = 'Commission Rule'
 
-    commission_order_line=fields.One2many("commission.orderline","id_order")
-        
-    logged_user=fields.Many2one('res.users','Created By',  default=lambda self: self.env.user)
-    
-    notes = fields.Text('Terms and Conditions')
-
-    
-    name= fields.Char('Name', copy=False)
+    commission_order_line = fields.One2many(comodel_name='commission.orderline', inverse_name='id_order')
+    logged_user = fields.Many2one(comodel_name='res.users', string='Created By',
+                                  default=lambda self: self.env.user)
+    notes = fields.Text(string='Terms and Conditions')
+    name = fields.Char(string='Name', required=True)
         
     
-class commission_processLine_Form(models.Model):
-  
-    _name='commission.orderline'
-    _description="Rules"
-    
-     
-    id_order=fields.Many2one("commission.rule") 
-    date_to=fields.Date("Date To")  
-    date_from=fields.Date("Date From")  
+class CommissionProcessLineForm(models.Model):
+    _name = 'commission.orderline'
+    _description = 'Commission Process Form'
 
-    priority=fields.Integer("Priority",default="1")
-    apply_on=fields.Selection([ ('pos', 'POS Order'),('sale', 'Sale Order'),],'Type', default='pos')
-   
-class config(models.Model):
-    _inherit='pos.config'
+    id_order = fields.Many2one(comodel_name='commission.rule')
+    date_to = fields.Date(string='Date To')
+    date_from = fields.Date(string='Date From')
+    priority = fields.Integer(string='Priority', default='1')
+    apply_on = fields.Selection([
+        ('pos', 'POS Order'),
+        ('sale', 'Sale Order')],
+        string='Type', default='pos')
+
+
+class PosConfigExt(models.Model):
+    _inherit = 'pos.config'
     
-    commission_rule_group = fields.Many2one('commission.rule',string="Commission Rule Group")
+    commission_rule_group = fields.Many2one(comodel_name='commission.rule', string='Commission Rule Group')
     
     
-class pos_order(models.Model):
-    _inherit='pos.order'
+class PosOrderExt(models.Model):
+    _inherit = 'pos.order'
     
-    pos_sale_line=fields.One2many("pos.sale.commission","psl_order")
-    
-    
+    pos_sale_line = fields.One2many(comodel_name='pos.sale.commission', inverse_name='psl_order')
+
     @api.model
-    def create(self, values): 
+    def create(self, values):
+        picking = super(PosOrderExt, self).create(values)
         if values:
-            dt=[] 
-            k=self.env['create.rule.form'].search([]) 
-            for kk in k:
-                if str(kk.start_date)<=values['date_order'].split()[0] and values['date_order'].split()[0]>=str(kk.end_date):
-                        z=self.env['create.rule.form'].search([('id','=',kk.id)])
-                        if values['amount_total'] >=z.minimum_order:
-                            for zz in z.rule_line:
-                                if zz.compute_price=='percentage':
-                                    self.env['commission.form'].create({'source_document': str(values['lines'][0][2]['name']),
-                                                                    'User':zz.users.id,
-                                                                    'order_date':values['date_order'].split()[0],
-                                                                    'sales_amount':values['amount_total'],
-                                                                    'commission_amount':values['amount_total']*zz.commission_price,
-                                                                    })
-                else:
-                    k=0
-                
-        return super(pos_order, self).create(values)
+            dt = []
+            rules = self.env['create.rule.form'].search([])
+            for rule in rules:
+                if str(rule.start_date) <= values['date_order'].split()[0] and str(rule.end_date) >= values['date_order'].split()[0]:
+                    rule_record = self.env['create.rule.form'].search([('id', '=', rule.id)])
+                    if values['amount_total'] >= rule_record.minimum_order:
+                        for line in rule_record.rule_line:
+                            if line:
+                                self.env['commission.form'].create({
+                                    'source_document': str(values['lines'][0][2]['name']),
+                                    'employee_id': line.employee_id.id,
+                                    'order_date': values['date_order'].split()[0],
+                                    'sales_amount': values['amount_total'],
+                                    'commission_amount': values['amount_total']*(line.commission_price/100),
+                                    'session_id': values['session_id']
+                                })
+        return picking
             
     @api.onchange('state')
     def onchange_func_state(self):
         for order in self:
             if order.state == 'paid':
-                k=self.env['create.rule.form'].search([]) 
-                for kk in k:
-                    if kk.start_date<=self.date_order.date() and self.date_order.date()>=kk.end_date:
-                            z=self.env['create.rule.form'].search([('id','=',kk.id)])
-                            if self.amount_total >=z.minimum_order:
-                                for zz in z.rule_line:
-                                    if zz.compute_price=='percentage':
-                                        line =self.env['commission.form'].create({'source_document': self.name,
-                                                                    'User':zz.users_id.id,
-                                                                    'order_date':self.date_order.date(),
-                                                                    'sales_amount':self.amount_total,
-                                                                    'commission_amount':0.0,
-                                                                    'pos_order':self.id,
-                                                                   'payment_id':self.payment_ids.id,
-                                                                    })
+                rule_form = self.env['create.rule.form'].search([])
+                for rule in rule_form:
+                    if rule.start_date<=self.date_order.date() and rule.end_date>=self.date_order.date():
+                        z = self.env['create.rule.form'].search([('id', '=', rule.id)])
+                        if self.amount_total >= z.minimum_order:
+                            for zz in z.rule_line:
+                                self.env['commission.form'].create({
+                                    'source_document': self.name,
+                                    'employee_id': zz.employee_id.id,
+                                    'order_date': self.date_order.date(),
+                                    'sales_amount': self.amount_total,
+                                    'commission_amount': ((zz.commission_price/100)*self.amount_total),
+                                    'pos_order': self.id,
+                                    'payment_id': self.payment_ids.id,
+                                })
     
 
-class pos_order_line(models.Model):
-    _name='pos.sale.commission'   
+class PosOrderLineExt(models.Model):
+    _name = 'pos.sale.commission'
     
-    psl_order=fields.Many2one("pos.order") 
-    User=fields.Many2one('res.users',string="User")
-    job_position=fields.Many2one('hr.job',string="Job Position")
-    commission_amount=fields.Float("Commission Amount")
-    
-class create_rule(models.Model):
-    _name='create.rule.form' 
+    psl_order = fields.Many2one(comodel_name='pos.order', string='Order')
+    user_id = fields.Many2one(comodel_name='res.users', string='User')
+    job_position = fields.Many2one(comodel_name='hr.job', string='Job Position')
+    commission_amount = fields.Float(string='Commission Amount')
+
+
+class RuleCreation(models.Model):
+    _name = 'create.rule.form'
+    _rec_name = 'apply_on'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
 
-    
-    apply_on=fields.Selection([('one','Product Variant'),('two','Product Catgory'),('three','Pos Order')],'Apply On',default="three")
-    priority=fields.Integer("Priority",default="1")
-    start_date=fields.Date("Start Date")
-    end_date=fields.Date("End Date")
-    minimum_order=fields.Float("Minimum Order")
-    rule_line=fields.One2many("beneficial.form","rule_order")
-    
-class beneficial(models.Model):
-    _name='beneficial.form'
-    
-    
-    job_title=fields.Many2one('hr.job',string="Job Title")
-    users=fields.Many2one('res.users',string="User(s)")
-    compute_price=fields.Selection([('f_x','Fix Price'),('percentage','Percentage')],'Compute Price')
-    commission_price=fields.Float("Commission")
-    rule_order=fields.Many2one("create.rule.form") 
+    apply_on = fields.Selection([
+        ('pos', 'Pos Order')],
+        string='Apply On',
+        default='pos')
+    priority = fields.Integer(string='Priority', default='1')
+    start_date = fields.Date(string='Start Date', required=True)
+    end_date = fields.Date(string='End Date', required=True)
+    minimum_order = fields.Float(string='Minimum Order Amount')
+    rule_line = fields.One2many(comodel_name='beneficial.form', inverse_name='rule_order')
 
-class commission(models.Model):
-    _name='commission.form' 
+    @api.constrains('minimum_order')
+    def ks_check_commission_amount(self):
+        if self.minimum_order <= 0:
+            raise ValidationError('Minimum Order amount should be greater than 0.')
+
+
+class BeneficialForm(models.Model):
+    _name = 'beneficial.form'
+
+    @api.model
+    def _employee_domain(self):
+        # for rec in self:
+        list = []
+        line_item = self.env['beneficial.form'].search([('rule_order', '=', self._origin.id)])
+        for line in line_item:
+            gloabal_list.append(line.employee_id.id)
+        return gloabal_list
+
+    @api.onchange('employee_id')
+    def onchange_test_domain_fiedl(self):
+        # here use your model to fetch the records
+        obj = self.search([])
+        available_ids = []
+        for i in obj:
+            # appends the man2one fields idsss
+            available_ids.append(i.employee_id.id)
+        return {'domain': {'employee_id': [('id', 'not in', available_ids)]}}
+
+    job_title = fields.Many2one(comodel_name='hr.job', string='Job Title')
+    employee_id = fields.Many2one(comodel_name='hr.employee', string='Employee', required=True)
+    # users = fields.Many2one('res.users', string='User')
+    user_id = fields.Many2one(comodel_name='res.users', string='User')
+    compute_price = fields.Selection([
+        ('percentage', 'Percentage')],
+        string='Compute Price')
+    commission_price = fields.Float(string='Commission(%)')
+    rule_order = fields.Many2one(comodel_name='create.rule.form')
+
+
+class EmployeeCommissionForm(models.Model):
+    _name = 'commission.form'
+    _rec_name = 'source_document'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
 
-    source_document=fields.Char("Source Document")
-    User=fields.Many2one('res.users',string="User")
-    invoice=fields.Many2one('account.move',"Invoice" ,domain=[('type','=',('in_invoice'))])
-    order_date=fields.Date("Order Date")
-    sales_amount=fields.Float("Sales Amount")
-    commission_amount=fields.Float("Commission Amount")
-    pay_by=fields.Selection([('sal','Salary'),('inv','Invoice')],'Pay By')
-    pos_order=fields.Char("Pos Order")
-    payment_id=fields.Char("Payment Id")
+    source_document = fields.Char(string='Source Document', readonly=True)
+    employee_id = fields.Many2one(comodel_name='hr.employee', string='Employee', readonly=True)
+    invoice = fields.Many2one(comodel_name='account.move', string='Invoice', readonly=True,
+                              domain=[('type', '=', ('in_invoice'))])
+    order_date = fields.Date(string='Order Date', readonly=True)
+    sales_amount = fields.Float(string='Sales Amount', readonly=True)
+    commission_amount = fields.Float(string='Commission Amount', readonly=True)
+    pay_by = fields.Selection([
+        ('sal', 'Salary'),
+        ('inv', 'Invoice')],
+        string='Pay By')
+    pos_order = fields.Char(string='Pos Order')
+    payment_id = fields.Char(string='Payment Id')
+    session_id = fields.Many2one(comodel_name='pos.session', string='Session')
+    config_id = fields.Many2one(comodel_name='pos.config', string='Outlet', related='session_id.config_id')
 
-class sales_target(models.Model):
-    _name='sales.target.form' 
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin'] 
-    
-    sales_person=fields.Many2one('res.users',string="Sales Person")
-    target_period=fields.Selection([('mt','Monthly'),('yl','yearly'),('dy','Day')],'Target Period',default="mt")
-    start_date=fields.Date("Start Date")
-    end_date=fields.Date("End Date")
-    
-    sales_target_line=fields.One2many("sale.target.line","sale_target_order")
-    
-    state=fields.Selection([('draft','Draft'),('confirm','confirmed')],'Status', readonly=True, index=True, copy=False, default='draft', track_visibility='onchange')
-    
-    
-    def draft(self):
-        self.write({'state':'confirm'}) 
-        
-        
 
-class sales_target_line(models.Model):
-    _name='sale.target.line'
-    
-    
-    start_target=fields.Date("Start of Target")
-    end_target=fields.Date("End of Target")
-    target_amount=fields.Float("Target Amount")
-    sale_amount=fields.Float("Sales Amount")
-    commission_amount=fields.Float("Commission Amount")
-    sale_target_order=fields.Many2one("sales.target.form") 
+class SalesTarget(models.Model):
+    _name = 'sales.target.form'
+    _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
 
-class print_commission_summary(models.Model):
+    def set_draft(self):
+        self.write({'state': 'confirm'})
+    
+    sales_person = fields.Many2one(comodel_name='res.users', string='Sales Person')
+    target_period = fields.Selection([
+        ('mt', 'Monthly'),
+        ('yl', 'yearly'),
+        ('dy', 'Day')],
+        string='Target Period', default="mt")
+    start_date = fields.Date(string='Start Date')
+    end_date = fields.Date(string='End Date')
+    sales_target_line = fields.One2many(comodel_name='sale.target.line', inverse_name='sale_target_order')
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirm', 'confirmed')],
+        string='Status', readonly=True, index=True, copy=False, default='draft', track_visibility='onchange')
+
+
+class SalesTargetLine(models.Model):
+    _name = 'sale.target.line'
+
+    start_target = fields.Date(string='Start of Target')
+    end_target = fields.Date(string='End of Target')
+    target_amount = fields.Float(string='Target Amount')
+    sale_amount = fields.Float(string='Sales Amount')
+    commission_amount = fields.Float(string='Commission Amount')
+    sale_target_order = fields.Many2one(comodel_name='sales.target.form', string='Target')
+
+
+class PrintCommissionSummary(models.Model):
     _name = 'commission.summary'
     _description = 'Create commission summary'
     
-    start_date=fields.Date("Start Date")
-    end_date=fields.Date("End Date") 
-    all_user=fields.Boolean('All User')
-    user=fields.Many2many('res.users',string="User(s)")
+    start_date = fields.Date(string='Start Date')
+    end_date = fields.Date(string='End Date')
+    all_employee = fields.Boolean(string='All Employee')
+    employee_id = fields.Many2many(comodel_name='hr.employee', string='Employee')
+    user = fields.Many2many(comodel_name='res.users', string='User(s)')
     
     @api.onchange('all_user')
     def user_auto(self):
         if self.all_user==True:
-            j=self.env['res.users'].search([])
-            self.user = j  
-        
-        
+            user_list = self.env['res.users'].search([])
+            self.user = user_list
+
     def create_invoice(self):
         for order in self:
-            if (order.start_date and order.end_date and order.user):
+            invoice_line_ids = []
+            if (order.start_date and order.end_date):
                 invoice_line = []
-                us=[]
-                jj=self.env['commission.form'].search([])
-                for j in jj:
-                    for od in order.user:
-                        if order.start_date<=j.order_date and order.end_date>=j.order_date:
-                            if od.id==j.User.id:
-                                us.append(j)
-                                for ss in j:
-                                    self.env['commission.form'].search([('id','=',ss.id)])
-                                    invoice_vals = {
-                                        'type': 'in_invoice',
-                                        'name':'/',
-                                        'partner_id': ss.User.partner_id.id,
-                                        'state': 'draft',
-                                        'invoice_date':ss.order_date,
-                                        'invoice_payment_term_id': '',
-                                        'invoice_line_ids': [0, 0, {
-                                            'name': ss.source_document,
-                                            'account_id': '',
-                                            'analytic_account_id': '',
-                                           'quantity': 1.0,
-                                           'price_unit':ss.commission_amount,
-                                        }]
-                                    }
-                                    invoice = self.env['account.move'].sudo().create(invoice_vals)
-     
-     
-        
-     
-     
- 
-     
-     
-     
-     
-     
-     
+                list = []
+                account = self.env['account.account'].search([('name', '=', 'POSCommission')])
+                commission_data = self.env['commission.form'].search([])
+                for data in commission_data:
+                    invoice_lines = {
+                        'name': data.source_document,
+                        'account_id': account.id,
+                        'quantity': 1.0,
+                        'price_unit': data.commission_amount,
+                    }
+                    for employee in order.employee_id:
+                        if order.start_date <= data.order_date and order.end_date >= data.order_date:
+                            if employee.id == data.employee_id.id:
+                                list.append(data)
+                                inv_obj = {
+                                    'partner_id': data.employee_id.user_id.partner_id.id,
+                                    'invoice_date': fields.Date.today(),
+                                    'type': 'in_invoice',
+                                    'name': 'Commission Invoice',
+                                    'state': 'draft',
+                                    'invoice_line_ids': [(0, 0, invoice_lines)],
+                                }
+                                record = self.env['account.move'].create(inv_obj)
