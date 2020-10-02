@@ -54,7 +54,7 @@ You won't need to set up separate stocks for the two apps and be a truly multi-c
 This module is maintained by Odoo.
 -----------------------------------
 
-![](C:\Users\PTS\Documents\Module Push - Demo-130\dev_print_cheque\images)
+![](C:/Users/PTS/Documents/Module Push - Demo-130/dev_print_cheque/images)
 
 
 
