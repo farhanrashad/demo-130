@@ -10,7 +10,7 @@ Because it's extremely flexible, you can configure Odoo POS to meet your precise
 User-friendly POS
 ===========================
 
-**Set-up in minutes, sell in seconds. Compatible with any device.
+**Set-up in minutes, sell in seconds. Compatible with any device.**
 
 
 
