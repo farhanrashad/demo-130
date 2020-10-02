@@ -10,14 +10,13 @@ Because it's extremely flexible, you can configure Odoo POS to meet your precise
 User-friendly POS
 ===========================
 
-Set-up in minutes, sell in seconds. Compatible with any device.
+**Set-up in minutes, sell in seconds. Compatible with any device.
 
 
 
 
 Online or offline
 ===========================
-
 Odoo's Point of Sale stays reliable even if your connection is not.
 -------------------------------------------------------------------
 
@@ -29,7 +28,6 @@ While an internet connection is required to start the Point of Sale, it will sta
 
 Keep in touch with your customers
 =========================================
-
 And keep them coming back with loyalty programs.
 ------------------------------------------------
 
@@ -56,7 +54,7 @@ You won't need to set up separate stocks for the two apps and be a truly multi-c
 This module is maintained by Odoo.
 -----------------------------------
 
-![image info](./E:/icon.png)
+![](C:\Users\PTS\Documents\Module Push - Demo-130\dev_print_cheque\images)
 
 
 
