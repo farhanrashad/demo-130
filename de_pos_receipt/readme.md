@@ -54,7 +54,9 @@ You won't need to set up separate stocks for the two apps and be a truly multi-c
 This module is maintained by Odoo.
 -----------------------------------
 
-![Image](E:/)
+.. image:: https://odoo-community.org/logo.png
+   :alt: Odoo Community Association
+   :target: https://odoo-community.org
 
 
 
