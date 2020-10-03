@@ -51,12 +51,8 @@ Furthermore, the POS is compatible with <a href="https://www.odoo.com/page/open-
 You won't need to set up separate stocks for the two apps and be a truly multi-channel business, without a headache.
 
 
-This module is maintained by Odoo.
+**This module is maintained by Odoo.**
 -----------------------------------
 
-.. image:: https://odoo-community.org/logo.png
-   :alt: Odoo Community Association
-   :target: https://odoo-community.org
-
-
+<img src="https://img.business.com/w/660/aHR0cHM6Ly93d3cuYnVzaW5lc3MuY29tL2ltYWdlcy9jb250ZW50LzVjYS8zY2NmYjVhMjE1ZThhNDU4YjU3MGUvMC04MDAt" />
 
