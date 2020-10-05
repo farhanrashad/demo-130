@@ -9,6 +9,8 @@ class ProductTemplate(models.Model):
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
+    
+        
 
     cost_lines = fields.One2many('mrp.production.direct.cost', 'production_id' ,string='Direct Cost Lines')    
     

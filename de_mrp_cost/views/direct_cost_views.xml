@@ -15,6 +15,9 @@
 			<field name="model">mrp.production</field>
 			<field name="inherit_id" ref="mrp.mrp_production_form_view"/>
 			<field name="arch" type="xml">
+                <xpath expr="//field[@name='purchase_ok']" position="after">
+                    <button name="button_generate_bill" attrs="{'invisible': [('state', '!=', 'confirm')]}" string="Generate Cost Bill" type="object" class="oe_highlight"/>
+				</xpath>
 				<xpath expr="//notebook" position="inside">
                     
 					 <page string="Finished Products">
