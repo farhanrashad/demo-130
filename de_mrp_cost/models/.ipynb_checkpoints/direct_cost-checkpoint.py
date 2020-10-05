@@ -5,7 +5,7 @@ from odoo import models, fields, api, _
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    is_charge = fields.Boolean(string='Is Charge')
+    is_charge = fields.Boolean(string='Is Charge', store=True)
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
@@ -22,6 +22,6 @@ class MrpCost(models.Model):
     is_charge = fields.Boolean(related='product_id.is_charge')
     standard_price = fields.Float(related='product_id.standard_price', readonly=False)
     is_billed = fields.Boolean(string='Billed')
-    partner_id = fields.Many2one('res.partner', string='Partner', default='product_id.seller_ids.name')
+    partner_id = fields.Many2one('res.partner', string='Vendor', default='product_id.seller_ids.name')
     
 
