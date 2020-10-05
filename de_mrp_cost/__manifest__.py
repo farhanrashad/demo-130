@@ -20,10 +20,12 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mrp','stock'],
+    'depends': ['base','mrp','stock','product'],
 
     # always loaded
     'data': [
+        'report/direct_cost_report.xml',
+        'report/direct_cost_report_template.xml',
         'security/ir.model.access.csv',
         'views/direct_cost_views.xml',
     ],
