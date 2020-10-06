@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import fields, models, api, _
+import copy
+import array as arr
 
 
 class EmployeeOvertime(models.Model):

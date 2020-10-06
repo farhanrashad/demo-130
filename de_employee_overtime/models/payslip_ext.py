@@ -10,12 +10,14 @@ class EmployeePayslipExt(models.Model):
 
     def overtime_calculation(self):
         cost = 0.0
-        overtime_data = self.env['employee.payslip.overtime'].search([('overtime_id', '=', self.id)])
+        print('id', self.id)
+        overtime_data = self.env['hr.attendance.overtime'].search([('employee_id', '=', self.employee_id.id)])
         for delta in overtime_data:
             cost = cost + delta.rate
         return cost
 
     def action_payslip_done(self):
+        print('new id', self.id)
         res = super(EmployeePayslipExt, self).action_payslip_done()
         to_paid = self.env['hr.attendance.overtime'].search([('employee_id', '=', self.employee_id.id),
                                                    ('state', '=', 'approve')])
