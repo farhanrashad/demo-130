@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+from odoo.tools.misc import format_date
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -13,53 +15,54 @@ class MrpProduction(models.Model):
     def button_generate_bill(self):
         vendor_list = []
         for line in self.cost_lines:
-            if line.partner_id and line.is_billed == True:
+            if line.partner_id and line.is_billed == False:
                 vendor_list.append(line.partner_id)
             else:
                 pass
         list = set(vendor_list)
-        for te in list:
-            product = []
-            for re in self.mo_line_ids:
-                if te == re.partner_id:
-                    if re.po_process == True:
+        for partner in list:
+            product_list = []
+            for line in self.cost_lines:
+                if partner == line.partner_id:
+                    if line.is_billed == False:
                         valss = {
-                            'product_id': re.product_id.id,
-                            'name': re.product_id.name,
-                            'product_uom_qty': re.product_uom_qty,
-                            'price_unit': re.product_id.standard_price,
-                            'date_planned': fields.Date.today(),
-                            'product_uom': re.product_id.uom_po_id.id,
+                            'product_id': line.product_id.id,
+                            'name': line.product_id.name,
+                            'account_id': line.account_id.id,
+                            'price_unit': line.product_id.standard_price,
+                            'partner_id': line.partner_id.id,
+                            'product_uom_id': line.product_id.uom_po_id.id,
                         }
-                        product.append(valss)
+                        product_list.append(valss)
             vals = {
-                  'partner_id': te.id,
-                  'date_order': fields.Date.today(),
-                  'sale_ref_id': self.sale_id.name,
-                  'origin': self.name,
+                  'partner_id': partner.id,
+                  'journal_id': self.journal_id.id,
+                  'invoice_date': fields.Date.today(),
+                  'type': 'out_invoice',
+                  'invoice_origin': self.id,
                     }
-            order = self.env['purchase.order'].create(vals)
-            for test in product:
-                order_line = {
-                       'order_id': order.id,
-                       'product_id': test['product_id'],
-                       'name': test['name'],
-                       'product_qty': test['product_uom_qty'],
-                       'price_unit': test['price_unit'],
-                       'date_planned': fields.Date.today(),
-                       'product_uom': test['product_uom'],
+            move = self.env['account.move'].create(vals)
+            for product in product_list:
+                move_line = {
+                       'move_id': move.id,
+                       'product_id': product['product_id'],
+                       'name': product['name'],
+                       'account_id': product['account_id'],
+                       'price_unit': product['price_unit'],
+                       'partner_id': product['partner_id'],
+                       'product_uom_id': product['product_uom_id'],
                         }
-                orders_lines = self.env['purchase.order.line'].create(order_line)
-        self.partner_id= False       
-        for line in self.mo_line_ids:
-            if line.po_process == True and not line.partner_id=='':
+                orders_lines = self.env['account.move.line'].create(move_line)
+#         self.partner_id= False       
+        for line in self.cost_lines:
+            if line.is_billed == False and line.partner_id:
                 line.update ({
-                   'po_process': False,
-                    'po_created': True,
+#                    'po_process': False,
+                    'is_billed': True,
                   	})    
     
-        
-
+    credit_account_id = fields.Many2one('account.account', string='Credit Account')    
+    journal_id = fields.Many2one('account.journal', string='Journal')
     cost_lines = fields.One2many('mrp.production.direct.cost', 'production_id' ,string='Direct Cost Lines')    
     
     
@@ -68,6 +71,7 @@ class MrpCost(models.Model):
     _description = 'This Production Order Cost'
 
     product_id = fields.Many2one('product.product',string='Product', domain="[('type', '=', 'service')]")
+    account_id = fields.Many2one('account.account', string='Account')
     production_id = fields.Many2one('mrp.production', string="Manufacturing Order")
     is_charge = fields.Boolean(related='product_id.is_charge')
     standard_price = fields.Float(related='product_id.standard_price', readonly=False)
