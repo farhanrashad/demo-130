@@ -16,7 +16,7 @@
     'category': 'Overtime',
     'version': '13.0',
 
-    'depends': ['base', 'hr', 'om_hr_payroll'],
+    'depends': ['base', 'hr', 'hr_payroll'],
 
 
     'data': [
