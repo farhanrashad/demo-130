@@ -42,24 +42,31 @@ class MrpProduction(models.Model):
 #                   'invoice_origin': self.id,
 #                     }
 #             move = self.env['account.move'].create(vals)
+            move_dict = {
+                  'partner_id': partner.id,
+                  'journal_id': self.journal_id.id,
+                  'invoice_date': fields.Date.today(),
+                  'type': 'in_invoice',
+                  'invoice_origin': self.name,
+                   }
                
-                line_ids = []
-                debit_sum = 0.0
-                credit_sum = 0.0
-                sum_tot_amount = 0.0
+            line_ids = []
+            debit_sum = 0.0
+            credit_sum = 0.0
+            sum_tot_amount = 0.0
             
                         #step2:debit side entry
-                for oline in self.cost_lines:
-                    sum_tot_amount = sum_tot_amount + oline.standard_price 
-                    debit_line = (0, 0, {
+            for oline in self.cost_lines:
+                sum_tot_amount = sum_tot_amount + oline.standard_price 
+                debit_line = (0, 0, {
     #                  	'move_id': move.id,
                     'name': oline.product_id.name,
                     'debit': abs(oline.standard_price),
                     'credit': 0.0,
                     'account_id': oline.account_id.id,
                          })
-                    line_ids.append(debit_line)
-                    debit_sum += debit_line[2]['debit'] - debit_line[2]['credit']
+                line_ids.append(debit_line)
+                debit_sum += debit_line[2]['debit'] - debit_line[2]['credit']
 
                 #step3:credit side entry
             credit_line = (0, 0, {
@@ -71,17 +78,9 @@ class MrpProduction(models.Model):
             line_ids.append(credit_line)
             credit_sum += credit_line[2]['credit'] - credit_line[2]['debit']
             
-#             move_dict['invoice_line_ids'] = product_list
+            move_dict['invoice_line_ids'] = product_list
 #             move_dict['line_ids'] = line_ids
-            move_dict = {
-                  'partner_id': partner.id,
-                  'journal_id': self.journal_id.id,
-                  'invoice_date': fields.Date.today(),
-                  'type': 'in_invoice',
-                  'invoice_origin': self.name,
-                   'invoice_line_ids': product_list ,
-                   'line_ids': line_ids , 
-                   }
+
             move = self.env['account.move'].create(move_dict)
 
         
@@ -120,7 +119,7 @@ class MrpCost(models.Model):
     production_id = fields.Many2one('mrp.production', string="Manufacturing Order")
     is_charge = fields.Boolean(related='product_id.is_charge')
     standard_price = fields.Float(related='product_id.standard_price', readonly=False)
-    is_billed = fields.Boolean(string='Billed')
+    is_billed = fields.Boolean(string='Billed', readonly=True)
     partner_id = fields.Many2one('res.partner', related='product_id.seller_ids.name',readonly=False)
     
 
