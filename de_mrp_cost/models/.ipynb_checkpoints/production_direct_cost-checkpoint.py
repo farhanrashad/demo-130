@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from odoo.tools.misc import format_date
@@ -69,23 +70,41 @@ class MrpProduction(models.Model):
     def get_document_count(self):
         count = self.env['account.move'].search_count([('invoice_origin','=', self.name)])
         self.document_id = count
+        
+    @api.model
+    def _get_default_journal(self):
+        return self.env['account.journal'].search([
+            ('type', '=', 'purchase'),],
+            limit=1).id    
+        
     
     document_id = fields.Integer(compute='get_document_count')
 #     credit_account_id = fields.Many2one('account.account', string='Credit Account', required=True)    
-    journal_id = fields.Many2one('account.journal', string='Journal', required=True, )
+    journal_id = fields.Many2one('account.journal', string='Journal', required=True, default = _get_default_journal)
     cost_lines = fields.One2many('mrp.production.direct.cost', 'production_id' ,string='Direct Cost Lines')    
     
     
 class MrpCost(models.Model):
     _name = 'mrp.production.direct.cost'
     _description = 'This Production Order Cost'
+    
+    @api.model
+    def _get_default_account(self):
+        return self.env['account.account'].search([
+            ('code', '=', '217100'),],
+            limit=1).id 
+    
+    @api.onchange('product_id')
+    def onchange_product(self):
+        self.partner_id = self.product_id.seller_ids.name
+
 
     product_id = fields.Many2one('product.product',string='Product', domain="[('type', '=', 'service')]")
-    account_id = fields.Many2one('account.account', string='Account', required=True, )
+    account_id = fields.Many2one('account.account', string='Account', required=True, default = _get_default_account)
     production_id = fields.Many2one('mrp.production', string="Manufacturing Order")
     is_charge = fields.Boolean(related='product_id.is_charge')
     standard_price = fields.Float(related='product_id.standard_price', readonly=False)
     is_billed = fields.Boolean(string='Billed', readonly=True)
-    partner_id = fields.Many2one('res.partner', related='product_id.seller_ids.name',readonly=False)
+    partner_id = fields.Many2one('res.partner', string="Vendor"  ,readonly=False)
     
 
