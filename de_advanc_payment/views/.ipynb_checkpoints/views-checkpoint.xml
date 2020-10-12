@@ -1,0 +1,6 @@
+<odoo>
+  <data>
+   
+            <menuitem action="account.action_account_payments" name="Advance Payments" id="menu_advance_payments_receivable" parent="account.menu_finance_receivables" sequence="20"/>
+  </data>
+</odoo>
