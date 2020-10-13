@@ -35,7 +35,7 @@ class JobOrderSheet(models.Model):
             print('picking', picking_type)
             order_data = self.env['mrp.production'].search([('sale_order', '=', rec.sale_order_id.name),
                                                             ('product_id.name', '=ilike', '[Un-Finished]%'),
-                                                            ('picking_type_id', '=', picking_type)])
+                                                            ('picking_type_id', '=', picking_type.id)])
             for order in order_data:
                 rec.sheet_ids |= rec.sheet_ids.new({
                     'mo_order_id': order.id,
