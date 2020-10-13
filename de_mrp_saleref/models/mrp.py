@@ -72,6 +72,7 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
     sale_ref = fields.Char(string='Ref Sale')
+    mo_product_id = fields.Many2one('product.product', string="Product")
 
     @api.model
     def create(self, vals):
