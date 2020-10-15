@@ -15,6 +15,7 @@ class MrpProductionSale(models.Model):
     _inherit = 'mrp.production'
 
     sale_order = fields.Many2one(comodel_name='sale.order', string='Sale Order')
+    # sale_id = fields.Char(string='Ref Sale')
 
 
 class JobOrderSheet(models.Model):
@@ -33,7 +34,7 @@ class JobOrderSheet(models.Model):
             rec.sheet_ids.unlink()
             picking_type = self.env['stock.picking.type'].search([('name', '=', 'Floor - Receiving')], limit=1)
             print('picking', picking_type)
-            order_data = self.env['mrp.production'].search([('sale_order', '=', rec.sale_order_id.id),
+            order_data = self.env['mrp.production'].search([('sale_id', '=', rec.sale_order_id.name),
                                                             ('product_id.name', 'ilike', '[Un-Finished]%'),
                                                             ('picking_type_id', '=', picking_type.id)])
             print('dtaa', order_data)
