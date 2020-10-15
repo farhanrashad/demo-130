@@ -3,9 +3,9 @@
 # from odoo import models, fields, api
 
 
-# class de_discount_invoices(models.Model):
-#     _name = 'de_discount_invoices.de_discount_invoices'
-#     _description = 'de_discount_invoices.de_discount_invoices'
+# class de_project_issue(models.Model):
+#     _name = 'de_project_issue.de_project_issue'
+#     _description = 'de_project_issue.de_project_issue'
 
 #     name = fields.Char()
 #     value = fields.Integer()

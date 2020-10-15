@@ -1,0 +1,43 @@
+<odoo>
+  <data>
+<!--       <record id="view_account_advance_payment_tree" model="ir.ui.view">
+		<field name="name">advance.payment.new.tree</field>
+		<field name="model">advance.payment</field>
+		<field name="arch" type="xml">
+			<tree string="Payment Tree">
+                    <header>
+                        <button name="#" type="object" string="Confirm"/>
+                    </header>
+					<field name="journal_id"/>
+					<field name="partner_id" string="Customer"/>
+                    <field name="payment_date"/>
+                    <field name="amount" sum="Amount"/>
+					<field name="payment_method_id"/>
+                    <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'posted'"/>
+              
+                </tree>
+		</field>
+	</record> -->
+      
+<!--     <record id="action_account_advance_payments_payable"
+            model="ir.actions.act_window">
+            <field name="name">Training</field>
+            <field name="res_model">advance.payment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_id" ref="view_account_advance_payment_tree" />
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Test Training.....
+                </p>
+            </field>
+        </record> -->
+      
+            <menuitem action="account.action_account_payments" name="Advance Payment" id="menu_advance_payments_customer" parent="account.menu_finance_receivables" sequence="16"/>
+      
+      <menuitem action="account.action_account_payments" name="Advance Payment" id="menu_advance_payments_vendor" parent="account.menu_finance_payables" sequence="16"/>
+  </data>
+    
+</odoo>

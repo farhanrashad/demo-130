@@ -5,23 +5,20 @@ class AccMoveInh(models.Model):
     _inherit = 'account.move'
     _name = 'account.move'
 
-    # reference = fields.Integer('Reference')
 
     @api.model
     def create(self, vals):
 
         ref_field = vals['ref']
+        if ref_field:
+            sql = """ select ref from account_move where ref ='""" + str(ref_field) + """' """
+            self.env.cr.execute(sql)
+            exists = self.env.cr.fetchone()
 
-        sql = """ select ref from account_move where ref ='""" + str(ref_field) + """' """
-        self.env.cr.execute(sql)
-        exists = self.env.cr.fetchone()
-
-        contains_digit = ref_field.isdigit()
-        if not contains_digit:
-            raise UserError(('Sorry! Only Integer Values are allowed in Reference field.'))
-
-        if exists:
-            raise UserError(('A Reference already exists.'))
+            if exists:
+                raise UserError(('A Reference already exists.'))
+            else:
+                pass
         else:
             pass
 
