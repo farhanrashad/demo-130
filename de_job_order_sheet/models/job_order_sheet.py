@@ -33,9 +33,10 @@ class JobOrderSheet(models.Model):
             rec.sheet_ids.unlink()
             picking_type = self.env['stock.picking.type'].search([('name', '=', 'Floor - Receiving')], limit=1)
             print('picking', picking_type)
-            order_data = self.env['mrp.production'].search([('sale_order', '=', rec.sale_order_id.name),
-                                                            ('product_id.name', '=ilike', '[Un-Finished]%'),
+            order_data = self.env['mrp.production'].search([('sale_order', '=', rec.sale_order_id.id),
+                                                            ('product_id.name', 'ilike', '[Un-Finished]%'),
                                                             ('picking_type_id', '=', picking_type.id)])
+            print('dtaa', order_data)
             for order in order_data:
                 rec.sheet_ids |= rec.sheet_ids.new({
                     'mo_order_id': order.id,
