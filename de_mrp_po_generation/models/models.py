@@ -3,6 +3,8 @@ from odoo.exceptions import UserError
 from odoo.tools.misc import format_date
 
 
+
+
 class MoBeforhand(models.Model):
     _name = 'mrp.mo.beforehand'
     _description = 'Create PO from MO'
