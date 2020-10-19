@@ -69,9 +69,16 @@
                  
                 </xpath>  -->
 
- 				<xpath expr="//field[@name='move_ids_without_package']" position="attributes">
-				    <attribute name="record_expense">1</attribute>	
+ 				<xpath expr="//notebook//page[1]" position="attributes">
+				    <attribute name="invisible">[('record_expense','=',True)]</attribute>	
 				</xpath> 
+                      <xpath expr="//notebook//page[2]" position="attributes">
+				    <attribute name="invisible">[('record_expense','=',True)]</attribute>	
+				</xpath> 
+                     <xpath expr="//notebook//page[3]" position="attributes">
+				    <attribute name="invisible">[('record_expense','=',True)]</attribute>	
+				</xpath> 
+
 <!--                 <xpath expr="//field[@name='move_ids_without_package']//tree//field[@name='account_id']" position="attributes">
 					<attribute name="invisible">1
 				</xpath> -->
