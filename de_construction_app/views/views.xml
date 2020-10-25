@@ -1,0 +1,447 @@
+<odoo>
+  <data>
+
+ <record model="ir.ui.view" id="projeect_tree_vieww">
+      <field name="name">projects.projects.tree</field>
+      <field name="model">projects.projects</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+            <field name="project_manager" widget="many2one_tags"/>
+             <field name="customer_name"/>
+
+            <field name="sub_task_project"/>
+            <field name="company"/>
+<!--          <field name="pateint_name"/>-->
+<!--          <field name="patient_age"/>-->
+        </tree>
+      </field>
+    </record>
+
+
+        <record id="quick_create_opportunity_form" model="ir.ui.view">
+            <field name="name">projects.projects.form.quick_create</field>
+            <field name="model">projects.projects</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                        <field name="customer_name" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_vat': True}"/>
+<!--                        <field name="planned_revenue" widget="monetary" options="{'currency_field': 'company_currency'}"/>-->
+<!--                        <field name="company_currency" invisible="1"/>-->
+<!--                        <field name="company_id" invisible="1"/>-->
+<!--                        <field name="priority" nolabel="1" widget="priority"/>-->
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+      <record model="ir.ui.view" id="res_projects_projects_kanban">
+            <field name="name">projects.projects.kanban</field>
+            <field name="model">projects.projects</field>
+            <field name="arch" type="xml">
+<!--                 class="o_res_partner_kanban"-->
+                <kanban class="o_kanban_small_column o_opportunity_kanban" on_create="quick_create" quick_create_view="de_construction_app.quick_create_opportunity_form"
+                    >
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="image_hr" widget="image"/>
+                    <field name="task_name"/>
+                    <field name="project_manager"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_projects_projects_kanban">
+                                <t t-if="record.image_hr.raw_value">
+                                    <div class="o_kanban_image_fill_left d-none d-md-block" t-attf-style="background-image:url('#{kanban_image('projects.projects', 'image_hr', record.id.raw_value,  placeholder)}')">
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="placeholder" t-value="'/base/static/img/company_image.png'"/>
+                                </t>
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong>
+                                    <div class="o_kanban_tags_sect ion oe_kanban_partner_categories"/>
+                                    <ul>
+                                        <li>name:<field name="task_name"/></li>
+                                        <li>manager:<field name="project_manager"/></li>
+                                    </ul>
+                                    <div class="oe_kanban_partner_links"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+      <record model="ir.ui.view" id="notes_tree_view">
+      <field name="name">notes.notes.tree</field>
+      <field name="model">notes.notes</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="tags_note"/>
+              <field name="task_job_order"/>
+              <field name="construction_projecct"/>
+              <field name="responsible_user"/>
+              <field name="tes_note"/>
+        </tree>
+      </field>
+    </record>
+
+      <record model="ir.ui.view" id="notes_form">
+      <field name="name">notes.notes.form</field>
+      <field name="model">notes.notes</field>
+<!--      <field name="view_mode">form</field>-->
+      <field name="arch" type="xml">
+
+        <form>
+             <header>
+                 <field name="state" widget="statusbar" statusbar_visible="new,meeting_mint,notes,todo"/>
+             </header>
+            <sheet>
+                <group>
+              <field name="tags_note"/>
+              <field name="task_job_order"/>
+              <field name="construction_projecct"/>
+              <field name="responsible_user"/>
+              <field name="tes_note"/>
+                </group>
+            </sheet>
+        </form>
+      </field>
+    </record>
+
+     <record model="ir.ui.view" id="construction_management_form_project">
+      <field name="name">projects.projects.form</field>
+      <field name="model">projects.projects</field>
+<!--      <field name="view_mode">form</field>-->
+      <field name="arch" type="xml">
+        <form>
+             <header>
+                <button name="action_share" type="object" string="Share" class="oe_highlight"/>
+             </header>
+            <sheet>
+              <div class="oe_button_box" name="button_box">
+                    <button name="documents_task"
+                            type="object" class="oe_stat_button"  icon="fa-file-text-o">
+                        <field name="documents_count" string="Documents" widget="statinfo"/>
+                    </button>
+                       <button name="task_button"
+                            type="object" class="oe_stat_button"  icon="fa-tasks">
+                        <field name="task_count" string="Tasks" widget="statinfo"/>
+                    </button>
+                       <button name="material_requisition"
+                            type="object" class="oe_stat_button" string="Material Requisition" icon="fa-book">
+<!--                        <field name="documents_count" string="material" widget="statinfo"/>-->
+                    </button>
+                  <button name="notes_document"
+                            type="object" class="oe_stat_button" icon="fa-tasks">
+                        <field name="notes_count" string="Notes"  widget="statinfo"/>
+                    </button>
+                       <button name="timesheet_button"
+                            type="object" class="oe_stat_button" string="Timesheet" icon="fa-calendar">
+<!--                        <field name="notes_count" string="notes" widget="statinfo"/>-->
+                    </button>
+              </div>
+                <div>
+                    <h1>
+                         <field name="name"/>
+                    </h1>
+                </div>
+
+                <group>
+                 <field name="task_name"/>
+<!--                    <field name="image_hr" width="10%" height="10%" widget="image"/>-->
+
+<!--                 <field name="pateint_name"/>-->
+<!--                 <field name="patient_age"/>-->
+                </group>
+                <notebook>
+                    <page string="Settings">
+                            <group>
+                                <group>
+                                    <field name="project_manager"/>
+                                    <field name="customer_name"/>
+                                </group>
+                                <group>
+                                    <field name="visibility" widget="radio"/>
+                                    <field name="sub_task_project"/>
+                                    <field name="company"/>
+                                </group>
+                                <field name="timesheet_f"/>
+                                <field name="customer_rating" widget="radio"/>
+                                <div>
+                                    <h1 style="color:blue">Time Scheduling</h1>
+                                </div>
+                            </group>
+
+
+                    </page>
+                    <page string="Construction Site Detail">
+                        <group>
+                            <group>
+                               <field name="construction_site"/>
+                            </group>
+                             <group>
+                               <field name="construction_location"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+      </field>
+    </record>
+
+     <record id="action_project" model="ir.actions.act_window">
+            <field name="name">project</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">projects.projects</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">kanban,tree,form</field>
+<!--            <field name="context">{"search_default_male":1}</field>-->
+<!--            <field name="view_id" ref="view_account_list"/>-->
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new project
+              </p>
+
+            </field>
+        </record>
+
+<record id="action_notes" model="ir.actions.act_window">
+            <field name="name">notes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">notes.notes</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+<!--            <field name="context">{"search_default_male":1}</field>-->
+<!--            <field name="view_id" ref="view_account_list"/>-->
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new project
+              </p>
+
+            </field>
+        </record>
+
+<!-- ====================================================================     -->
+
+<!--      <record id="project_project_view_form_simplified" model="ir.ui.view">-->
+<!--            <field name="name">projects.projects.view.form.simplified</field>-->
+<!--            <field name="model">projects.projects</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="Project">-->
+<!--                    <group>-->
+<!--                        <group>-->
+<!--                            <field name="name" class="o_project_name oe_inline"-->
+<!--                                string="Project Name" placeholder="e.g. Office Party"/>-->
+<!--                            <field name="user_id" invisible="1"/>-->
+<!--&lt;!&ndash;                            <label for="alias_name" string="Choose a Project Email" attrs="{'invisible': [('alias_domain', '=', False)]}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div name="alias_def" attrs="{'invisible': [('alias_domain', '=', False)]}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <field name="alias_name" class="oe_inline"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--&lt;!&ndash;      ==========================================================================&ndash;&gt;-->
+<!--&lt;!&ndash;      action for order job model&ndash;&gt;-->
+<!--&lt;!&ndash;      ==============================================================================&ndash;&gt;-->
+
+<!--      <record id="act_project_project_2_project_task_all" model="ir.actions.act_window">-->
+<!--            <field name="name">Tasks</field>-->
+<!--            <field name="res_model">order.job</field>-->
+<!--            <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>-->
+<!--            <field name="context">{-->
+<!--                'pivot_row_groupby': ['user_id'],-->
+<!--                'search_default_project_id': [active_id],-->
+<!--                'default_project_id': active_id,-->
+<!--            }</field>-->
+<!--&lt;!&ndash;            <field name="search_view_id" ref="view_task_search_form"/>&ndash;&gt;-->
+<!--            <field name="help" type="html">-->
+<!--                <p class="o_view_nocontent_smiling_face">-->
+<!--                    Click <i>Create</i> to start a new task.-->
+<!--                </p><p>-->
+<!--                    To get things done, use activities and status on tasks.<br/>-->
+<!--                    Chat in real time or by email to collaborate efficiently.-->
+<!--                </p>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--       <record id="project_project_view_form_simplified_footer" model="ir.ui.view">-->
+<!--            <field name="name">projects.projects.view.form.simplified</field>-->
+<!--            <field name="model">projects.projects</field>-->
+<!--            <field name="inherit_id" ref="de_construction_app.project_project_view_form_simplified"/>-->
+<!--            <field name="mode">primary</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//group" position="after">-->
+<!--                    <footer>-->
+<!--                        <button string="Create" name="open_tasks" type="object" class="btn-primary o_open_tasks"/>-->
+<!--                        <button string="Discard" class="btn-secondary" special="cancel"/>-->
+<!--                    </footer>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--      <record id="open_create_project" model="ir.actions.act_window">-->
+<!--            <field name="name">Create a Project</field>-->
+<!--            <field name="res_model">projects.projects</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="view_id" ref="project_project_view_form_simplified_footer"/>-->
+<!--            <field name="target">new</field>-->
+<!--        </record>-->
+
+
+
+<!--      <record model="ir.ui.view" id="view_project_kanban">-->
+<!--            <field name="name">projects.projects.kanban</field>-->
+<!--            <field name="model">projects.projects</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <kanban class="oe_background_grey o_kanban_dashboard o_project_kanban o_emphasize_colors" on_create="de_construction_app.open_create_project">-->
+<!--                    <field name="name"/>-->
+<!--                    <field name="partner_id"/>-->
+<!--                    <field name="color"/>-->
+<!--                    <field name="task_count"/>-->
+<!--                    <field name="label_tasks"/>-->
+<!--&lt;!&ndash;                    <field name="alias_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <field name="alias_name"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <field name="alias_domain"/>&ndash;&gt;-->
+<!--                    <field name="is_favorite"/>-->
+<!--&lt;!&ndash;                    <field name="rating_percentage_satisfaction"/>&ndash;&gt;-->
+<!--                    <field name="rating_status"/>-->
+<!--                    <field name="analytic_account_id"/>-->
+<!--                    <templates>-->
+<!--                        <t t-name="kanban-box">-->
+<!--                            <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click o_has_icon">-->
+<!--                                <div class="o_project_kanban_main">-->
+<!--                                    <div class="o_kanban_card_content">-->
+<!--                                        <div class="o_kanban_primary_left">-->
+<!--                                            <div class="o_primary">-->
+<!--                                                <span><t t-esc="record.name.value"/></span>-->
+<!--                                                <span t-if="record.partner_id.value">-->
+<!--                                                    <strong><t t-esc="record.partner_id.value"/></strong>-->
+<!--                                                </span>-->
+<!--                                            </div>-->
+<!--                                            <div t-if="record.alias_name.value and record.alias_domain.value">-->
+<!--                                                <span><i class="fa fa-envelope" role="img" aria-label="Domain Alias" title="Domain Alias"></i> <t t-esc="record.alias_id.value"/></span>-->
+<!--                                            </div>-->
+<!--                                            <div t-if="record.rating_status.raw_value != 'no'" class="mt8 text-primary" title="Percentage of happy ratings over the past 30 days. Get rating details from the More menu." groups="project.group_project_rating">-->
+<!--                                                <b>-->
+<!--                                                    <t t-if="record.rating_percentage_satisfaction.value == -1">-->
+<!--                                                        <i class="fa fa-smile-o"/> No rating yet-->
+<!--                                                    </t>-->
+<!--                                                    <t t-if="record.rating_percentage_satisfaction.value != -1">-->
+<!--                                                        <a name="action_view_all_rating" type="object" context="{'search_default_rating_last_30_days':1}">-->
+<!--                                                            <i class="fa fa-smile-o" role="img" aria-label="Percentage of satisfaction" title="Percentage of satisfaction"/> <t t-esc="record.rating_percentage_satisfaction.value"/>%-->
+<!--                                                        </a>-->
+<!--                                                    </t>-->
+<!--                                                </b>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="o_kanban_card_manage_pane dropdown-menu" groups="project.group_project_manager" role="menu">-->
+<!--                                        <div class="o_kanban_card_manage_section o_kanban_manage_reports">-->
+<!--                                            <div role="menuitem">-->
+<!--                                                <a name="%(portal.portal_share_action)d" type="action">Share</a>-->
+<!--                                            </div>-->
+<!--                                            <div role="menuitem">-->
+<!--                                                <a type="edit">Edit</a>-->
+<!--                                            </div>-->
+<!--                                            <div role="menuitem" t-if="record.rating_status.raw_value != 'no'">-->
+<!--                                                <a name="action_view_all_rating" type="object">Customer Ratings</a>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">-->
+<!--                                            <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <a class="o_kanban_manage_toggle_button o_left" href="#" groups="project.group_project_manager"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>-->
+<!--                                    <span class="o_right"><field name="is_favorite" widget="boolean_favorite" nolabel="1" force_save="1" /></span>-->
+<!--                                </div>-->
+
+<!--                                <div class="o_project_kanban_boxes">-->
+<!--                                    <a class="o_project_kanban_box" name="%(act_project_project_2_project_task_all)d" type="action">-->
+<!--                                        <div>-->
+<!--                                            <span class="o_value"><t t-esc="record.task_count.value"/></span>-->
+<!--                                            <span class="o_label"><t t-esc="record.label_tasks.value"/></span>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                    <a t-if="record.analytic_account_id.raw_value" class="o_project_kanban_box o_project_timesheet_box" name="action_view_account_analytic_line" type="object" groups="analytic.group_analytic_accounting">-->
+<!--                                        <div>-->
+<!--                                            <span class="o_label">Profitability</span>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </t>-->
+<!--                    </templates>-->
+<!--                </kanban>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--      <record id="view_project_project_filter" model="ir.ui.view">-->
+<!--            <field name="name">projects.projects.select</field>-->
+<!--            <field name="model">projects.projects</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <search string="Search Project">-->
+<!--                    <field name="name" string="Project"/>-->
+<!--                    <field name="user_id" string="Project Manager"/>-->
+<!--                    <field name="partner_id" string="Customer" filter_domain="[('partner_id', 'child_of', self)]"/>-->
+<!--&lt;!&ndash;                    <filter string="My Favorites" name="my_projects" domain="[('favorite_user_ids', 'in', uid)]"/>&ndash;&gt;-->
+<!--                    <separator/>-->
+<!--                    <filter string="Followed" name="followed_by_me" domain="[('message_is_follower', '=', True)]"/>-->
+<!--                    <separator/>-->
+<!--                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>-->
+<!--                    <group expand="0" string="Group By">-->
+<!--                        <filter string="Project Manager" name="Manager" context="{'group_by': 'user_id'}"/>-->
+<!--                        <filter string="Customer" name="Partner" context="{'group_by': 'partner_id'}"/>-->
+<!--                    </group>-->
+<!--                </search>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--       <record id="ir_actions_server_project_sample" model="ir.actions.server">-->
+<!--            <field name="name">Project: Activate Sample Project</field>-->
+<!--            <field name="model_id" ref="de_construction_app.model_projects_projects"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">action = model.activate_sample_project()</field>-->
+<!--        </record>-->
+
+<!--         <record id="open_view_project_all" model="ir.actions.act_window">-->
+<!--                    <field name="name">Projects</field>-->
+<!--                    <field name="res_model">projects.projects</field>-->
+<!--                    <field name="domain">[]</field>-->
+<!--                    <field name="view_mode">kanban,form</field>-->
+<!--                    <field name="view_id" ref="view_project_kanban"/>-->
+<!--                    <field name="search_view_id" ref="view_project_project_filter"/>-->
+<!--                    <field name="target">main</field>-->
+<!--                    <field name="help" type="html">-->
+<!--                        <p class="o_view_nocontent_smiling_face">-->
+<!--                            Create a new project-->
+<!--                        </p><p>-->
+<!--                            Or <a type="action" name="%(de_construction_app.ir_actions_server_project_sample)d" tabindex="-1">activate a sample project</a> to play with.-->
+<!--                        </p>-->
+<!--                    </field>-->
+<!--                </record>-->
+
+
+
+      <!--   menu item here -->
+    <menuitem name="Construction" id="construction_root" sequence="3" web_icon="de_construction_app.static/description/icon.png"/>
+      <menuitem name="Construction" id="construction_menu" parent="construction_root" />
+      <menuitem name="Project" id="open_view_project_all_project" parent="construction_menu" action="action_project"/>
+      <menuitem name="Notes" id="notes_menu" parent="construction_menu" action="action_notes"/>
+<!--      <menuitem  id="menu_projects" name="Projects" parent="construction_root" sequence="1"/>-->
+
+<!--      action="open_view_project_all"-->
+
+
+
+  </data>
+</odoo>

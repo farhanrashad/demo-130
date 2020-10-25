@@ -1,0 +1,22 @@
+<odoo>
+
+<record id="action_contractors" model="ir.actions.act_window">
+            <field name="name">Contractor</field>
+            <field name="type">ir.actions.act_window</field>
+<!--            <field name="res_model">res.users</field>-->
+            <field name="res_model">res.users</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">kanban,tree,form</field>
+<!--            <field name="context">{"search_default_male":1}</field>-->
+<!--            <field name="view_id" ref="view_account_list"/>-->
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new contractors
+              </p>
+
+            </field>
+        </record>
+ <menuitem name="Vendors" id="vendor_root" parent="construction_root"/>
+      <menuitem name="Contractors" id="contractors_menu" parent="vendor_root" action="action_contractors"/>
+
+    </odoo>

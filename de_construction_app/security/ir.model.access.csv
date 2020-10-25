@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_projects_projects,access.projects.projects,model_projects_projects,,1,1,1,1
+access_projects_projects_linea,access.projects.projects.linea,model_projects_projects_linea,,1,1,1,1
+access_notes_notes,access.notes.notes,model_notes_notes,,1,1,1,1
+access_boq_boq,access.boq.boq,model_boq_boq,,1,1,1,1
+access_materials_materials,access.materials.materials,model_materials_materials,,1,1,1,1
+access_order_job,access.order.job,model_order_job,,1,1,1,1
+access_order_job_linea,access.order.job.linea,model_order_job_linea,,1,1,1,1
+access_order_job_linesm,access.order.job.linesm,model_order_job_linesm,,1,1,1,1
+access_order_job_linesubtask,access.order.job.linesubtask,model_order_job_linesubtask,,1,1,1,1
+access_order_job_linetimesheet,access.order.job.linetimesheet,model_order_job_linetimesheet,,1,1,1,1
+access_joborder_notes,access.joborder.notes,model_joborder_notes,,1,1,1,1
+access_contractor_contractor,access.contractor.contractor,model_contractor_contractor,,1,1,1,1
+access_stages_stages,access.stages.stages,model_stages_stages,,1,1,1,1

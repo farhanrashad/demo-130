@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_make_invoice_part" model="ir.ui.view">
+            <field name="name">Make Part Invoice</field>
+            <field name="model">repair.order.make_invoice.part</field>
+            <field name="arch" type="xml">
+            <form string="Create part invoices">
+                <group string="Do you really want to create the part invoice(s)?">
+                    <field name="group"/>
+                </group>
+                <footer>
+                    <button name="make_part_invoices" string="Create Part Invoice" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+            </field>
+        </record>
+
+        <act_window name="Create part invoices"
+            res_model="repair.order.make_invoice.part"
+            binding_model="repair.order"
+            binding_views="list"
+            view_mode="form"
+            target="new"
+            id="act_repair_invoice_part"/>
+
+    </data>
+</odoo>

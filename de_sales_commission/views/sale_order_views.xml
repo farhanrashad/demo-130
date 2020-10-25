@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.view.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='action_confirm']" position="after">
+<!--                <button name="test_commission" string="Test" type="object" class="oe_highlight"/>-->
+<!--                attrs="{'invisible': [('state', 'not in', ['draft'])]}"-->
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group" position="inside">
+                    <group string="Agent" name="Agent">
+                        <field name="agent_id"/>
+                    </group>
+                </xpath>
+
+
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/form[1]/group[1]/group[1]/field[@name='tax_id']" position="after">
+                <field name="commission_percentage"/>
+            </xpath>
+            <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='tax_id']" position="after">
+                <field name="commission_percentage"/>
+
+            </xpath>
+            <xpath expr="//field[@name='note']" position="after">
+                <group name="group_recompute_commission">
+                    <button name="recompute_lines_agents" type="object" string="Recompute lines agents" states="draft,sent"></button>
+                </group>
+            </xpath>
+            
+            <field name="amount_total" position="after">
+                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                    <label for="commission_amount" />
+                </div>
+                <field name="commission_amount" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                 <div class="oe_clear"/>
+            </field>
+            
+        </field>
+    </record>
+
+<!--        <record id="sale_view_order_form_inherit_order_line" model="ir.ui.view">-->
+<!--        <field name="name">sale.view.order.form.inherit.line</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="inherit_id" ref="sale.view_order_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--        <xpath expr="/form/sheet/notebook/page[@name='order_lines']/field[@name='order_line']/field[@name='price_unit']" position="after">-->
+<!--        <field name="partner_id"/>-->
+<!--        </xpath>-->
+<!--        </field>-->
+<!--        </record>-->
+</odoo>

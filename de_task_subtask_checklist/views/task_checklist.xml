@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="project_subtask_configuration_inherit" model="ir.ui.view">
+            <field name="name">project.subtask.configuration.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="project.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <xpath expr="//div[@id='o_setting_box')]" position="inside">
+                        <div class="o_setting_left_pane">
+                            <field name="task_progress_restriction" widget="radio"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="task_progress_restriction"/>
+                            <div class="text-muted">
+                                Restrict Task Progress Before All Checklist Either Canceled Or Completed
+                            </div>
+                        </div>
+                    </xpath>
+                </xpath>
+                <xpath expr="//div[hasclass('o_setting_box')]" position="after">
+                    <div class="o_setting_left_pane">
+                        <field name="task_progress_restriction" widget="radio"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="task_progress_restriction"/>
+                        <div class="text-muted">
+                            Restrict Task Progress Before All Checklist Either Canceled Or Completed
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <record id="project_task_type_inherit" model="ir.ui.view">
+            <field name="name">project.task.type.inherit</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_edit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='fold']" position="after">
+                    <field name="checklist_task_progress_restriction"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="project_task_inherit" model="ir.ui.view">
+            <field name="name">project.task.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="task_checklist_id"/>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page[@name='extra_info']" position="after">
+                    <page name="task_checklist" string="Checklist">
+                        <field name="checklist_item_ids" widget="section_and_note_one2many" readonly="1">
+                            <tree >
+                                <field name="name"/>
+                                <field name="description"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

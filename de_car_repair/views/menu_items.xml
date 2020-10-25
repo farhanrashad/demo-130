@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem
+    		name="Car Repair"
+            sequence="1"
+            id="parent_menu_car_repair"
+            web_icon="de_car_repair.static/description/icon.png"
+        />
+
+        <!--            groups="de_car_repair.group_repair_user"-->
+
+
+        <menuitem id="menu_car_repair_transaction" name="Repair Management" parent="parent_menu_car_repair" sequence="10"/>
+        <menuitem id="menu_car_products" name="Products" parent="parent_menu_car_repair" sequence="20"/>
+        <menuitem id="menu_car_repair_report" name="Reporting" parent="parent_menu_car_repair" sequence="30"/>
+        <menuitem id="menu_car_repair_configuration" name="Configuration" parent="parent_menu_car_repair" sequence="32"/>
+<!--         sequence="30" groups="de_car_repair.group_repair_manager"-->
+    </data>
+</odoo>

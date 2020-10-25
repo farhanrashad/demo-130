@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_de_repair_app_invoice_de_repair_app_invoice,de_repair_app_invoice.de_repair_app_invoice,model_de_repair_app_invoice_de_repair_app_invoice,base.group_user,1,1,1,1

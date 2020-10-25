@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+  <data>
+        <record id="hr_employee_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/div[@name='button_box']/button[@id='hr_presence_button']"  position="after">
+                      <button name="open_overtime" type="object" class="oe_stat_button" icon="fa-clock-o">
+                          <field name="overtime_count" string="Overtime" widget="statinfo"/>
+                      </button>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page[@name='hr_settings']/group/group[@name='identification_group']" position="after">
+                    <group string="Overtime Pay" name="overtime_pay_group">
+                        <field name="weekday_ot_rate" />
+                        <field name="weekend_ot_rate" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+<!--      overtime tree view-->
+      <record id="hr_employee_overtime_tree_view" model="ir.ui.view">
+        <field name="name">hr.employee.overtime.tree.view</field>
+        <field name="model">hr.employees.overtime</field>
+        <field name="arch" type="xml">
+            <tree string="Overtime Tree">
+                <field name="employee_id"/>
+                <field name="date"/>
+                <field name="based_on"/>
+                <field name="ot_rate"/>
+                <field name="overtime"/>
+<!--                <field name="state"/>-->
+            </tree>
+        </field>
+    </record>
+<!--      overtime form view-->
+      <record id="hr_employee_overtime_form_view" model="ir.ui.view">
+            <field name="name">hr.employee.overtime.form.view</field>
+            <field name="model">hr.employees.overtime</field>
+            <field name="arch" type="xml">
+                <form string="Overtime Form">
+                    <header>
+                        <button name="state_approve" type="object" states="draft" class="oe_highlight" string="Approve"/>
+                        <button name="state_cancel" type="object" states="draft"  string="Cancel"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done,cancel"/>
+                    </header>
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="date"/>
+                            <field name="based_on"/>
+                        </group>
+                        <group>
+                            <field name="ot_rate"/>
+                            <field name="overtime"/>
+                        </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+    </record>
+<!--overtime action -->
+      <record id="hr_employees_overtime_action" model="ir.actions.act_window">
+        <field name="name">Overtime</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.employees.overtime</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p>
+                Enter the first overtime !!!
+            </p>
+        </field>
+    </record>
+
+<!-- payslips tree view      -->
+      <record id="hr_payroll_inherit" model="ir.ui.view">
+            <field name="name">hr.payroll.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page[@name='account_info']/group/group[@name='accounting']" position="after">
+                    <field name='payslip_overtime_ids' readonly="1">
+                            <tree name='overtime_tree'>
+                                <field name='date'/>
+                                <field name='based_on'/>
+                                <field name='ot_rate'/>
+                                <field name='overtime'/>
+                            </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+      <menuitem id="hr_employees_overtime" parent="hr.menu_hr_root" name="Overtime" action="hr_employees_overtime_action"/>
+
+  </data>
+</odoo>

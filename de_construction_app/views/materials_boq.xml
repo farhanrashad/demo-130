@@ -1,0 +1,36 @@
+<odoo>
+    <record id="action_materials" model="ir.actions.act_window">
+            <field name="name">Purchase Requisitions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">materials.materials</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+<!--            <field name="context">{"search_default_male":1}</field>-->
+<!--            <field name="view_id" ref="view_account_list"/>-->
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new project
+              </p>
+
+            </field>
+        </record>
+<record id="action_boq" model="ir.actions.act_window">
+            <field name="name">boq</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">boq.boq</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+<!--            <field name="context">{"search_default_male":1}</field>-->
+<!--            <field name="view_id" ref="view_account_list"/>-->
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new boq
+              </p>
+
+            </field>
+        </record>
+ <menuitem name="Materials/BOQ" id="materialsboq_root" parent="construction_root"/>
+      <menuitem name="Material Requisitions/BOQ" id="boq_menu" parent="materialsboq_root" action="action_boq"/>
+      <menuitem name="Materials" id="mate_menu" parent="materialsboq_root" action="action_materials"/>
+
+    </odoo>
