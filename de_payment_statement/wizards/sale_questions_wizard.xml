@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_sale_wizard" model="ir.ui.view">
+			<field name="name">sale.questions.wizard.form</field>
+			<field name="model">sale.questions.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Choose The Details">
+					<group>
+						<field name="check_box" invisible="1"/>
+						<field name="type" widget="radio"/>
+					</group>
+					<br />
+					<notebook>
+						<page string="Question Groups and Values">
+							<field name="sale_questions_line">
+								<tree editable="bottom">
+									<field name="question_groups"/>
+									<field name="value" widget="many2many_tags"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+					<footer>
+						<button name="action_add" string="Submit" type="object" class="oe_highlight"/>
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="action_sale_wizard" model="ir.actions.act_window">
+			<field name="name">Groups</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">sale.questions.wizard</field>
+			<field name="view_id" ref="view_sale_wizard" />
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+	</data>
+</odoo>
