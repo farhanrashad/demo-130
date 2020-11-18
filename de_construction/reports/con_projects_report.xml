@@ -4,7 +4,7 @@
             string="Project Report"
             model="con.projects"
             report_type="qweb-pdf"
-            file="de_construction_app.report_con_project_reports"
-            name="de_construction_app.report_con_project_reports" />
+            file="de_construction.report_con_project_reports"
+            name="de_construction.report_con_project_reports" />
 
 </odoo>

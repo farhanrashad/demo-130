@@ -1,6 +1,19 @@
 <odoo>
     <data>
 
+          <!--    Action For Sub Menu Project -->
+        <record id="con_project_action" model="ir.actions.act_window">
+            <field name="name">Project</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">con.projects</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a New Project
+                </p>
+            </field>
+        </record>
+
         <!--        Project Tree View-->
         <record model="ir.ui.view" id="construction_project_tree_view">
             <field name="name">con.projects.tree</field>
@@ -126,13 +139,15 @@
 <!--                                    type="object" class="oe_stat_button" icon="fa-file-text-o">-->
 <!--                                <field name="documents_count" string="Documents" widget="statinfo"/>-->
 <!--                            </button>-->
-                            <button name="con_task_button" type="object" class="oe_stat_button" icon="fa-tasks">
+                            <button name="con_task_button"
+                                    type="object" class="oe_stat_button" icon="fa-tasks">
                                 <field name="task_count" string="Tasks" widget="statinfo"/>
                             </button>
-<!--                            <button name="material_requisition" type="object" class="oe_stat_button" string="Material Requisition" icon="fa-book">-->
-<!--&lt;!&ndash;                                <field name="documents_count" string="material" widget="statinfo"/>&ndash;&gt;-->
-<!--                            </button>-->
-                            <button name="notes_document" type="object" class="oe_stat_button" icon="fa-tasks">
+                            <button name="material_requisition" type="object" class="oe_stat_button" string="Material Requisition" icon="fa-book">
+                                <!--                        <field name="documents_count" string="material" widget="statinfo"/>-->
+                            </button>
+                            <button name="notes_document"
+                                    type="object" class="oe_stat_button" icon="fa-tasks">
                                 <field name="notes_count" string="Notes" widget="statinfo"/>
                             </button>
 <!--                            <button name="time_sheet_button"-->
@@ -206,22 +221,8 @@
                                 </group>
                             </page>
                         </notebook>
-                  </sheet>
+                    </sheet>
                 </form>
-            </field>
-        </record>
-
-         <!--    Action For Sub Menu Project -->
-        <record id="con_project_action" model="ir.actions.act_window">
-            <field name="name">Project</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">con.projects</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="construction_project_tree_view"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create a New Project
-                </p>
             </field>
         </record>
 

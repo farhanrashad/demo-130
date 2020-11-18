@@ -5,6 +5,6 @@
             string="Job Order"
             model="job.order"
             report_type="qweb-pdf"
-            file="de_construction_app.report_con_job_order_template"
-            name="de_construction_app.report_con_job_order_template" />
+            file="de_construction.report_con_job_order_template"
+            name="de_construction.report_con_job_order_template" />
 </odoo>

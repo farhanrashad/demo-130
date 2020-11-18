@@ -123,19 +123,19 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Stock Move">
-                                <field name="stock_move_line">
-                                    <tree editable="bottom">
-                                        <field name="expected_date"/>
-                                        <field name="creation_date"/>
-                                        <field name="source_document"/>
-                                        <field name="product_ids"/>
-                                        <field name="initial_demand"/>
-                                        <field name="unit_of_measure"/>
-                                        <field name="state_check"/>
-                                    </tree>
-                                </field>
-                            </page>
+<!--                            <page string="Stock Move">-->
+<!--                                <field name="stock_move_line">-->
+<!--                                    <tree editable="bottom">-->
+<!--                                        <field name="expected_date"/>-->
+<!--                                        <field name="creation_date"/>-->
+<!--                                        <field name="source_document"/>-->
+<!--                                        <field name="product_ids"/>-->
+<!--                                        <field name="initial_demand"/>-->
+<!--                                        <field name="unit_of_measure"/>-->
+<!--                                        <field name="state_check"/>-->
+<!--                                    </tree>-->
+<!--                                </field>-->
+<!--                            </page>-->
                             <page string="TimeSheet">
                                 <group>
                                     <group>

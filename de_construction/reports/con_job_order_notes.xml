@@ -5,6 +5,6 @@
             string="Notes"
             model="job.notes"
             report_type="qweb-pdf"
-            file="de_construction_app.report_con_job_order_notes_template"
-            name="de_construction_app.report_con_job_order_notes_template" />
+            file="de_construction.report_con_job_order_notes_template"
+            name="de_construction.report_con_job_order_notes_template" />
 </odoo>

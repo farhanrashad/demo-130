@@ -9,6 +9,7 @@
                 <group>
                     <group class="oe_title col-3 col-lg-3">
                         <label string="Project Subtask User" for="create_id" class="col-3 col-lg-3 o_light_label"/>
+
                     </group>
                     <group class="col-9 col-lg-9">
                         <tree>
@@ -19,6 +20,7 @@
 
                         </tree>
                     </group>
+
                 </group>
                 <footer>
                     <button string="Create" type="object" class="btn-primary"/>
@@ -28,12 +30,12 @@
         </field>
     </record>
 
-    <record id="con_create_sub_task_action" model="ir.actions.act_window">
-        <field name="name">Project User Subtask</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">create.subtask</field>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="con_create_sub_task_form"/>
-        <field name="target">new</field>
-    </record>
+<!--    <record id="con_create_sub_task_action" model="ir.actions.act_window">-->
+<!--        <field name="name">Project User Subtask</field>-->
+<!--        <field name="type">ir.actions.act_window</field>-->
+<!--        <field name="res_model">create.subtask</field>-->
+<!--        <field name="view_mode">tree,form</field>-->
+<!--        <field name="view_id" ref="con_create_sub_task_form"/>-->
+<!--        <field name="target">new</field>-->
+<!--    </record>-->
 </odoo>
