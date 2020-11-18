@@ -28,7 +28,7 @@
     'data': [
 
         'security/ir.model.access.csv',
-        'wizards/con_create_sub_tasks.xml',
+        # 'wizards/con_create_sub_tasks.xml',
         # 'reports/con_job_order_notes.xml',
         # 'reports/con_job_order_notes_template.xml',
         # 'reports/con_job_order_report.xml',

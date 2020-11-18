@@ -33,7 +33,7 @@
                             </page>
                         </notebook>
                         <footer>
-                            <button name="action_create_purchase_order" string="Create" class="btn-primary" type="object"/>
+                            <button name="#" string="Create" class="btn-primary"/>
                             <button special="cancel" string="Close" class="oe_link" />
                         </footer>
                     </sheet>
@@ -76,11 +76,11 @@
                         <button name="action_cancel" states="draft,sent" type="object" string="Cancel"/>
                         <button name="action_department_approval" states="waiting" string="Department Approve"
                                 class="btn-primary" type="object"/>
-                        <button name="action_reject" states="waiting,ir,approved" type="object" string="Reject"/>
+                        <button name="#" states="waiting,ir,approved" string="Reject"/>
                         <button name="con_approve" states="ir" string="Approve" class="btn-primary" type="object"/>
                         <button name="con_create_picking" states="approved" string="Create Picking and PO" class="btn-primary" type="object"/>
                         <button name="con_po_received" states="created" string="Received" class="btn-primary" type="object"/>
-<!--                        <button name="action_disposal" string="Purchase Order" class="btn-primary" type="object"/>-->
+                        <button name="action_disposal" string="Purchase Order" class="btn-primary" type="object"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="New,waiting,ir,approved,created,recived"/>
                     </header>
@@ -180,6 +180,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">materials.boq</field>
             <field name="view_mode">tree,form</field>
+<!--            <field name="view_id" ref="con_purchase_requistions_tree"/>-->
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Add a New project
