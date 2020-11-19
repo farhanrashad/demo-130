@@ -301,15 +301,18 @@ class print_commission_summary(models.Model):
                         raise UserError((
                                                     'No Record found against applied user: ' + employee.name + '\nKindly deselect all records not in done stage.'))
                     for data in commission_data:
-                        if not data.active_employee.user_id:
+                        employee_partner = self.env['res.partner'].search([('name', '=', data.active_employee.name)])
+                        if not employee_partner:
                             raise UserError(
-                                ('Please link related user on employee form in HR settings for: ' + employee.name))
+                                ('Partner of employee is not linked: ' + employee_partner.name))
 
                         total_commission = total_commission + data.commission_amount
                         data.state = 'billed'
+                        
+                        
 
                     inv_obj = {
-                        'partner_id': data.active_employee.user_id.partner_id.id,
+                        'partner_id': employee_partner.id,
                         'invoice_date': fields.Date.today(),
                         'type': 'in_invoice',
                         'name': '/',
