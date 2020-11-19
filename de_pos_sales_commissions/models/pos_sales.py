@@ -48,22 +48,21 @@ class pos_order(models.Model):
     def create(self, values):
         if values:
             dt = []
-            k = self.env['create.rule.form'].search([])
-            for kk in k:
-                if str(kk.start_date) <= values['date_order'].split()[0] and str(kk.end_date) >= \
+            rules = self.env['create.rule.form'].search([])
+            for rule in rules:
+                if str(rule.start_date) <= values['date_order'].split()[0] and str(rule.end_date) >= \
                         values['date_order'].split()[0]:
-                    z = self.env['create.rule.form'].search([('id', '=', kk.id)])
-                    if values['amount_total'] >= z.minimum_order:
-                        for zz in z.rule_line:
-                            #                             if zz:
-                            if zz.job_title.id == values['employee_id']:
+
+                    rule_records = self.env['create.rule.form'].search([('id', '=', rule.id), ('state', '=', 'lock')])
+                    if values['amount_total'] >= rule_records.minimum_order:
+                        for line in rule_records.rule_line:
+                            if line.job_title.id == values['employee_id']:
                                 self.env['commission.form'].create({
                                     'source_document': str(values['lines'][0][2]['name']),
-                                    #                                     'User':self.env.user,
                                     'active_employee': values['employee_id'],
                                     'order_date': values['date_order'].split()[0],
                                     'sales_amount': values['amount_total'],
-                                    'commission_amount': values['amount_total'] * (zz.commission_price / 100),
+                                    'commission_amount': values['amount_total'] * (line.commission_price / 100),
                                 })
                 else:
                     k = 0
@@ -290,32 +289,35 @@ class print_commission_summary(models.Model):
                 data_list = []
 
                 account = self.env['account.account'].search([('name', '=', 'POSCommission')])
-                for employee in order.user:
+                employee_ids = self.env['hr.employee'].search([('id', 'in', order.user.ids)])
+                for employee in employee_ids:
                     total_commission = 0
-                    #                         if order.start_date <= data.order_date and order.end_date >= data.order_date:
-                    #                         if employee.id == data.user.id:
-                    #                             data_list.append(data)
+
                     commission_data = self.env['commission.form'].search(
                         [('order_date', '>=', order.start_date), ('order_date', '<=', order.end_date),
                          ('active_employee', '=', employee.id), ('state', '=', 'done')])
+
                     if not commission_data:
                         raise UserError((
                                                     'No Record found against applied user: ' + employee.name + '\nKindly deselect all records not in done stage.'))
                     for data in commission_data:
+                        if not data.active_employee.user_id:
+                            raise UserError(
+                                ('Please link related user on employee form in HR settings for: ' + employee.name))
+
                         total_commission = total_commission + data.commission_amount
                         data.state = 'billed'
 
-                        inv_obj = {
-                            #                             'partner_id': data.User.partner_id.id,
-                            'partner_id': data.active_employee.user_id.partner_id.id,
-                            'invoice_date': fields.Date.today(),
-                            'type': 'in_invoice',
-                            'name': 'Commission Invoice',
-                            'state': 'draft',
-                            'invoice_line_ids': [(0, 0, {'name': data.source_document,
-                                                         'account_id': account.id,
-                                                         'quantity': 1.0,
-                                                         'price_unit': total_commission, })],
-                        }
+                    inv_obj = {
+                        'partner_id': data.active_employee.user_id.partner_id.id,
+                        'invoice_date': fields.Date.today(),
+                        'type': 'in_invoice',
+                        'name': '/',
+                        'state': 'draft',
+                        'invoice_line_ids': [(0, 0, {'name': data.source_document,
+                                                     'account_id': account.id,
+                                                     'quantity': 1.0,
+                                                     'price_unit': total_commission, })],
+                    }
 
-                        record = self.env['account.move'].create(inv_obj)
+                    record = self.env['account.move'].create(inv_obj)
