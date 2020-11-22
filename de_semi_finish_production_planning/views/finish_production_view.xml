@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="finish_production_form_view_inh" model="ir.ui.view">
+		<field name="name">mrp.production.form</field>
+		<field name="model">mrp.production</field>
+		<field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//sheet/field[@name='reservation_state']" position='before'>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="purchase_order" type="action" class="oe_stat_button" icon="fa-bars" string="Purchase Order">
+                            <field name="purchase_order_count"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_button_box" name="button_box">
+                        <button name="production_order" type="action" class="oe_stat_button" icon="fa-bars" string="Production Order"/>
+                            <field name="production_order_count"/>
+                    </div>
+
+                </xpath>
+
+                <xpath expr="//header/button[@name='button_mark_done']" position='after'>
+                    <button name="semi_finish_order" string="Create Semi-Finish Order" type="object" class="oe_highlight"
+                        attrs="{'invisible': [('is_order', '=', True)]}"/>
+                </xpath>
+
+                <xpath expr="//sheet" position='inside'>
+                    <group>
+                        <field name="is_order" string="Order Created" readonly=""/>
+                    </group>
+                </xpath>
+
+            </field>
+	</record>
+
+    <record id="model_semi_finish_action" model="ir.actions.server">
+        <field name="name">Create Semi-Finish Order</field>
+        <field name="model_id" ref="mrp.model_mrp_production"/>
+        <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+        <field name="binding_view_types">tree,list,form,kanban,activity</field>
+        <field name="state">code</field>
+        <field name="code">action = records.semi_finish_order_action()</field>
+    </record>
+
+</odoo>
