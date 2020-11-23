@@ -17,7 +17,11 @@ class MrpWorkorder(models.Model):
 #         self.time_ids.date_end = datetime.today()
 #         if self.is_last_unfinished_wo == True:
         qty_produced = 0.0
+        finish_qty = 0.0
         raw_material =self.env['mrp.production'].search([('name','=',self.production_id.name)])
+        for finish_line in raw_material.finished_move_line_ids:
+            if finish_line.done_move == False:
+                finish_qty = finish_qty + finish_line.qty_done
 #         workorders = self.env['mrp.workorder'].search([('production_id.name','=',raw_material.name)])            
 #         for workorder in workorders:
 #             if self.env.context['active_id'] == self.env.context['active_id']:
@@ -31,7 +35,7 @@ class MrpWorkorder(models.Model):
             if move_line.product_uom_qty:
                 if move_line.is_done == False:
                     move_line.update({
-                                'quantity_done' : (move_line.product_uom_qty_ratio)*self.qty_produced,
+                                'quantity_done' : (move_line.product_uom_qty_ratio)*finish_qty,
                             })
             else:
                  pass
@@ -52,7 +56,11 @@ class MrpWorkorder(models.Model):
         self.time_ids.date_end = datetime.today()
 #         if self.is_last_unfinished_wo == True:
         qty_produced = 0.0
+        finish_qty = 0.0
         raw_material =self.env['mrp.production'].search([('name','=',self.production_id.name)])
+        for finish_line in raw_material.finished_move_line_ids:
+            if finish_line.done_move == False:
+                finish_qty = finish_qty + finish_line.qty_done
 #         workorders = self.env['mrp.workorder'].search([('production_id.name','=',raw_material.name)])            
 #         for workorder in workorders:
 #             qty_produced = qty_produced + workorder.qty_produced
@@ -64,7 +72,7 @@ class MrpWorkorder(models.Model):
             if move_line.product_uom_qty: 
                 if move_line.is_done == False:
                     move_line.update({
-                            'quantity_done' : (move_line.product_uom_qty_ratio)*self.qty_produced,
+                            'quantity_done' : (move_line.product_uom_qty_ratio)*finish_qty,
                         })
                 else:
                     pass
@@ -79,7 +87,11 @@ class MrpWorkorder(models.Model):
     
     def action_open_manufacturing_order(self):
         res = super(MrpWorkorder, self).action_open_manufacturing_order()  
+        finish_qty = 0.0
         raw_material =self.env['mrp.production'].search([('name','=',self.production_id.name)])
+        for finish_line in raw_material.finished_move_line_ids:
+            if finish_line.done_move == False:
+                finish_qty = finish_qty + finish_line.qty_done
 #         workorders = self.env['mrp.workorder'].search([('production_id.name','=',raw_material.name)]) 
 #         qty_produced = 0.0
 #         for workorder in workorders:
@@ -92,7 +104,7 @@ class MrpWorkorder(models.Model):
             if move_line.product_uom_qty:
                 if move_line.is_done == False:
                     move_line.update({
-                        'quantity_done' : (move_line.product_uom_qty_ratio)*self.qty_produced,
+                        'quantity_done' : (move_line.product_uom_qty_ratio)*finish_qty,
                         })
                 else:
                     pass
@@ -269,6 +281,7 @@ class MrpProduction(models.Model):
                 })
 
         total_quantity = 0.0
+        finish_qty = 0.0
         if self.product_f_qty:
             total_quantity = total_quantity + self.product_f_qty
         if self.product_s_qty:
@@ -276,7 +289,15 @@ class MrpProduction(models.Model):
         if self.product_t_qty:
             total_quantity = total_quantity + self.product_t_qty
         if self.product_fo_qty:
-            total_quantity = total_quantity + self.product_fo_qty 
+            total_quantity = total_quantity + self.product_fo_qty
+            
+        for finish_line in self.finished_move_line_ids:
+            finish_qty = finish_qty + finish_line.qty_done
+            
+        total_quantity = total_quantity + finish_qty
+            
+            
+            
         if total_quantity > self.product_qty:
             raise exceptions.ValidationError('Routing Quantity must be equal to MO Quantity To Consume')            
         else:        

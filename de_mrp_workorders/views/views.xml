@@ -46,6 +46,9 @@
 			<field name="model">mrp.workorder</field>
 			<field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
 			<field name="arch" type="xml">
+<!--                 <xpath expr="//header" position="inside">                        
+                <button name="record_production" type="object" string="Ready" class="btn-success" attrs="{'invisible': ['|', '|', '|', ('is_produced', '=', True), ('working_state', '=', 'blocked'), ('state', '!=', 'progress'), ('is_user_working', '=', False)]}"/>
+				</xpath> -->
 				<xpath expr="//field[@name='product_uom_id']" position="before">
                         
                         <field name="qty_production"/>
