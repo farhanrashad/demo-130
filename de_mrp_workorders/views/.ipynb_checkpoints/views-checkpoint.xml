@@ -1,5 +1,19 @@
 <odoo>
   <data>
+       <record id="mrp_stock_move_tree_view_inherit" model="ir.ui.view">
+			<field name="name">stock.move.tree.view.inherit</field>
+			<field name="model">stock.move</field>
+			<field name="inherit_id" ref="mrp.view_stock_move_raw_tree"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='is_done']" position="after">
+                        <field name="product_uom_qty_ratio" invisible="1"/>
+                        <field name="is_ratio" invisible="1"/>
+
+				</xpath>
+			</field>
+	  </record>
+      
+      
        <record id="work_order_tree_view_inherit" model="ir.ui.view">
 			<field name="name">mrp.workorder.tree.view.inherit</field>
 			<field name="model">mrp.workorder</field>
