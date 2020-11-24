@@ -9,12 +9,15 @@
 
                 <xpath expr="//sheet/field[@name='reservation_state']" position='before'>
                     <div class="oe_button_box" name="button_box">
-                        <button name="purchase_order" type="action" class="oe_stat_button" icon="fa-bars" string="Purchase Order">
+                        
+                        <button class="oe_stat_button" string="Purchase Order">
                             <field name="purchase_order_count"/>
                         </button>
-                        <button name="production_order" type="action" class="oe_stat_button" icon="fa-bars" string="Production Order">
+                        
+                        <button class="oe_stat_button" string="Production Order">
                             <field name="production_order_count"/>
                         </button>
+                        
                     </div>
 
                 </xpath>
@@ -26,7 +29,7 @@
 
                 <xpath expr="//sheet" position='inside'>
                     <group>
-                        <field name="is_order" string="Order Created" readonly=""/>
+                        <field name="is_order" string="Order Created" readonly="1" invisible="1"/>
                     </group>
                 </xpath>
 
