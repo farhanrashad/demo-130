@@ -3,25 +3,17 @@
 
 {
     "name": "POS Analytic Account",
-    "category": 'Point of Sales',
     "summary": 'POS Analytic Account',
-    "description": """
-	 
-   
-    """,
     "sequence": 1,
     "author": "Dynexcel",
     "website": "http://www.dynexcel.co",
-    "version": '14.0.0.1',
+    "version": '14.0.0.3',
     "depends": ['base','point_of_sale'],
     "data": [
         'security/ir.model.access.csv',
         'views/pos_analytic_account_view.xml',
         'views/pos_analytic_account_views_inherit.xml',
     ],
-
-    "price": 0,
-    "currency": 'EUR',
     "installable": True,
     "application": False,
     "auto_install": False,
