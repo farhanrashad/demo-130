@@ -26,7 +26,7 @@ class FinishProduction(models.Model):
             }
             order = self.env['mrp.production'].create(vals)
 
-        elif self.bom_id.type=='subcontract':
+        if self.bom_id.type=='subcontract':
             
             move = self.env['mrp.bom'].search([('product_tmpl_id','=', self.bom_id.id)])
             vals = {
@@ -84,6 +84,6 @@ class FinishProduction(models.Model):
         self.production_order_count = record
 
     def purchase_count(self):
-        record = self.env['purchase.order'].search_count([('partner_id', '=', self.user_id.id)])
+        record = self.env['purchase.order'].search_count([('partner_id', '=', self.bom_id.subcontractor_ids.id)])
         self.purchase_order_count = record
         
