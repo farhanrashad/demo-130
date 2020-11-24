@@ -11,7 +11,6 @@
     "depends": ['base','point_of_sale'],
     "data": [
         'security/ir.model.access.csv',
-        'views/pos_analytic_account_view.xml',
         'views/pos_analytic_account_views_inherit.xml',
     ],
     "installable": True,
