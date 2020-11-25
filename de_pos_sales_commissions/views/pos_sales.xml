@@ -156,13 +156,14 @@
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <div>
-                        <group col="4">
-                            <field name="apply_on" widget="radio"/>
-                            <field name="priority" attrs="{'readonly':[('state','=','lock')]}"/>
-                        </group>
-                    </div>
-                    <group>
+					<div class="oe_title">
+						<h1>
+							<field name="name" default_focus="1" placeholder="Rule Name..."/>
+						</h1>
+					</div>
+                    <group col="4">
+                        <field name="apply_on" widget="radio"/>
+                        <field name="priority" attrs="{'readonly':[('state','=','lock')]}"/>
                     </group>
                     <group col="4">
                         <field name="start_date" attrs="{'readonly':[('state','=','lock')]}"/>
@@ -175,7 +176,7 @@
                         <page string="Beneficial(s)">
                             <field name="rule_line" attrs="{'readonly':[('state','=','lock')]}">
                                 <tree string="Beneficial(s)" editable="bottom" >
-                                    <field name="job_title"/>
+                                    <field name="job_title" />
                                     <field name="users"/>
                                     <field name="compute_price"/>
                                     <field name="commission_price"/>
@@ -362,36 +363,6 @@
             </form>
         </field>
     </record>
-
-    <record id="open_sales_target_tree" model="ir.ui.view">
-        <field name="name">Sales Target</field>
-        <field name="model">sales.target.form</field>
-        <field name="arch" type="xml">
-            <tree string="Create Rule">
-                <field name="sales_person"/>
-                <field name="target_period" />
-                <field name="start_date"/>
-                <field name="end_date"/>
-
-            </tree>
-        </field>
-    </record>
-
-
-    <record id="open_sales_target_order" model="ir.actions.act_window">
-        <field name="name">Sales Target</field>
-        <field name="res_model">sales.target.form</field>
-        <field name="binding_view_types">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="open_sales_target_tree"/>
-    </record>
-
-
-    <menuitem id="menu_sales_target"
-              name="Sales Target"
-              parent="de_pos_sales_commissions.menu_sale_commission"
-              action="de_pos_sales_commissions.open_sales_target_order"/>
-
 
     <record id="create_commission_summary_form" model="ir.ui.view">
         <field name="name">commission.summary.wizard</field>

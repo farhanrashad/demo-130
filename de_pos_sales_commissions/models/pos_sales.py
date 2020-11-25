@@ -101,7 +101,9 @@ class pos_order_line(models.Model):
 class create_rule(models.Model):
     _name = 'create.rule.form'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
+    _rec_name = 'name'
 
+    name = fields.Char(required=True)
     apply_on = fields.Selection([('pos', 'Pos Order')], 'Apply On', default="pos")
     priority = fields.Integer("Priority", default="1")
     start_date = fields.Date("Start Date", required=True)
@@ -119,6 +121,12 @@ class create_rule(models.Model):
     def check_commission_amount(self):
         if self.minimum_order <= 0:
             raise ValidationError('Minimum Order amount should be greater than 0.')
+
+    @api.constrains('end_date', 'start_date')
+    def date_constrains(self):
+        for record in self:
+            if record.end_date < record.start_date:
+                raise ValidationError(_('Sorry, End Date Must be greater Than Start Date...'))
 
     @api.onchange('all_employees')
     def onchange_all_employees(self):
@@ -139,6 +147,9 @@ class create_rule(models.Model):
 
     def action_lock(self):
         self.state = 'lock'
+        self.refresh_employee_list()
+
+    def refresh_employee_list(self):
         employees = self.env['hr.employee'].search([])
         for employee in employees:
             employee.update({
@@ -147,22 +158,42 @@ class create_rule(models.Model):
 
     def action_reset(self):
         self.state = 'draft'
+        emp_list = []
+        if self.rule_line:
+            for line in self.rule_line:
+                emp_list.append(line.job_title.id)
 
+        employees = self.env['hr.employee'].search([('id', 'in', emp_list)])
+        for employee in employees:
+            employee.update({
+                'employee_set': True,
+            })
 
-#     def write(self, values):
-#         emp_list = []
-#         if self.rule_line:
-#             for line in self.rule_line:
-#                 emp_list.append(line.job_title.id)
+    @api.model
+    def create(self, values):
+        employees = self.env['hr.employee'].search([])
+        for employee in employees:
+            employee.update({
+                'employee_set': False,
+            })
+        rules = super(create_rule, self).create(values)
+        return rules
 
-#         employees  = self.env['hr.employee'].search(['id','in', emp_list])
+    def write(self, values):
+        emp_list = []
+        if self.rule_line:
+            for line in self.rule_line:
+                emp_list.append(line.job_title.id)
 
-#         for employee in employees:
-#             employee.update ({
-#                        'employee_set': False,
-#                         })
-#         ruless = super(create_rule, self).write(values)
-#         return ruless
+        employees = self.env['hr.employee'].search([('id', 'in', emp_list)])
+
+        for employee in employees:
+            employee.update({
+                'employee_set': True,
+            })
+        rules = super(create_rule, self).write(values)
+        return rules
+
 
 class HrEmployeeInherit(models.Model):
     _inherit = 'hr.employee'
@@ -172,7 +203,7 @@ class HrEmployeeInherit(models.Model):
 class beneficial(models.Model):
     _name = 'beneficial.form'
 
-    job_title = fields.Many2one('hr.employee', string="Employee", domain=[('employee_set', '=', False)])
+    job_title = fields.Many2one('hr.employee', string="Employee", domain=[('employee_set', '=', False)], required=True)
     users = fields.Many2one(related='job_title.job_id')
     compute_price = fields.Selection([('percentage', 'Percentage')], default='percentage', readonly=True)
     commission_price = fields.Float("Commission(%)")
@@ -223,45 +254,15 @@ class commission(models.Model):
     def action_cancelled(self):
         self.state = 'cancelled'
 
-        def unlink(self):
-            if not self.state == 'draft':
-                raise UserError(('Deletion is only allowed for draft documents!'))
+    def unlink(self):
+        if not self.state == 'draft':
+            raise UserError(('Deletion is only allowed for draft documents!'))
 
     def action_done(self):
         self.state = 'done'
 
     def action_billed(self):
         self.state = 'billed'
-
-
-class sales_target(models.Model):
-    _name = 'sales.target.form'
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
-
-    sales_person = fields.Many2one('res.users', string="Sales Person")
-    target_period = fields.Selection([('mt', 'Monthly'), ('yl', 'yearly'), ('dy', 'Day')], 'Target Period',
-                                     default="mt")
-    start_date = fields.Date("Start Date")
-    end_date = fields.Date("End Date")
-
-    sales_target_line = fields.One2many("sale.target.line", "sale_target_order")
-
-    state = fields.Selection([('draft', 'Draft'), ('confirm', 'confirmed')], 'Status', readonly=True, index=True,
-                             copy=False, default='draft', track_visibility='onchange')
-
-    def draft(self):
-        self.write({'state': 'confirm'})
-
-
-class sales_target_line(models.Model):
-    _name = 'sale.target.line'
-
-    start_target = fields.Date("Start of Target")
-    end_target = fields.Date("End of Target")
-    target_amount = fields.Float("Target Amount")
-    sale_amount = fields.Float("Sales Amount")
-    commission_amount = fields.Float("Commission Amount")
-    sale_target_order = fields.Many2one("sales.target.form")
 
 
 class print_commission_summary(models.Model):
