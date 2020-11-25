@@ -1,0 +1,95 @@
+<odoo>
+    <data>
+        <report id="report_commission_summary_detail"
+                string="Print Commission Summary"
+                model="commission.form"
+                name="de_pos_sales_commissions.report_custom_template"
+                report_type="qweb-pdf"
+                menu="0"/>
+
+        <!--Template for  pdf-->
+        <template id="report_custom_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure" />
+                        <h2 style="text-align: center;">Commission Details </h2>
+                    </div>
+                    <div class="col-xs-12">
+                        <table style="border:1px solid black;" class="table table-sm o_main_table">
+                            <tr>
+                                <td>
+                                    <span style="font-size:15px;" t-esc="users[1]" /><br/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-xs-12">
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <th width="20%" style="border:1px solid black;" class="text-center"><strong>Source Document</strong></th>
+                                <th width="20%" style="border:1px solid black;" class="text-center"><strong>Commission Date</strong></th>
+                                <th width="20%" style="border:1px solid black;" class="text-center"><strong>Sales Amount</strong></th>
+                                <th width="20%" style="border:1px solid black;" class="text-center"><strong>Commission Amount</strong></th>
+                                <th width="20%" style="border:1px solid black;" class="text-center"><strong>State</strong></th>
+                                <!-- <th width="20%" style="border:1px solid black;" class="text-center"><strong>Pay by</strong></th> -->
+                            </thead>
+                            <t t-set="total_sales_amount" t-value="0"/>
+                            <t t-set="total_commission_amount" t-value="0"/>
+                            <tbody>
+                                <t t-foreach="datacr" t-as="line">
+                                    <!-- <t t-foreach="cr.invoice_line_ids12" t-as="line"> -->
+                                    <tr>
+                                        <td width="20%" style=" border:1px solid black;">
+                                            <span t-field="line.source_document"/>
+                                        </td>
+
+                                        <td width="20%" style=" border:1px solid black;">
+                                            <span t-field="line.order_date"/>
+                                        </td>
+
+                                        <td width="20%" style="border:1px solid black;">
+                                            <span t-field="line.sales_amount"/>
+                                            <t t-set="total_sales_amount" t-value="total_sales_amount + line.sales_amount"/>
+                                        </td>
+
+                                        <td width="20%" style="border:1px solid black;">
+                                            <span t-field="line.commission_amount"/>
+                                            <t t-set="total_commission_amount" t-value="total_commission_amount + line.commission_amount"/>
+                                        </td>
+
+                                        <td width="20%" style="border:1px solid black;">
+                                            <span t-field="line.state"/>
+                                        </td>
+
+                                        <!--                      <td width="20%" style=" border:1px solid black;">
+                                                                     <span t-field="line.pay_by"/>
+                                                                  </td> -->
+                                    </tr>
+                                </t>
+                                <div class="clearfix" style='float:right;' align="right">
+                                    <div id="total" name="total">
+                                        <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                            <tr class="border-black o_total">
+                                                <td name="td_amount_total_label"><strong>Total Sales Amount:</strong></td>
+                                                <td name="td_amount_total" class="text-right">
+                                                    <span t-esc="total_sales_amount"></span>
+                                                </td>
+                                            </tr>
+                                            <tr class="border-black o_total">
+                                                <td name="td_amount_total_label"><strong>Total Commission:</strong></td>
+                                                <td name="td_amount_total" class="text-right">
+                                                    <span t-esc="'%.2f'%(total_commission_amount)"></span>
+                                                </td>
+                                            </tr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
