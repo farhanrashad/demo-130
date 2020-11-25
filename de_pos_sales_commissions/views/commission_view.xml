@@ -66,6 +66,7 @@
     <menuitem id="menu_commission"
               name="Commission"
               parent="de_pos_sales_commissions.menu_sale_commission"
-              action="de_pos_sales_commissions.open_commission_order"/>
+              action="de_pos_sales_commissions.open_commission_order"
+              sequence="1"/>
 
 </odoo>

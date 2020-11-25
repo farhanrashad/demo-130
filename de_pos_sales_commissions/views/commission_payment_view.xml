@@ -33,6 +33,7 @@
     <menuitem id="menu_commission_summary"
               name="Commission Payment"
               parent="de_pos_sales_commissions.menu_sale_commission"
-              action="de_pos_sales_commissions.create_commission_summary_wizard"/>
+              action="de_pos_sales_commissions.create_commission_summary_wizard"
+              sequence="2"/>
 
 </odoo>
