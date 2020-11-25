@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="open_commission_order_form" model="ir.ui.view">
+        <field name="name">Commission</field>
+        <field name="model">commission.form</field>
+        <field name="arch" type="xml">
+            <form string="Commission">
+                <header>
+                    <button name="action_cancelled" states="draft" string="Cancel" type="object" class="oe_highlight"/>
+                    <button name="action_done" states="draft" string="Done" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group col="4">
+                        <field name="source_document"/>
+                        <field name="active_employee" readonly="1"/>
+                        <field name="User" invisible="1"/>
+                        <field name="invoice" invisible="1"/>
+                        <field name="order_date" readonly="1"/>
+                    </group>
+                    <group col="4">
+                        <field name="sales_amount" readonly="1"/>
+                        <field name="commission_amount" readonly="1"/>
+                        <field name="pay_by" invisible="1"/>
+                    </group>
+                    <group col="4">
+                        <field name="pos_order" invisible="1"/>
+                        <field name="payment_id" invisible="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="open_commission_tree" model="ir.ui.view">
+        <field name="name">Commission</field>
+        <field name="model">commission.form</field>
+        <field name="arch" type="xml">
+            <tree string="Commission">
+                <field name="source_document"/>
+<!--                 <field name="User"/> -->
+                <field name="active_employee"/>
+                <field name="invoice" invisible="1"/>
+                <field name="order_date"/>
+                <field name="sales_amount"/>
+                <field name="commission_amount"/>
+                <field name="state"/>
+                <field name="pay_by" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="open_commission_order" model="ir.actions.act_window">
+        <field name="name">Commission</field>
+        <field name="res_model">commission.form</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="open_commission_tree"/>
+    </record>
+
+    <menuitem id="menu_commission"
+              name="Commission"
+              parent="de_pos_sales_commissions.menu_sale_commission"
+              action="de_pos_sales_commissions.open_commission_order"/>
+
+</odoo>

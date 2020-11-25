@@ -11,8 +11,12 @@
         [
             'security/ir.model.access.csv',
             'security/security.xml',
-            'views/pos_sales.xml',
-            'wizards/report_wizard.xml',
+            'reports/report_commission.xml',
+            'views/commission_rule_view.xml',
+            'views/commission_summary_view.xml',
+            'views/commission_view.xml',
+            'views/commission_payment_view.xml',
+            'views/pos_sales_views_inherit.xml',
         ],
     'installable': True,
 
