@@ -33,8 +33,11 @@
                                     <tree editable="bottom"  create="false" delete="false">
                                         <field name="po_process" attrs="{'readonly': [('po_created','=', True)]}"/>
                                         <field name="po_created"/>
+                                        
                                         <field name="product_id" attrs="{'readonly': [('po_created','=',True)]}"/>
-                                        <field name="product_uom_qty" attrs="{'readonly': [('po_created','=',True)]}"/>
+                                        <field name="product_uom_qty_so" attrs="{'readonly': [('po_created','=',True)]}"/>
+                                        <field name="seller_ids" widget="many2many_tags" invisible="1"/>
+                                         <field name="product_uom_qty_order" attrs="{'readonly': [('po_created','=',True)]}"/>
                                         <field name="on_hand_qty" attrs="{'readonly': [('po_created','=',True)]}"/>
                                         <field name="forcast_qty" attrs="{'readonly': [('po_created','=',True)]}"/>
                                         <field name="partner_id" attrs="{'readonly': [('po_created','=',True)]}"/>
@@ -74,9 +77,12 @@
                 <field name="product_id" readonly="1" />
                 <field name="po_process" invisible="1"/>
                 <field name="po_created"  invisible="1"/>
-                <field name="product_uom_qty"  attrs="{'readonly': [('po_created','=', True)]}"/>
+                <field name="seller_ids"  widget="many2many_tags" invisible="1"/>
+                <field name="product_uom_qty_so"  readonly="1"/>
+                <field name="product_uom_qty_order"  attrs="{'readonly': [('po_created','=', True)]}"/>
                 <field name="on_hand_qty" readonly="1" />
                 <field name="forcast_qty" readonly="1" /> 
+                
                 <field name="partner_id" attrs="{'required': [('po_process','=', True)],'readonly':[('po_created','=',True)]}"/>
             </tree>
         </field>

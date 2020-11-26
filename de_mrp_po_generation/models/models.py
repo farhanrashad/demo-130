@@ -1,6 +1,12 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools.misc import format_date
+from odoo.exceptions import UserError
+from datetime import datetime
+from odoo.exceptions import Warning
+
+
+
 
 
 
@@ -8,6 +14,7 @@ from odoo.tools.misc import format_date
 class MoBeforhand(models.Model):
     _name = 'mrp.mo.beforehand'
     _description = 'Create PO from MO'
+    _order = 'name desc, id desc'
     
     
     def material_planning(self):
@@ -39,31 +46,49 @@ class MoBeforhand(models.Model):
      
             return super(MoBeforhand, self).unlink()
 
-    
+
    
 
     def get_sheet_lines(self):
+#         datas[:] = [] 
         for rec in self:
             rec.mo_line_ids.unlink()
             order_data = self.env['mrp.production'].search([('sale_id', '=', rec.sale_id.name),('product_id.name', '=ilike', '[Un-Finished]%')])
             data = []
             for order in order_data:
                 for line in order.move_raw_ids:
+                    vendor_data = [] 
                     if not '[Cut Material]' in line.product_id.name:
+                        product_vendor = self.env['product.product'].search([('name','=',line.product_id.name)])
+                        for product in product_vendor:
+                            for vendor in product.seller_ids:
+                                vendor_data.append(vendor.name.id)
+                    
+                    line_data = [] 
+                    if not '[Cut Material]' in line.product_id.name:
+                        bom_produt = self.env['mrp.bom'].search([('product_id','=',line.product_id.id)])
+                        for product in bom_produt:
+                            for subcontractor in product.subcontractor_ids:
+                                line_data.append(subcontractor.id)
                         data.append((0,0,{
                                     'mo_id': self.id,
                                     'po_process': True, 
-                                    'product_id': line.product_id.id,
-                                    'product_uom_qty': line.product_uom_qty,
+                                     'product_id': line.product_id.id,
+                                    'product_uom_qty_so': line.product_uom_qty,
+                                    'seller_ids':  line_data,
+                                    'product_uom_qty_order': line.product_uom_qty,
                                     'on_hand_qty':line.product_id.qty_available,
                                     'forcast_qty': line.product_id.virtual_available,
-                                    'partner_id': line.product_id.seller_ids.name.id,
+                                    'partner_id': vendor_data[0],
+#                                    'partner_id': line.product_id.seller_ids.name.id[0],
                              }))
+                        bom_produt = self.env['mrp.bom'].search([('product_id','=',line.product_id.id)])
                         
             rec.mo_line_ids = data
             self.write ({
                 'state': 'process'
             })
+            
             
             
             
@@ -120,15 +145,42 @@ class MoBeforhandWizardLine(models.Model):
                 raise UserError(_('You cannot delete an order'))
      
             return super(MoBeforhandWizardLine, self).unlink()
-    
+     
+                
+                
     po_process = fields.Boolean(string='Select')
     po_created = fields.Boolean(string='PO Created')
     product_id = fields.Many2one('product.product',string="Product")
-    product_uom_qty = fields.Float(string='Quantity Required')
+    seller_ids = fields.Many2many('res.partner', string='Vendor list')
+    product_uom_qty_so = fields.Float(string='Quantity Required in SO')
+    product_uom_qty_order = fields.Float(string='Quantity to Order')
     on_hand_qty = fields.Float(string="Quantity On Hand")
     forcast_qty = fields.Float(string="Forcast Quantity")
     mo_id = fields.Many2one('mrp.mo.beforehand',string="Document")
-    partner_id = fields.Many2one('res.partner', string="Vendor")
+    partner_id = fields.Many2one('res.partner', string="Vendor",domain="[('id', 'in', seller_ids)]")
+    
+#  domain=lambda self: [('id', 'in', seller_ids)]
+
+    @api.constrains('product_uom_qty_order')
+    def product_uom_qty_order_val(self):
+        for qty in self:
+            if qty.product_uom_qty_order > qty.product_uom_qty_so:
+                raise Warning("You can't add Quantity to Order Greater than:" + str(qty.product_uom_qty_so) + " "+"For Product"+ " "+ str(qty.product_id.name)) 
+    
+    def action_update_vendor(self):
+        for line in self:
+#         order_data = self.env['mrp.production'].search([('sale_id', '=', self.mo_id.sale_id.name),('product_id.name', '=ilike', '[Un-Finished]%')])
+#         for order in order_data:
+#             for line in order.move_raw_ids:
+            line_data = [] 
+    #         if not '[Cut Material]' in line.product_id.name:
+            bom_produt = self.env['mrp.bom'].search([('product_id','=',line.product_id.id)])
+            for product in bom_produt:
+                for subcontractor in product.subcontractor_ids:
+                    line_data.append(subcontractor.id)
+            line.update ({
+                'seller_ids': line_data,
+                })
     
     
     def action_generate_po(self):
@@ -152,7 +204,7 @@ class MoBeforhandWizardLine(models.Model):
                         valss = {
                             'product_id': re.product_id.id,
                             'name': re.product_id.name,
-                            'product_uom_qty': re.product_uom_qty,
+                            'product_uom_qty': re.product_uom_qty_order,
                             'price_unit': re.product_id.standard_price,
                             'date_planned': fields.Date.today(),
                             'product_uom': re.product_id.uom_po_id.id,
@@ -182,6 +234,9 @@ class MoBeforhandWizardLine(models.Model):
                    'po_process': False,
                     'po_created': True,
                   	})
+                
+                
+                
                 
 
 

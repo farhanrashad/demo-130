@@ -12,49 +12,111 @@ class MrpWorkorder(models.Model):
     qty_production = fields.Float('Original Production Quantity', readonly=True)
     
     
+    def record_production(self):
+        res = super(MrpWorkorder, self).record_production()
+#         self.time_ids.date_end = datetime.today()
+#         if self.is_last_unfinished_wo == True:
+        qty_produced = 0.0
+        finish_qty = 0.0
+        raw_material =self.env['mrp.production'].search([('name','=',self.production_id.name)])
+        for finish_line in raw_material.finished_move_line_ids:
+            if finish_line.done_move == False:
+                finish_qty = finish_qty + finish_line.qty_done
+#         workorders = self.env['mrp.workorder'].search([('production_id.name','=',raw_material.name)])            
+#         for workorder in workorders:
+#             if self.env.context['active_id'] == self.env.context['active_id']:
+#                 qty_produced = qty_produced + workorder.qty_produced
+        for move_line in raw_material.move_raw_ids:
+#                 if move_line.reserved_availability: 
+#                     move_line.update({
+#                         'quantity_done' : (move_line.reserved_availability/raw_material.product_qty)*qty_produced,
+#                     })  
+                
+            if move_line.product_uom_qty:
+                if move_line.is_done == False:
+                    move_line.update({
+                                'quantity_done' : (move_line.product_uom_qty_ratio)*finish_qty,
+                            })
+            else:
+                 pass
+#         if self.is_last_unfinished_wo == True:        
+#         if self.state == 'done':
+#             pass
+#         else:
+#             self.write({
+#                    'state': 'done',
+#                 })     
+        return res
+    
+    
 
     
     def do_finish(self):
         res = super(MrpWorkorder, self).do_finish()
         self.time_ids.date_end = datetime.today()
-        if self.is_last_unfinished_wo == True:
-            raw_material =self.env['mrp.production'].search([('name','=',self.production_id.name)])
-            for move_line in raw_material.move_raw_ids:
-                if move_line.reserved_availability: 
+#         if self.is_last_unfinished_wo == True:
+        qty_produced = 0.0
+        finish_qty = 0.0
+        raw_material =self.env['mrp.production'].search([('name','=',self.production_id.name)])
+        for finish_line in raw_material.finished_move_line_ids:
+            if finish_line.done_move == False:
+                finish_qty = finish_qty + finish_line.qty_done
+#         workorders = self.env['mrp.workorder'].search([('production_id.name','=',raw_material.name)])            
+#         for workorder in workorders:
+#             qty_produced = qty_produced + workorder.qty_produced
+        for move_line in raw_material.move_raw_ids:
+#                 if move_line.reserved_availability: 
+#                     move_line.update({
+#                         'quantity_done' : (move_line.reserved_availability/raw_material.product_qty)*qty_produced,
+#                     })  
+            if move_line.product_uom_qty: 
+                if move_line.is_done == False:
                     move_line.update({
-                        'quantity_done' : move_line.reserved_availability,
-                    })  
-                elif move_line.product_uom_qty: 
-                    move_line.update({
-                        'quantity_done' : move_line.product_uom_qty,
-                    })
+                            'quantity_done' : (move_line.product_uom_qty_ratio)*finish_qty,
+                        })
                 else:
                     pass
+#         if self.is_last_unfinished_wo == True:        
         if self.state == 'done':
             pass
         else:
             self.write({
-               'state': 'done',
-            })     
+                   'state': 'done',
+                })     
         return res
     
     def action_open_manufacturing_order(self):
-        raw_material =self.env['mrp.production'].search([('name','=',self.production_id.name)])
-        for move_line in raw_material.move_raw_ids:
-            if move_line.reserved_availability: 
-                    move_line.update({
-                        'quantity_done' : move_line.reserved_availability,
-                    })  
-            elif move_line.product_uom_qty: 
-                move_line.update({
-                    'quantity_done' : move_line.product_uom_qty,
-                    })
-            else:
-                pass
         res = super(MrpWorkorder, self).action_open_manufacturing_order()  
+        finish_qty = 0.0
+        raw_material =self.env['mrp.production'].search([('name','=',self.production_id.name)])
+        for finish_line in raw_material.finished_move_line_ids:
+            if finish_line.done_move == False:
+                finish_qty = finish_qty + finish_line.qty_done
+#         workorders = self.env['mrp.workorder'].search([('production_id.name','=',raw_material.name)]) 
+#         qty_produced = 0.0
+#         for workorder in workorders:
+#             qty_produced = qty_produced + workorder.qty_produced
+        for move_line in raw_material.move_raw_ids:
+#             if move_line.reserved_availability: 
+#                     move_line.update({
+#                         'quantity_done' : (move_line.reserved_availability/raw_material.product_qty)*qty_produced,
+#                     })  
+            if move_line.product_uom_qty:
+                if move_line.is_done == False:
+                    move_line.update({
+                        'quantity_done' : (move_line.product_uom_qty_ratio)*finish_qty,
+                        })
+                else:
+                    pass
         return res
 
 
+    
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+    
+    product_uom_qty_ratio = fields.Float(string="Ratio")
+    is_ratio = fields.Boolean(string="Is Ratio")
 
 
 
@@ -63,6 +125,10 @@ class MrpWorkorder(models.Model):
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
+    
+    
+    
+    
     
 #     def action_assign_test(self):
 #         for move_line in self.move_raw_ids:
@@ -91,7 +157,7 @@ class MrpProduction(models.Model):
         for move_line in self.move_raw_ids:
             if move_line.product_uom_qty: 
                 move_line.update({
-                    'quantity_done' : move_line.product_uom_qty,
+#                     'quantity_done' : move_line.product_uom_qty,
                 })
         ress = super(MrpProduction, self).button_mark_done()
        
@@ -207,7 +273,15 @@ class MrpProduction(models.Model):
     
                 
     def button_plans(self):
+        for move_line in self.move_raw_ids:
+            if move_line.is_ratio == False:
+                move_line.update({
+                    'product_uom_qty_ratio': move_line.product_uom_qty/self.product_qty,
+                    'is_ratio': True,
+                })
+
         total_quantity = 0.0
+        finish_qty = 0.0
         if self.product_f_qty:
             total_quantity = total_quantity + self.product_f_qty
         if self.product_s_qty:
@@ -215,7 +289,15 @@ class MrpProduction(models.Model):
         if self.product_t_qty:
             total_quantity = total_quantity + self.product_t_qty
         if self.product_fo_qty:
-            total_quantity = total_quantity + self.product_fo_qty 
+            total_quantity = total_quantity + self.product_fo_qty
+            
+        for finish_line in self.finished_move_line_ids:
+            finish_qty = finish_qty + finish_line.qty_done
+            
+        total_quantity = total_quantity + finish_qty
+            
+            
+            
         if total_quantity > self.product_qty:
             raise exceptions.ValidationError('Routing Quantity must be equal to MO Quantity To Consume')            
         else:        
