@@ -17,6 +17,15 @@ from datetime import datetime
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 
+class PurchaseOrder(models.Model):
+    _inherit = 'purchase.order'
+    
+    def send_approval_button(self):
+        self.write({
+            'state':'to approve'
+        })
+
+
 class PaymentState(models.Model):
     _name = 'account.vendor_bill_state'
     _description = 'Vendor Bill State'
@@ -30,7 +39,8 @@ class account_payment(models.Model):
     state = fields.Selection([('draft', 'Draft'),
                               ('waiting', 'Waiting For Approval'),
                               ('approved', 'Approved'),
-                              ('posted', 'Posted')],
+                              ('posted', 'Posted'),
+                              ('cancel','Cancelled') ],
                              readonly=True, default='draft', copy=False, string="Status", track_visibility='onchange')
 
     def send_approval(self):
