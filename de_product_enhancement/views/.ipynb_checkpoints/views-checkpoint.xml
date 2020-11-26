@@ -1,0 +1,75 @@
+<odoo>
+  <data>
+      <record id="purchase_order_form_view_inherit" model="ir.ui.view">
+			<field name="name">purchase.order.tree.view.inherit</field>
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase.purchase_order_form"/>
+			<field name="arch" type="xml">
+                <xpath expr="//header//button[@name='button_done']" position="attributes">
+                    <attribute name="groups">de_product_enhancement.group_lock_order_access</attribute>
+				</xpath>
+                <xpath expr="//header//button[@name='button_unlock']" position="attributes">
+                    <attribute name="groups">de_product_enhancement.group_unlock_order_access</attribute>
+				</xpath>
+                
+                
+				<xpath expr="//field[@name='date_approve']" position="after">
+                        <field name="receipt_date" widget="date"/>
+                        <field name="payment_term_date" widget="date"/>
+				</xpath>
+                <xpath expr="//page[@name='purchase_delivery_invoice']//group//group[@name='planning']" position="replace">
+                  <group name="planning">
+                      <label for="date_planned" string="Original Date"/>
+                      <div>
+                          <field name="date_planned" attrs="{'readonly': [('state', 'not in', ('draft', 'sent'))]}"/>
+                      </div>
+                 </group>
+				</xpath>
+			</field>
+	   </record>
+      
+      <record id="sale_order_form_view_inherit" model="ir.ui.view">
+			<field name="name">sale.order.tree.view.inherit</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='partner_id']" position="after">
+                        <field name="purchase_id"/>
+            
+				</xpath>
+                <xpath expr="//field[@name='commitment_date']" position="attributes">
+                    <attribute name="required">1</attribute>
+            
+				</xpath>
+			</field>
+	   </record>
+      
+       <record id="product_template_form_view_inherit" model="ir.ui.view">
+			<field name="name">product.template.tree.view.inherit</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_only_form_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='tracking']" position="after">
+                        <field name="allow_location"/>
+            
+				</xpath>
+<!--                 <xpath expr="//field[@name='seller_ids']//field[@name='name']" position="attributes">
+                    <attribute name="required">1</attribute>
+				</xpath> -->
+			</field>
+	   </record>
+      
+      <record id="product_supplier_form_view_inherit" model="ir.ui.view">
+			<field name="name">product.template.tree.view.inherit</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="purchase.view_product_supplier_inherit"/>
+			<field name="arch" type="xml">
+			
+                <xpath expr="//field[@name='seller_ids']" position="attributes">
+                    <attribute name="required">1</attribute>
+				</xpath>
+			</field>
+	   </record>
+      
+  </data>
+</odoo>
