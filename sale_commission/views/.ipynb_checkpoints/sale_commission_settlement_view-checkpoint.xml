@@ -57,13 +57,13 @@
         <field name="arch" type="xml">
             <form string="Settlement" create="false">
                 <header>
-                    <button
+<!--                     <button
                         string="Make invoice"
                         attrs="{'invisible': ['|', ('state', '!=', 'settled'), ('agent_type', '!=', 'agent')]}"
                         class="oe_highlight"
                         type="object"
                         name="action_invoice"
-                    />
+                    /> -->
                     <button
                         string="Cancel"
                         states="settled"
@@ -80,6 +80,7 @@
                             name="invoice_id" invisible="1"/>
                         <field name="account_invoice_id" attrs="{'invisible': [('state', '!=', 'invoiced')]}"
                         />
+                        <field name= "total"/>
                     </group>
                     <group>
                         <field name="company_id" groups="base.group_multi_company" />
@@ -88,7 +89,7 @@
                         <field name="agent_type" invisible="1" />
                     </group>
                 </group>
-                <group string="Commission lines" colspan="4">
+                <group string="Commission lines" colspan="4" invisible="1">
                     <field name="line_ids" nolabel="1">
                         <tree string="Settlement lines">
                             <field name="date" />
@@ -98,7 +99,7 @@
                         </tree>
                     </field>
                 </group>
-                <group class="oe_subtotal_footer oe_right">
+                <group class="oe_subtotal_footer oe_right" invisible="1"> 
                     <field
                         name="total"
                         class="oe_subtotal_footer_separator"
