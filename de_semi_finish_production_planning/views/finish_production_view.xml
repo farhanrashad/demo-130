@@ -36,13 +36,15 @@
             </field>
 	</record>
 
-    <record id="model_semi_finish_action" model="ir.actions.server">
+<!--     <record id="model_semi_finish_action" model="ir.actions.server">
         <field name="name">Create Semi-Finish Order</field>
         <field name="model_id" ref="mrp.model_mrp_production"/>
         <field name="binding_model_id" ref="mrp.model_mrp_production"/>
         <field name="binding_view_types">tree,list,form,kanban,activity</field>
         <field name="state">code</field>
-        <field name="code">action = records.semi_finish_order_action()</field>
-    </record>
+        <field name="code">
+            if records:action = model.semi_finish_order_action(records)
+        </field>
+    </record> -->
 
 </odoo>
