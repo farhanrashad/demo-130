@@ -15,7 +15,8 @@ class Settlement(models.Model):
         return self.env.user.company_id.currency_id.id
 
     name = fields.Char("Name")
-    total = fields.Float(compute="_compute_total", readonly=True, store=True)
+    # total = fields.Float(compute="_compute_total", readonly=True, store=True)
+    total = fields.Float(store=True)
     date_from = fields.Date(string="From")
     date_to = fields.Date(string="To")
     agent_id = fields.Many2one(

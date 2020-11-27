@@ -6,19 +6,19 @@
         <field name="arch" type="xml">
             <form string="Settle commissions">
                 <group>
-                    <p
-                        colspan="4"
-                    >Select the date up to which you want to make the settlements:</p>
+                    <p colspan="4">Select the date up to which you want to make the settlements:</p>
                 </group>
-                <group colspan="2">
-                    <field name="date_from" />
-                    <field name="date_to" />
+                <group>
+                    <group>
+                        <field name="date_from" />
+                    </group>
+                    <group>
+                        <field name="date_to" />
+                    </group>
                 </group>
                 <group string="Agents" colspan="4">
-                    <p
-                        colspan="4"
-                    >(keep empty for making the settlement of all agents)</p>
-                    <field name="agent_ids" nolabel="1" widget="many2many_list" />
+                    <p colspan="4">(keep empty for making the settlement of all agents)</p>
+                    <field name="agent_ids" nolabel="1" widget="many2many_tags" />
                 </group>
                 <footer>
                     <button

@@ -14,7 +14,8 @@
                 <field name="company_id" groups="base.group_multi_company" />
                 <field name="date_from" />
                 <field name="date_to" />
-                <field name="total" sum="Settled total" />
+<!--                <field name="total" sum="Settled total" />-->
+                <field name="total" readonly="1" force_save="1"/>
                 <field name="state" />
             </tree>
         </field>
@@ -101,6 +102,7 @@
                         name="total"
                         class="oe_subtotal_footer_separator"
                         widget="monetary"
+                        readonly="1" force_save="1"
                         options="{'currency_field': 'currency_id'}"
                     />
                 </group>

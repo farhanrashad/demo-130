@@ -8,7 +8,9 @@
                 <group colspan="2">
                     <field name="journal_id" />
                     <field name="company_id" />
-                    <field name="product_id" />
+<!--                    <field name="product_id" />-->
+                    <field name="product_id" invisible="1" />
+                    <field name="agent_id"/>
                     <field name="date" />
                 </group>
                 <group
@@ -18,7 +20,7 @@
                     <p colspan="4">(keep empty for invoicing all the settlements)</p>
                     <field name="from_settlement" invisible="1" />
                     <group colspan="4">
-                        <field name="settlement_ids" />
+                        <field name="settlement_ids" nolabel="1"/>
                     </group>
                 </group>
                 <footer>

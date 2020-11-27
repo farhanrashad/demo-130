@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet/group" position="inside">
                 <group>
-                    <field name="agent_id" />
+                    <field name="agent_id" options="{'no_open': True, 'no_create_edit': True, 'no_quick_create': True}" />
                 </group>
             </xpath>
         </field>
@@ -35,7 +35,9 @@
                 <field
                         name="commission_total"
                         widget="monetary"
+                        force_save="1"
                         options="{'currency_field': 'currency_id'}"
+
                 />
             </field>
             <xpath expr="//field[@name='note']" position="after">

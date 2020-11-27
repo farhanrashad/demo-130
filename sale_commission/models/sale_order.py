@@ -16,7 +16,7 @@ class SaleOrder(models.Model):
     )
 
     @api.onchange("amount_total")
-    def _compute_commission(self):
+    def _compute_commission_total(self):
         for record in self:
             flag = False
             if record.agent_id.commission_id.commission_type == 'section':
@@ -27,15 +27,16 @@ class SaleOrder(models.Model):
                         flag = True
                         commission = (rule.percent * self.amount_total) / 100
                         self.commission_total = commission
+
                 if not flag:
                     raise UserError(('No Rate definition found for this amount total, against applied agent: ' + record.agent_id.name ))
 
 
 
-    @api.depends("order_line.agent_ids.amount")
-    def _compute_commission_total(self):
-        for record in self:
-            record.commission_total = sum(record.mapped("order_line.agent_ids.amount"))
+    # @api.depends("order_line.agent_ids.amount")
+    # def _compute_commission_total(self):
+    #     for record in self:
+    #         record.commission_total = sum(record.mapped("order_line.agent_ids.amount"))
 
     commission_total = fields.Float(
         string="Commissions", compute="_compute_commission_total", store=True,

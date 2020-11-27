@@ -1,4 +1,5 @@
-from odoo import _, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class SaleCommissionMakeInvoice(models.TransientModel):
@@ -35,6 +36,32 @@ class SaleCommissionMakeInvoice(models.TransientModel):
         "('company_id', '=', company_id)]",
         default=_default_settlement_ids,
     )
+
+    agent_id = fields.Many2one(
+        comodel_name="res.partner",
+        domain="[('agent', '=', True)]",
+        ondelete="restrict",
+        required=True,
+    )
+
+    @api.onchange("agent_id")
+    def _compute_settlement_lines(self):
+        data = []
+
+        for record in self:
+            settlements = self.env['sale.commission.settlement'].search([('agent_id', '=', record.agent_id.id),
+                                                                         ("state", "=", "settled")])
+            # if not settlements:
+            #     for line in self.settlement_ids:
+            #         line.unlink()
+            flag = False
+            if settlements:
+                for settlement in settlements:
+                    data.append(settlement.id)
+            else:
+                self.settlement_ids = None
+        self.settlement_ids = data
+
     from_settlement = fields.Boolean(default=_default_from_settlement)
     date = fields.Date(default=fields.Date.context_today)
 
