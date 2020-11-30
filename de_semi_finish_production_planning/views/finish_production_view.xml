@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    
+    <record id="action_semi_finish_production" model="ir.actions.act_window">
+		<field name="name">Semi Finish Production</field>
+		<field name="res_model">mrp.production</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">tree</field>
+		<field name="domain">[('origin', '=', active_id.name)]</field>
+        <field name="view_id" ref="mrp.mrp_production_tree_view"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				No Semi Finish Production
+			</p>
+		</field>
+	</record>
+    
+    <record id="action_semi_finish_production_purchase" model="ir.actions.act_window">
+		<field name="name">Semi Finish Purchase</field>
+		<field name="res_model">purchase.order</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">tree</field>
+		<field name="domain">[('origin', '=', active_id)]</field>
+        <field name="view_id" ref="purchase.purchase_order_tree"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				No Semi Finish Production
+			</p>
+		</field>
+	</record>
 
 	<record id="finish_production_form_view_inh" model="ir.ui.view">
 		<field name="name">mrp.production.form</field>
@@ -10,12 +38,12 @@
                 <xpath expr="//sheet/field[@name='reservation_state']" position='before'>
                     <div class="oe_button_box" name="button_box">
                         
-                        <button class="oe_stat_button" icon="fa-tasks">
-                            <field string="P Order" name="purchase_order_count" widget="statinfo"/>
+                        <button class="oe_stat_button" icon="fa-tasks" type="object" name="action_purchase_order">
+                            <field string="PO's" name="purchase_order_count" widget="statinfo"/>
                         </button>
                         
-                        <button class="oe_stat_button" icon="fa-tasks">
-                            <field string="M Order" name="production_order_count" widget="statinfo"/>
+                        <button class="oe_stat_button" icon="fa-tasks" type="object" name="action_production_order">
+                            <field string="MO's" name="production_order_count" widget="statinfo"/>
                         </button>
                         
                     </div>
@@ -35,8 +63,10 @@
 
             </field>
 	</record>
+    
+    
 
-<!--     <record id="model_semi_finish_action" model="ir.actions.server">
+    <record id="model_semi_finish_action" model="ir.actions.server">
         <field name="name">Create Semi-Finish Order</field>
         <field name="model_id" ref="mrp.model_mrp_production"/>
         <field name="binding_model_id" ref="mrp.model_mrp_production"/>
@@ -45,6 +75,6 @@
         <field name="code">
             if records:action = model.semi_finish_order_action(records)
         </field>
-    </record> -->
+    </record>
 
 </odoo>
