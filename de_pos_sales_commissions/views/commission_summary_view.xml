@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="create_commission_report" model="ir.ui.view">
-        <field name="name">pos.commission.report</field>
+        <field name="name">commission.summary.report</field>
         <field name="model">commission.report</field>
         <field name="arch" type="xml">
             <form string="Print Commission Report">

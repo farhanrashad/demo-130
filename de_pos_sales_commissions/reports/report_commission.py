@@ -67,7 +67,7 @@ class commission_summary_report(models.AbstractModel):
 
         single2 = list(set(vr))
         lval.append(('id', 'in', single2))
-        in_cr = self.env['pos.commission'].search(lval)
+        in_cr = self.env['commission.form'].search(lval)
 
         return {
             'datacr': in_cr,

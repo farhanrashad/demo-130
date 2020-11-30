@@ -2,8 +2,8 @@
 <odoo>
 
     <record id="create_commission_summary_form" model="ir.ui.view">
-        <field name="name">pos.commission.summary.wizard</field>
-        <field name="model">pos.commission.summary</field>
+        <field name="name">commission.summary.wizard</field>
+        <field name="model">commission.summary</field>
         <field name="arch" type="xml">
             <form string="Commission Payment">
                 <group col="4">
@@ -23,7 +23,7 @@
     <record id="create_commission_summary_wizard" model="ir.actions.act_window">
         <field name="name">Commission Payment</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">pos.commission.summary</field>
+        <field name="res_model">commission.summary</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="create_commission_summary_form"/>
         <field name="target">new</field>
