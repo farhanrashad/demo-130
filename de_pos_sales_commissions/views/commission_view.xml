@@ -15,7 +15,7 @@
                     <group col="4">
                         <field name="source_document"/>
                         <field name="active_employee" readonly="1"/>
-                        <field name="User" invisible="1"/>
+                        <field name="user_id" invisible="1"/>
                         <field name="invoice" invisible="1"/>
                         <field name="order_date" readonly="1"/>
                     </group>
@@ -39,11 +39,11 @@
 
     <record id="open_commission_tree" model="ir.ui.view">
         <field name="name">Commission</field>
-        <field name="model">commission.form</field>
+        <field name="model">pos.commission</field>
         <field name="arch" type="xml">
             <tree string="Commission">
                 <field name="source_document"/>
-<!--                 <field name="User"/> -->
+<!--                 <field name="user_id"/> -->
                 <field name="active_employee"/>
                 <field name="invoice" invisible="1"/>
                 <field name="order_date"/>
@@ -57,7 +57,7 @@
 
     <record id="open_commission_order" model="ir.actions.act_window">
         <field name="name">Commission</field>
-        <field name="res_model">commission.form</field>
+        <field name="res_model">pos.commission</field>
         <field name="binding_view_types">form</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="open_commission_tree"/>
