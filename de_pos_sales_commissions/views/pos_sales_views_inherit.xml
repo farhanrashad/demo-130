@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.account.analytic.default</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <h2 class="mt32">Sales Commission</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="sale_commission_account"/>
+                            <div class="text-muted">
+                                Commission Account
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="sale_commission_account" class="o_light_label"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label for="commission_pay_by"/>
+                            <div class="text-muted">
+                                Commission Pay By
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field name="commission_pay_by" class="o_light_label" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="open_commission_order" model="ir.ui.view">
+        <field name="name">commission.rule.group</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <form string="Commission Rule Group">
+
+                <sheet>
+                    <group col="4">
+                        <field name="name" />
+                        <field name="logged_user" />
+                    </group>
+
+                    <notebook>
+                        <page string="Rules">
+                            <field name="commission_order_line">
+                                <tree string="Rules" editable="bottom" >
+                                    <field name="priority"/>
+                                    <field name="apply_on"/>
+                                    <field name="date_to"/>
+                                    <field name="date_from"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <notebook>
+                        <page>
+                            <field name="notes" class="oe_inline" placeholder="An administrator can set up default Terms and conditions in your Company settings."/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="open_internalprocessing_tree" model="ir.ui.view">
+        <field name="name">commission.rule.group</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Rule Group Tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="open_internalprocessing_order" model="ir.actions.act_window">
+        <field name="name">commission.rule.group</field>
+        <field name="res_model">commission.rule</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="open_internalprocessing_tree"/>
+    </record>
+
+    <menuitem action="open_internalprocessing_order" id="commission_form_rule_group" parent="point_of_sale.menu_point_config_product" />
+
+
+    <record id="pos_config_view_form" model="ir.ui.view">
+        <field name="name">pos_config_view_form.default</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="inside">
+                <h2> Commission</h2>
+                <div class="row mt16 o_settings_container">
+                    <div id="company" class="col-12 col-lg-6 o_setting_box">
+                        <div>
+                            Set Commission rule group which will apply while Calculate Commission
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="commission_rule_group"/>
+                            <field name="commission_rule_group"/>
+
+                        </div>
+                    </div>
+                </div>
+
+            </xpath>
+        </field>
+    </record>
+    <record id="view_pos_line_inherit" model="ir.ui.view">
+        <field name="name">pos.order.form12</field>
+        <field name="model">pos.order</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="POS Sales Commission">
+
+                    <field name="pos_sale_line">
+                        <tree string="POS Sales Commission" editable="bottom" >
+                            <field name="User"/>
+                            <field name="job_position"/>
+                            <field name="commission_amount"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
