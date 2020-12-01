@@ -23,7 +23,7 @@ class SaleOrder(models.Model):
             if rules:
                 if record.agent_id.commission_id.commission_type == 'section':
                     for rule in rules.section_ids:
-                        if self.amount_total > rule.amount_from and self.amount_total < rule.amount_to:
+                        if rule.amount_from <= self.amount_total <= rule.amount_to:
                             flag = True
                             commission = (rule.percent * self.amount_total) / 100
                             self.commission_total = commission

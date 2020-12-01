@@ -5,15 +5,30 @@
 from odoo import _, api, exceptions, fields, models
 from odoo.exceptions import UserError
 from odoo.tests.common import Form
+import datetime
 
 
 class Settlement(models.Model):
     _name = "sale.commission.settlement"
     _description = "Settlement"
     _order = "date_from desc"
+    
+    seq_name = fields.Char('Settlement#', required=True, copy=False, readonly=True,
+                           index=True, default=lambda self: _('New'))
 
     def _default_currency(self):
         return self.env.user.company_id.currency_id.id
+    
+    @api.model
+    def create(self,vals):
+        if vals.get('seq_name', ('New')) == ('New'):
+            date_from = datetime.datetime.strptime(str(vals['date_from']), "%Y-%m-%d")
+            date_to = datetime.datetime.strptime(str(vals['date_to']), "%Y-%m-%d")
+            
+            vals['seq_name'] = (str(date_from.strftime("%b")) + '-' + str(date_to.strftime("%b")) + '/' + self.env['ir.sequence'].next_by_code('sale.commission.settlement.sequence')) or _('New')
+        
+        result = super(Settlement, self).create(vals)
+        return result
 
     name = fields.Char("Name")
     # total = fields.Float(compute="_compute_total", readonly=True, store=True)
