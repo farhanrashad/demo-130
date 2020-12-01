@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-    <record id="action_semi_finish_production" model="ir.actions.act_window">
+<!--     <record id="action_semi_finish_production" model="ir.actions.act_window">
 		<field name="name">Semi Finish Production</field>
 		<field name="res_model">mrp.production</field>
 		<field name="type">ir.actions.act_window</field>
@@ -27,7 +27,7 @@
 				No Semi Finish Production
 			</p>
 		</field>
-	</record>
+	</record> -->
 
 	<record id="finish_production_form_view_inh" model="ir.ui.view">
 		<field name="name">mrp.production.form</field>
@@ -73,7 +73,8 @@
         <field name="binding_view_types">tree,list,form,kanban,activity</field>
         <field name="state">code</field>
         <field name="code">
-            if records:action = model.semi_finish_order_action(records)
+            if records:
+                action = model.semi_finish_order_action(records)
         </field>
     </record>
 
