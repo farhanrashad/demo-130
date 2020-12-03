@@ -108,6 +108,7 @@ class HrEmployeeInherit(models.Model):
 
 class PosCommissionBeneficiary(models.Model):
     _name = 'pos.commission.beneficiary'
+    _description = 'Pos Commission Beneficiary'
 
     employee_id = fields.Many2one('hr.employee', string="Employee", domain=[('employee_set', '=', False)], required=True)
     job_position = fields.Many2one(related='employee_id.job_id')

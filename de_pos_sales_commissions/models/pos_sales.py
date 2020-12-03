@@ -35,6 +35,8 @@ class pos_order(models.Model):
                     rule_records = self.env['pos.commission.rule'].search([('id', '=', rule.id), ('state', '=', 'lock')])
                     if values['amount_total'] >= rule_records.minimum_order:
                         for line in rule_records.rule_line:
+                            if not values['employee_id']:
+                                raise UserError(('No employee cashier selected!'))
                             if line.employee_id.id == values['employee_id']:
                                 self.env['pos.commission'].create({
                                     'source_document': str(values['lines'][0][2]['name']),

@@ -30,15 +30,16 @@ class CommissionReport(models.TransientModel):
 
 class commission_summary_report(models.AbstractModel):
     _name = 'report.de_pos_sales_commissions.report_custom_template'
+    _description = 'Commission summary Report'
 
     @api.model
     def _get_report_values(self, docids, data=None):
         vals = []
-        lval = []
+        list_values = []
 
         if (data['form']['start_date'] != False and data['form']['end_date'] != False and data['form'][
             'user'] != False):
-            commission_details = self.env['commission.form'].search([
+            commission_details = self.env['pos.commission'].search([
                 ('active_employee', '=', data['form']['user'][1]),
                 ('order_date', '>=', data['form']['start_date']),
                 ('order_date', '<=', data['form']['end_date']),
@@ -47,28 +48,28 @@ class commission_summary_report(models.AbstractModel):
             if not commission_details:
                 raise UserError(('No record found against applied employee!'))
 
-            for y in commission_details:
-                vals.append(y)
+            for detail in commission_details:
+                vals.append(detail)
 
-            lval.append(('active_employee', '=', data['form']['user'][1]))
-            lval.append(('order_date', '>=', data['form']['start_date']))
-            lval.append(('order_date', '<=', data['form']['end_date']))
-        #             lval.append(('state','=',data['form']['status'])
+            list_values.append(('active_employee', '=', data['form']['user'][1]))
+            list_values.append(('order_date', '>=', data['form']['start_date']))
+            list_values.append(('order_date', '<=', data['form']['end_date']))
+        #             list_values.append(('state','=',data['form']['status'])
 
         idvs = []
         # testing
         for i in vals:
             idvs.append(i.id)
         # testing
-        single = list(set(vals))
-        vr = []
-        for vl in single:
-            for v in vl:
-                vr.append(v.id)
+        singles = list(set(vals))
+        set_vals = []
+        for single in singles:
+            for i in single:
+                set_vals.append(i.id)
 
-        single2 = list(set(vr))
-        lval.append(('id', 'in', single2))
-        in_cr = self.env['pos.commission'].search(lval)
+        single2 = list(set(set_vals))
+        list_values.append(('id', 'in', single2))
+        in_cr = self.env['pos.commission'].search(list_values)
 
         return {
             'datacr': in_cr,

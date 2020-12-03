@@ -4,6 +4,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class PosCommission(models.Model):
     _name = 'pos.commission'
+    _rec_name = 'id'
     _description = 'Commission records'
     _order = 'order_date desc'
     _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
@@ -27,10 +28,13 @@ class PosCommission(models.Model):
 
     def action_cancelled(self):
         self.state = 'cancelled'
-
+    
+    
     def unlink(self):
-        if not self.state == 'draft':
-            raise UserError(('Deletion is only allowed for draft documents!'))
+        for rec in self:
+            if not rec.state == 'draft':
+                raise UserError(('Deletion is only allowed for draft documents!\nUnselect all records in state other than draft.'))
+        return super(PosCommission, self).unlink()
 
     def action_done(self):
         self.state = 'done'

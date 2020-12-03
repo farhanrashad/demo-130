@@ -32,7 +32,7 @@ class PosCommissionSummary(models.Model):
                 for employee in employee_ids:
                     total_commission = 0
 
-                    commission_data = self.env['commission.form'].search(
+                    commission_data = self.env['pos.commission'].search(
                         [('order_date', '>=', order.start_date), ('order_date', '<=', order.end_date),
                          ('active_employee', '=', employee.id), ('state', '=', 'done')])
 

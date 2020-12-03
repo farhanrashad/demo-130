@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <report id="report_commission_summary_detail"
-                string="Print Commission Summary"
+                string="Commission Summary - Print"
                 model="pos.commission"
                 name="de_pos_sales_commissions.report_custom_template"
                 report_type="qweb-pdf"
