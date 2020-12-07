@@ -12,7 +12,7 @@ class PayrollPaymentWizard(models.TransientModel):
 
     def create_data(self):
         for record in self.payslip_lines:
-            if record.status == 'done':
+            if record.state == 'done':
                 rec = self.env['account.account'].search([('user_type_id', '=', 'Payable')])[0]
                 line_ids = []
                 debit_sum = 0.0
