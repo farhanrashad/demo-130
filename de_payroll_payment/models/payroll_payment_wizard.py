@@ -22,7 +22,7 @@ class PayrollPaymentWizard(models.TransientModel):
                     'journal_id': self.journal_id.id,
                     'partner_id': record.employee_id.id,
                     'date': self.payment_date,
-                    'state': 'posted',
+                    'state': 'draft',
                 }
                 for oline in self.payslip_lines:
                     debit_line = (0, 0, {
