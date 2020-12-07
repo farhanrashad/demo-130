@@ -9,17 +9,16 @@
 						<field name="payment_date" required="True"/>
 					</group>
 
-                <h2>Payrolll Payment</h2>
-				<field name="payslip_lines">
-                    <tree>
-                        <field name="employee_id" string="Employee"/>
-                        <field name="number"/>
-                        <field name="name" string="Payslip"/>
-                         <field name="journal_id" string="Pyment Journel"/>
-                        <field name="net_wage" string="Due Amount"/>
-                         <field name='amount_to_pay' string="Amount To Pay"/>
-                    </tree>
-                </field>
+                <h2>Payroll Payment</h2>
+				<field name="payslip_lines"/>
+<!--                    <tree>-->
+<!--                        <field name="employee_id" string="Employee"/>-->
+<!--                        <field name="number"/>-->
+<!--                        <field name="name" string="Payslip"/>-->
+<!--                         <field name="journal_id" string="Payment Journal"/>-->
+<!--                        <field name="net_wage" string="Due Amount"/>-->
+<!--                         <field name='amount_to_pay' string="Amount To Pay"/>-->
+<!--                    </tree>-->
 
 					<footer>
 						<button name="create_data" string="Confirm" type="object" class="btn-primary"/>

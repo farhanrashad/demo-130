@@ -10,7 +10,6 @@ class PayrollPayment(models.Model):
     journal_id = fields.Many2one('account.journal')
     amount_to_pay = fields.Float('Amount To Pay')
 
-
     def action_payslip_payment_wizard(self):
         payslip_list = []
         for rec in self:
@@ -18,12 +17,12 @@ class PayrollPayment(models.Model):
             selected_records = rec.env['hr.payslip'].browse(selected_ids)
 
             for record in selected_records:
-                if record.state != 'done':
+                if record.state == 'done':
                     payslip_list.append(record.id)
         return {
                 'type': 'ir.actions.act_window',
                 'name': 'Payroll Payment',
-                'view_id':self.env.ref('de_payroll_payment.view_payroll_payment_wizard_form', False).id,
+                'view_id': self.env.ref('de_payroll_payment.view_payroll_payment_wizard_form', False).id,
                 'target': 'new',
                 'context': {'default_payslip_lines': payslip_list},
                 'res_model': 'payroll.payment.wizard',

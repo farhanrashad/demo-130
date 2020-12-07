@@ -8,11 +8,11 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//header" position="inside">
-                    <button string="Payslip Payment" class="oe_highlight" type="object" name="action_payslip_payment_wizard" attrs="{'invisible': [('state','=', 'draft')]}"/>
+                    <button string="Payslip Payment" class="oe_highlight" type="object" name="action_payslip_payment_wizard" attrs="{'invisible': [('state','=', 'draft,verify')]}"/>
                 </xpath>
 
                  <div name="button_box" position="inside">
-                    <button name="action_journal_entries" type="object" class="oe_stat_button" icon="fa-bars" string="Payslip Payments"/>
+                    <button name="action_journal_entries" type="object" class="oe_stat_button" icon="fa-bars" string="Payslip Payments" attrs="{'invisible': [('state','=', 'draft,verify')]}"/>
                 </div>
 
             </field>
@@ -29,8 +29,6 @@
                     <field name='journal_id'/>
                     <field name='amount_to_pay'/>
                 </xpath>
-
-
 
             </field>
     </record>
