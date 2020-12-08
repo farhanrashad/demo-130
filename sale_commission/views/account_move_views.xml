@@ -51,8 +51,9 @@
                     icon="fa-users"
                     attrs="{'invisible': ['|', ('commission_free', '=', True), ('any_settled', '=', True)]}"
                     type="object"
+                        invisible="1"
                 />
-                <field name="commission_status" />
+                <field name="commission_status" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']" position="after">
                 <button

@@ -23,9 +23,9 @@ class Settlement(models.Model):
     def create(self,vals):
         if vals.get('seq_name', ('New')) == ('New'):
             date_from = datetime.datetime.strptime(str(vals['date_from']), "%Y-%m-%d")
-            date_to = datetime.datetime.strptime(str(vals['date_to']), "%Y-%m-%d")
+#             date_to = datetime.datetime.strptime(str(vals['date_to']), "%Y-%m-%d")
             
-            vals['seq_name'] = (str(date_from.strftime("%b")) + '-' + str(date_to.strftime("%b")) + '/' + self.env['ir.sequence'].next_by_code('sale.commission.settlement.sequence')) or _('New')
+            vals['seq_name'] = (str(date_from.strftime("%b")) + '/' + self.env['ir.sequence'].next_by_code('sale.commission.settlement.sequence')) or _('New')
         
         result = super(Settlement, self).create(vals)
         return result
