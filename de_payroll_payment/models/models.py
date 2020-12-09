@@ -7,8 +7,7 @@ from odoo.exceptions import UserError
 class PayrollPayment(models.Model):
     _inherit = 'hr.payslip'
 
-    journal_id = fields.Many2one('account.journal')
-    amount_to_pay = fields.Float('Amount To Pay')
+    amount_to_pay = fields.Float("Amount To Pay")
 
     def action_payslip_payment_wizard(self):
         payslip_list = []
@@ -16,15 +15,23 @@ class PayrollPayment(models.Model):
             selected_ids = rec.env.context.get('active_ids', [])
             selected_records = rec.env['hr.payslip'].browse(selected_ids)
 
-            for record in selected_records:
-                if record.state == 'done':
-                    payslip_list.append(record.id)
+        for record in selected_records:
+            if record.state == 'done':
+                line = (0, 0, {
+                        'number': record.number,
+                        'name':record.name,
+                        'employee_id': record.employee_id.id,
+                        'journal_id': self.journal_id.id,
+                        'net_wage': record.net_wage,
+                        'amount_to_pay': record.amount_to_pay,
+                    })
+                payslip_list.append(line)
         return {
                 'type': 'ir.actions.act_window',
                 'name': 'Payroll Payment',
                 'view_id': self.env.ref('de_payroll_payment.view_payroll_payment_wizard_form', False).id,
                 'target': 'new',
-                'context': {'default_payslip_lines': payslip_list},
+                'context': {'default_payslip_line': payslip_list},
                 'res_model': 'payroll.payment.wizard',
                 'view_mode': 'form',
             }

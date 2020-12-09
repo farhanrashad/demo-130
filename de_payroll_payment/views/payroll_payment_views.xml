@@ -7,9 +7,9 @@
             <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//header" position="inside">
+<!--             <xpath expr="//header" position="inside">
                     <button string="Payslip Payment" class="oe_highlight" type="object" name="action_payslip_payment_wizard" attrs="{'invisible': [('state','!=', 'done')]}"/>
-                </xpath>
+                </xpath> -->
 
                  <div name="button_box" position="inside">
                     <button name="action_journal_entries" type="object" class="oe_stat_button" icon="fa-bars" string="Payslip Payments" attrs="{'invisible': [('state','!=', 'done')]}"/>
@@ -25,10 +25,9 @@
             <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//field[@name='net_wage']" position="after">
-                    <field name='journal_id'/>
+                <xpath expr="//field[@name='state']" position="before">
                     <field name='name'/>
-                    <field name='amount_to_pay' readonly="0"/>
+                    <field name='amount_to_pay'/>
                 </xpath>
 
             </field>
@@ -38,6 +37,7 @@
         <field name="name">Payslip Payment</field>
         <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
         <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+<!--         <field name='groups_id' eval="[(4, ref('account.group_account_invoice'))]"/> -->
         <field name="state">code</field>
         <field name="code">
             if records:

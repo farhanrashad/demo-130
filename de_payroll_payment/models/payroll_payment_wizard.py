@@ -9,27 +9,13 @@ class PayrollPaymentWizard(models.TransientModel):
 
     journal_id = fields.Many2one('account.journal', string="Journal")
     payment_date = fields.Date(string="Payment Date", compute='get_date')
-    payslip_lines = fields.Many2many('hr.payslip')
+#     payslip_lines = fields.Many2many('hr.payslip')
     payslip_line = fields.One2many('payroll.payment.wizard.line', 'payment_id')
-    is_lines_added = fields.Boolean('Is Lines Added?', default=False)
+#     is_lines_added = fields.Boolean('Is Lines Added?', default =False)
 
     @api.onchange('payment_date')
     def get_date(self):
         self.payment_date = datetime.today().date()
-
-    @api.onchange('payment_date')
-    def get_lines(self):
-        if self.is_lines_added == False:
-            for rec in self.payslip_lines:
-                record = self.env['payroll.payment.wizard.line'].create({
-                    'payment_id': self.id,
-                    'name': rec.name,
-                    'journal_id': rec.journal_id.id,
-                    'employee_id': rec.employee_id.id,
-                    'number': rec.number,
-                    'net_wage': rec.net_wage,
-                })
-            self.is_lines_added = True
 
     def create_data(self):
         for record in self.payslip_line:
@@ -44,43 +30,53 @@ class PayrollPaymentWizard(models.TransientModel):
                     'journal_id': self.journal_id.id,
                     'partner_id': record.employee_id.id,
                     'date': self.payment_date,
+                    'ref': record.name,
                     'state': 'draft',
                 }
-                for oline in self.payslip_line:
-                    if oline.amount_to_pay < oline.net_wage:
-                        amount = 0
-                        amount = oline.amount_to_pay if oline.amount_to_pay > 0 else oline.net_wage
-                        debit_line = (0, 0, {
-                            'name': oline.number,
+#                 raise ValidationError(_(record.employee_id.id))
+                amount = 0
+                if record.amount_to_pay <= record.net_wage:
+                    amount = record.amount_to_pay if record.amount_to_pay > 0 else record.net_wage
+                    debit_line = (0, 0, {
+                            'name': record.number,
                             'debit': amount,
                             'credit': 0.0,
-                            'partner_id': oline.employee_id.id,
+                            'partner_id': record.employee_id.id,
                             'account_id': rec.id,
-                        })
-                        line_ids.append(debit_line)
-                        debit_sum += debit_line[2]['debit'] - debit_line[2]['credit']
-                        credit_line = (0, 0, {
-                            'name': oline.number,
+                    })
+                    line_ids.append(debit_line)
+                    debit_sum += debit_line[2]['debit'] - debit_line[2]['credit']
+                    credit_line = (0, 0, {
+                            'name': record.number,
                             'debit': 0.0,
-                            'partner_id': oline.employee_id.id,
+                            'partner_id': record.employee_id.id,
                             'credit': amount,
                             'account_id': rec.id,
-                        })
-                        line_ids.append(credit_line)
-                        credit_sum += credit_line[2]['credit'] - credit_line[2]['debit']
-                    else:
-                        raise ValidationError(_("Amount to Pay is Greater than Due Amount!!!!!"))
+                    })
+                    line_ids.append(credit_line)
+                    credit_sum += credit_line[2]['credit'] - credit_line[2]['debit']
+                else:
+                    raise ValidationError(_("Amount to Pay is Greater than Due Amount!!!!!"))
 
-                move_dict['line_ids'] = line_ids
-                move = record.env['account.move'].create(move_dict)
-                print("General entry created")
             else:
                 raise ValidationError(_("There is no Payable Account."))
+        move_dict['line_ids'] = line_ids
+        move = record.env['account.move'].create(move_dict)
+        print("General entry created")
+        self.write_amount()
+
+    def write_amount(self):
+        for record in self.payslip_line:
+            rec = self.env['hr.payslip'].search([('number', '=', record.number)])
+            rec.write({
+                'amount_to_pay': record.amount_to_pay,
+            })
 
 
 class PayrollPaymentWizardLine(models.TransientModel):
     _name = 'payroll.payment.wizard.line'
     _description = 'Payroll Payment Line'
+
 
     payment_id = fields.Many2one('payroll.payment.wizard')
     employee_id = fields.Many2one('hr.employee')
@@ -89,3 +85,4 @@ class PayrollPaymentWizardLine(models.TransientModel):
     journal_id = fields.Many2one('account.journal')
     net_wage = fields.Float('Due Amount')
     amount_to_pay = fields.Float('Amount To Pay')
+
