@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "de_payroll_payment",
+    'name': "Payroll Payment",
 
     'summary': """
        Payroll Payment""",
@@ -19,13 +19,12 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr_payroll'],
+    'depends': ['base', 'hr_payroll'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'views/payroll_payment_views.xml',
-        'views/templates.xml',
         'wizards/payroll_payment_wizard.xml',
     ],
     # only loaded in demonstration mode
