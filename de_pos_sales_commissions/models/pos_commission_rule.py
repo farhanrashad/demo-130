@@ -16,6 +16,15 @@ class PosCommissionRule(models.Model):
     minimum_order = fields.Float("Minimum Order")
     rule_line = fields.One2many("pos.commission.beneficiary", "rule_order")
     all_employees = fields.Boolean(string="Select All Employees", default=False)
+    existing_request_user_ids = fields.Many2many('hr.employee', compute='_compute_existing_request_user_ids')
+
+    @api.onchange('rule_line')
+    def _compute_existing_request_user_ids(self):
+        data = []
+        for approver in self:
+            for line in approver.rule_line:
+                data.append(line.employee_id.id)
+            approver.existing_request_user_ids = data
 
 
     state = fields.Selection([
@@ -110,11 +119,19 @@ class PosCommissionBeneficiary(models.Model):
     _name = 'pos.commission.beneficiary'
     _description = 'Pos Commission Beneficiary'
 
-    employee_id = fields.Many2one('hr.employee', string="Employee", domain=[('employee_set', '=', False)], required=True)
+    #employee_id = fields.Many2one('hr.employee', string="Employee", domain=[('employee_set', '=', False)], required=True)
+    employee_id = fields.Many2one('hr.employee', string="Employee", domain="[('id', 'not in', existing_request_user_ids)]" ,required=True)
+    existing_request_user_ids = fields.Many2many('hr.employee', compute='_compute_existing_request_user_ids')
     job_position = fields.Many2one(related='employee_id.job_id')
     compute_price = fields.Selection([('percentage', 'Percentage')], default='percentage', readonly=True)
     commission_price = fields.Float("Commission(%)")
     rule_order = fields.Many2one("pos.commission.rule")
+    
+    @api.onchange('employee_id')
+    def _compute_existing_request_user_ids(self):
+        for approver in self:
+            approver.existing_request_user_ids = approver.rule_order.existing_request_user_ids
+            
 
     @api.onchange('employee_id')
     def onchange_production_order(self):

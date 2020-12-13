@@ -25,6 +25,7 @@
                         <field name="minimum_order" attrs="{'readonly':[('state','=','lock')]}"/>
                         <field name="end_date" attrs="{'readonly':[('state','=','lock')]}"/>
                         <field name="all_employees" attrs="{'readonly':[('state','=','lock')]}"/>
+						<field name="existing_request_user_ids" invisible="1"/>
                     </group>
 
                     <notebook>
@@ -32,6 +33,7 @@
                             <field name="rule_line" attrs="{'readonly':[('state','=','lock')]}">
                                 <tree string="Beneficial(s)" editable="bottom" >
                                     <field name="employee_id" />
+									<field name="existing_request_user_ids" invisible="1"/>
                                     <field name="job_position"/>
                                     <field name="compute_price"/>
                                     <field name="commission_price"/>
