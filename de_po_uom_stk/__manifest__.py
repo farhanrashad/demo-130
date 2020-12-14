@@ -25,10 +25,8 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/product_views.xml',
-        'views/production_lot_views.xml',
-        'views/stock_move_views.xml',
-        'views/stock_quant_views.xml',
+        'views/views.xml',
+        'views/templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

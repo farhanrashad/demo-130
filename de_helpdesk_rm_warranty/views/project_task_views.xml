@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_warranty_form" model="ir.actions.act_window">
+        <field name="name">Create a Warranty</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.warranty</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+    
+    
+    <record id="view_project_task_form_inherit" model="ir.ui.view">
+        <field name="name">view.project.task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="de_helpdesk_repair_mgmt.view_project_task_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[1]" position="after">
+                <button name="%(action_warranty_form)d" type="action" class="oe_highlight"
+                    groups="de_helpdesk.group_helpdesk_user"
+                    string="Create Warranty" context="{'default_partner_id': partner_id, 'default_ticket_id': ticket_id, 'default_project_id':project_id, 'default_task_id':id, 'default_company_id': company_id,'default_is_diagnosys':True}" attrs="{'invisible': [('is_workorder', '=', False)]}"/>
+
+            </xpath>
+            
+            <xpath expr="//form[1]/sheet[1]/div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" name="action_view_warranty" icon="fa-pencil-square-o" type="object" attrs="{'invisible': [('warranty_count', '=', 0)]}">
+                            <field name="warranty_count" string="Warranty" widget="statinfo"/>
+                </button>
+            </xpath>
+             <xpath expr="//field[@name='ticket_id']" position="after">
+                <field name="barcode" />
+            </xpath>
+            <xpath expr="//field[@name='repair_planning_lines']/tree[1]" position="inside">
+                <field name="warranty_id" domain="[('barcode','=',parent.barcode),('state','not in',['expired','cancel'])]"/>
+            </xpath>
+            
+        </field>
+    </record>
+    
+    
+</odoo>

@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_account_move,access.account.move,model_account_move,de_stock_picking_order.group_allow_create_journal_entry,1,1,1,1
-access_account_move_line,access.account.move.line,model_account_move_line,de_stock_picking_order.group_allow_create_journal_entry,1,1,1,1
-access_account_journal,access.account.journal,model_account_journal,de_stock_picking_order.group_allow_create_journal_entry,1,1,1,1

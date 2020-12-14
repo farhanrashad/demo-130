@@ -11,22 +11,22 @@ class StockProductionLotExt(models.Model):
 
     @api.onchange('partner_id')
     def _onchange_sale_order(self):
-        # self.partner_id = self.sale_order_id.partner_id
+        self.partner_id = self.sale_order_id.partner_id
         same_lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
         for lot in same_lot:
             lot.write({
-                # 'sale_order_id': self.sale_order_id.id,
+                'sale_order_id': self.sale_order_id.id,
                 'partner_id': self.partner_id.id,
             })
 
-    def btn_action_same_partner(self):
-        if self.partner_id:
-            same_lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
-            for lot in same_lot:
-                lot.write({
-                    # 'sale_order_id': self.sale_order_id.id,
-                    'partner_id': self.partner_id.id,
-                })
+    # def btn_action_same_partner(self):
+    #     if self.partner_id:
+    #         same_lot = self.env['stock.production.lot'].search([('name', '=', self.name)])
+    #         for lot in same_lot:
+    #             lot.write({
+    #                 # 'sale_order_id': self.sale_order_id.id,
+    #                 'partner_id': self.partner_id.id,
+    #             })
 
 
 class StockQuant(models.Model):

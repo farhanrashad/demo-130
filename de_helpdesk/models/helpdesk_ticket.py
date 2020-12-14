@@ -17,7 +17,7 @@ class HelpdeskTicket(models.Model):
     name = fields.Char(string='Title', required=True)
     description = fields.Text(required=True)
     user_id = fields.Many2one('res.users', string='Assigned to', tracking=True, domain=lambda self: [('groups_id', 'in', self.env.ref('de_helpdesk.group_helpdesk_user').id)])
-    notify_date=fields.Datetime("Notify Date")
+
     user_ids = fields.Many2many(comodel_name='res.users',related='team_id.user_ids',string='Users')
 
     @api.model
@@ -32,9 +32,9 @@ class HelpdeskTicket(models.Model):
         default=_get_default_stage_id,
         track_visibility='onchange',
     )
-    partner_id = fields.Many2one('res.partner')
-    partner_name = fields.Char()
-    partner_email = fields.Char()
+    partner_id = fields.Many2one('res.partner',string='Customer')
+    partner_name = fields.Char(string='Customer Name')
+    partner_email = fields.Char(string='Customer Email')
 
     last_stage_update = fields.Datetime(
         string='Last Stage Update',
@@ -42,7 +42,6 @@ class HelpdeskTicket(models.Model):
     )
     assigned_date = fields.Datetime(string='Assigned Date')
     closed_date = fields.Datetime(string='Closed Date')
-    closed = fields.Boolean(related='stage_id.closed')
     unattended = fields.Boolean(related='stage_id.unattended')
     tag_ids = fields.Many2many('helpdesk.ticket.tag')
     company_id = fields.Many2one(
@@ -54,9 +53,7 @@ class HelpdeskTicket(models.Model):
     channel_id = fields.Many2one(
         'helpdesk.ticket.channel',
         string='Channel',
-        help='Channel indicates where the source of a ticket'
-             'comes from (it could be a phone call, an email...)',
-    )
+        help='Channel indicates where the source of a ticket comes from (it could be a phone call, an email...)',)
     category_id = fields.Many2one('helpdesk.ticket.category',
                                   string='Category')
     team_id = fields.Many2one('helpdesk.ticket.team')
@@ -76,6 +73,7 @@ class HelpdeskTicket(models.Model):
         ('done', 'Ready for next stage'),
         ('blocked', 'Blocked')], string='Kanban State')
     active = fields.Boolean('Active', default=True)
+    closed = fields.Boolean(related='stage_id.closed',string='Closed')
 
     def send_user_mail(self):
         self.env.ref('de_helpdesk.assignment_email_template'). \

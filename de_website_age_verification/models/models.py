@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+# from odoo import models, fields, api
 
-# class de_age_verfication(models.Model):
-#     _name = 'de_age_verfication.de_age_verfication'
+
+# class de_website_age_verification(models.Model):
+#     _name = 'de_website_age_verification.de_website_age_verification'
+#     _description = 'de_website_age_verification.de_website_age_verification'
 
 #     name = fields.Char()
 #     value = fields.Integer()
@@ -12,4 +14,5 @@ from odoo import models, fields, api
 #
 #     @api.depends('value')
 #     def _value_pc(self):
-#         self.value2 = float(self.value) / 100
+#         for record in self:
+#             record.value2 = float(record.value) / 100

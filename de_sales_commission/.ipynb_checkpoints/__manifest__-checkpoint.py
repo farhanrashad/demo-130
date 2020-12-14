@@ -21,13 +21,13 @@
 #############################################################################
 {
     'name': 'Sales Commission',
-    'version': '0.2',
+    'version': '12.0.1.0.0',
     'summary': """To address a contact, sale or invoice in care of someone else""",
     'description': """Calculate and Print report for Sales Care of commission""",
-    'author': "Dynexcel",
-    'company': 'Dynexcel',
-    'maintainer': 'Dynexcel',
-    'website': "https://www.dynexcel.com",
+    'author': "Cybrosys Techno Solutions",
+    'company': 'Cybrosys Techno Solutions',
+    'maintainer': 'Cybrosys Techno Solutions',
+    'website': "https://www.cybrosys.com",
     'category': 'Accounting',
     'depends': ['base','sale','sales_team','account'],
     'data': [

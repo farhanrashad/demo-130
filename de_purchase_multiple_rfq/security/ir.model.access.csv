@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_purchase_order_multiple,access.purchase.order.multiple,model_purchase_order_multiple,,1,1,1,1
-access_purchase_order_multiple_line,access.purchase.order.multiple.line,model_purchase_order_multiple_line,,1,1,1,1
