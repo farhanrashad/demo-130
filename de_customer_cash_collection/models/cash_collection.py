@@ -140,6 +140,12 @@ class CustomerCollectionLine(models.Model):
     city = fields.Char(related='batch_payment_lines_id.city')
     partner_id = fields.Many2one('res.partner', domain="[('city', '=', city)]" ,required=True)
     amount = fields.Integer(string='Amount')
+    
+    @api.constrains('amount')
+    def check_commission_amount(self):
+        for rec in self:
+            if rec.amount <= 0:
+                raise ValidationError('Amount should be greater than 0.')
 
 
 class AccountJournalInherit(models.Model):
