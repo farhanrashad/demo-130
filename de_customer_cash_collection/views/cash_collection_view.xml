@@ -28,12 +28,13 @@
                             <field name="payment_method_code" invisible="1"/>
                         </group>
                         <group>
-                            <field name="city"/>
+                            <field name="city" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="bank" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="name" placeholder="auto ..." required="0" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
+                  
                     <notebook>
                         <page string="Cash Collection" name="collection_content">
                             <field name="payment_lines_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">

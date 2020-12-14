@@ -97,22 +97,12 @@ class CashCollection(models.Model):
               })
             i.name = batch.id
         self.write({'state':'payment'})
-        return self._send_after_validation()
-    
-
-    
-    def _send_after_validation(self):
-        if self.payment_ids:
-            self.state = 'payment'
-    
 
     
     def cash_deposit_button(self):
         if not self.bank:
             raise UserError(_('You must define a Contact Name for this applicant.'))
         amount_total = 0
-        if self.payment_ids:
-            self.state = 'payment'
         for i in self.payment_lines_ids:
             amount_total = amount_total + i.amount
         
@@ -145,7 +135,7 @@ class CustomerCollectionLine(models.Model):
         return [('id', 'in', partners)]
     
     
-    batch_payment_lines_id = fields.Many2one('account.customer.collection', ondelete='set null', copy=False)
+    batch_payment_lines_id = fields.Many2one('account.customer.collection', ondelete='set null', copy=False, string='Cash Payment')
     name = fields.Many2one('account.payment', string="Reference",)
     city = fields.Char(related='batch_payment_lines_id.city')
     partner_id = fields.Many2one('res.partner', domain="[('city', '=', city)]" ,required=True)
