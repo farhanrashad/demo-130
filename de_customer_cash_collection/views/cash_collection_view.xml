@@ -34,9 +34,6 @@
                             <field name="name" placeholder="auto ..." required="0" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
-                    <button name='%(de_customer_cash_collection.action_account_payment_wizard)d' string="Add Wizard Payments" type="action" 
-                            context="{'default_get_id': id}" invisible="1"/>
-                    <button name='action_add_payments' string="Add Payments" type="object"  invisible="1"/>
                     <notebook>
                         <page string="Cash Collection" name="collection_content">
                             <field name="payment_lines_ids" attrs="{'readonly': [('state', '!=', 'draft')]}">
