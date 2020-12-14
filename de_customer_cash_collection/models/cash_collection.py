@@ -17,7 +17,6 @@ class CashCollection(models.Model):
     city = fields.Char(string='City')
     journal_id = fields.Many2one('account.journal', string='Cash Collection', domain=[('type', '=', 'bank')], required=True)
     bank = fields.Many2one('account.journal', string='Bank Account', domain=[('type', '=', 'bank')])
-    payment_ids = fields.One2many('account.payment', 'cash_payment_id', string="Payments", required=True)
     payment_lines_ids = fields.One2many('account.customer.collection.line', 'batch_payment_lines_id')
     amount = fields.Monetary(store=True, readonly=True)
     currency_id = fields.Many2one('res.currency', store=True, readonly=True)

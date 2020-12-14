@@ -13,9 +13,6 @@
         'security/ir.model.access.csv',
         'views/cash_collection_view.xml',
     ],
-
-    "price": 0,
-    "currency": 'EUR',
     "installable": True,
     "application": False,
     "auto_install": False,
