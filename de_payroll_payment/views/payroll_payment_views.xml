@@ -1,0 +1,50 @@
+<odoo>
+  <data>
+     <record id="view_hr_payslip_inherit" model="ir.ui.view">
+            <field name="name">hr.payslip.form.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+
+<!--             <xpath expr="//header" position="inside">
+                    <button string="Payslip Payment" class="oe_highlight" type="object" name="action_payslip_payment_wizard" attrs="{'invisible': [('state','!=', 'done')]}"/>
+                </xpath> -->
+
+                 <div name="button_box" position="inside">
+                    <button name="action_journal_entries" type="object" class="oe_stat_button" icon="fa-bars" string="Payslip Payments" attrs="{'invisible': [('state','!=', 'done')]}"/>
+                </div>
+
+            </field>
+    </record>
+
+       <record id="view_hr_payslip_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.payslip.tree.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='state']" position="before">
+                    <field name='name'/>
+                    <field name='amount_to_pay'/>
+                </xpath>
+
+            </field>
+    </record>
+
+      <record id="action_payslip_payment_server" model="ir.actions.server">
+        <field name="name">Payslip Payment</field>
+        <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+<!--         <field name='groups_id' eval="[(4, ref('account.group_account_invoice'))]"/> -->
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_payslip_payment_wizard()
+        </field>
+    </record>
+
+
+  </data>
+</odoo>

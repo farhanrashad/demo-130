@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_production_gain_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+
+                    <div id="informations" class="row mt32 mb32">
+                        <div class="col-auto mw-100 mb-2" name="partner_id">
+                            <strong>Customer Name:</strong>
+                            <p class="m-0" t-field="o.partner_id"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2" name="name">
+                            <strong>SO#:</strong>
+                            <p class="m-0" t-field="o.name"/>
+                        </div>
+                        <div class="col-auto mw-100 mb-2" name="confirmation_date">
+                            <strong>DATE:</strong>
+                            <p class="m-0" t-field="o.confirmation_date"/>
+                        </div>
+                        <t t-set="no_of_invoice" t-value="0"/>
+
+                        <t t-foreach="request.env['account.invoice'].search([('origin','=', o.name)])" t-as="invoic_order">
+                            <t t-set="no_of_invoice" t-value="no_of_invoice + 1"/> 
+                          </t>
+
+
+                        <div class="col-auto mw-100 mb-2" name="no_date">
+                          <strong>No Of Invoices:</strong>
+                           <p class="m-0" t-esc="no_of_invoice"/>
+                 
+              
+                        </div>   
+                     
+
+                        
+
+                       <div style="width: 600px" name="invoice_ref">
+                          <strong>Invoice#:</strong>
+                          <t t-foreach="request.env['account.invoice'].search([('origin','=', o.name)])" t-as="invoic_order">
+                            <span t-esc="invoic_order.number"/>,
+                          </t>
+                        </div> 
+
+                       
+                    </div>  
+                        <div class="row justify-content-end">
+
+                            <!--  style="table-layout: fixed" -->
+                            <div class="col-12">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Analytic Tags</th>
+                                            <th>Order Qty</th> 
+                                            <th>SO till Stitched</th>
+                                            <th>Greige Stitched</th>
+                                            <th>Stitched to Stenter</th>
+                                            <th>Stenter Meters</th>
+                                            <th>Stenter to Fold</th>
+                                            <th>Folded Meters</th> 
+                                            <th>Fresh</th>                            
+                                            <th>C.P</th>                                            
+                                            <th>B.G</th>
+                                            <th>Gain%</th>
+                                            <th>Fresh%</th>
+                                            <th>Waste%</th>  
+                                         <!--   <th>Ratio</th> -->
+                                        </tr>
+                                    </thead>
+                                     <t t-set="tot_sum_uom_qty" t-value="0"/>  
+                                     <t t-set="tot_sum_stiched_qty" t-value="0"/>
+                                     <t t-set="tot_sum_processed_qty" t-value="0"/>
+                                     <t t-set="tot_sum_finish_qty" t-value="0"/>   
+                                     <t t-set="tot_sum_fresh_qty" t-value="0"/>
+                                     <t t-set="tot_sum_cutpiece_qty" t-value="0"/>
+                                     <t t-set="tot_sum_bgrade_qty" t-value="0"/>
+                                     <t t-set="tot_sum_gain_qty" t-value="0"/>
+                                     <t t-set="tot_sum_fresh_gain_qty" t-value="0"/>
+                                     <t t-set="tot_sum_waste_gain_qty" t-value="0"/> 
+                                     <t t-set="tot_sum_ratio_qty" t-value="0"/>
+
+                                    <tbody>
+                                      <t t-foreach="o.order_line" t-as="line">
+                                          
+                                     
+                                          
+                                          
+                                        <tr>
+
+                                      
+                                       <t t-set="sum_qty" t-value="0"/>
+                                       <t t-set="so_to_stitched_days" t-value="0"/>
+                                        <t t-set="stitched_to_stenter_days" t-value="0"/>
+                                       <t t-set="stenter_to_fold_days" t-value="0"/>
+                                       <t t-set="sum_qty_processed" t-value="0"/>
+                                       <t t-set="sum_qty_finish" t-value="0"/>
+                                       <t t-set="sum_fresh_qty" t-value="0"/>
+                                       <t t-set="sum_bgrade_qty" t-value="0"/>
+                                       <t t-set="sum_cutpiece_qty" t-value="0"/>
+                                       <t t-foreach="request.env['mrp.production'].search([('product_id.name','=', line.name+'-Stitched'),('sale_id','=', o.name)])" t-as="production_order">
+                                          
+                                         <t t-set="so_to_stitched_days" t-value="so_to_stitched_days + get_product_obj(production_order.date_planned_start,production_order.date_finished)"/>
+                                        <t t-foreach="production_order.finished_move_line_ids" t-as="production_lines">                                              
+                                            <t t-set="sum_qty" t-value="sum_qty + production_lines.qty_done"/>
+                                               </t>      
+                                          </t>
+                                      <t t-foreach="request.env['mrp.production'].search([('product_id.name','=', line.name+'-Processed'),('sale_id','=', o.name)])" t-as="production_order">
+                                     
+                                        <t t-set="stitched_to_stenter_days" t-value="stitched_to_stenter_days + get_product_obj(production_order.date_planned_start,production_order.date_finished)"/>
+                                       <t t-foreach="production_order.finished_move_line_ids" t-as="production_lines">                                              
+                                            <t t-set="sum_qty_processed" t-value="sum_qty_processed + production_lines.qty_done"/>
+                                               </t>      
+                                          </t>     
+
+                                      <t t-foreach="request.env['mrp.production'].search([('product_id','=', line.product_id.id),('sale_id','=', o.name)])" t-as="production_order">
+                                        
+                                          <t t-set="stenter_to_fold_days" t-value="stenter_to_fold_days + get_product_obj(production_order.date_planned_start,production_order.date_finished)"/>
+                                              
+                                          <t t-foreach="production_order.finished_move_line_ids" t-as="production_lines">                                              
+                                            <t t-set="sum_qty_finish" t-value="sum_qty_finish + production_lines.qty_done"/>
+                                               </t>      
+                                          </t>        
+                                          
+                                     <t t-foreach="request.env['account.invoice'].search([('origin','=', o.name)])" t-as="invoice_order">
+                                      <t t-foreach="invoice_order.invoice_line_ids" t-as="invoice_lines">
+                                          
+                                          <t t-if="invoice_lines.package_id.shipping_grade == 'fresh'">
+                                           <t t-if="invoice_lines.product_id == line.product_id">  
+                                            <t t-set="sum_fresh_qty" t-value="sum_fresh_qty + invoice_lines.quantity"/>
+                                          </t>   
+                                          </t>
+                                          
+                                           <t t-if="invoice_lines.package_id.shipping_grade == 'b'">
+                                           <t t-if="invoice_lines.product_id == line.product_id">     
+                                            <t t-set="sum_bgrade_qty" t-value="sum_bgrade_qty + invoice_lines.quantity"/>
+                                               </t>   
+                                          </t>
+                                          
+                                           <t t-if="invoice_lines.package_id.shipping_grade == 'c'">
+                                           <t t-if="invoice_lines.product_id == line.product_id">      
+                                             <t t-set="sum_cutpiece_qty" t-value="sum_cutpiece_qty + invoice_lines.quantity"/>
+                                               </t>  
+                                           </t>   
+                                          
+                                          </t>
+                                        </t> 
+                                          
+
+
+
+                                            <td style="border:max-width:470px; word-wrap:break-word;">
+                                                <span t-field="line.product_id"/>
+                                            </td>
+                                            <td>
+                                              <t t-foreach="line.analytic_tag_ids" t-as="tags">     
+                                                <span t-esc="tags.name"/>,
+                                              </t>
+                                            </td>
+                                            
+                                            <td >
+                                                 <span t-esc="'{0:,.2f}'.format(line.product_uom_qty)"/>
+                                            </td>
+                                             <t t-set="tot_sum_uom_qty" t-value="tot_sum_uom_qty + line.product_uom_qty"/> 
+                                             <td >
+                                                 <span t-esc="so_to_stitched_days"/>  
+                                            </td>
+
+                                            <td >
+                                               <t t-if="sum_qty > 0">  
+                                                 <span t-esc="'{0:,.2f}'.format(sum_qty)"/>
+                                               </t>
+                                                <t t-if="sum_qty == 0">
+                                                   <p>Reference Not Available</p>  
+                                                </t>    
+                                            </td>
+                                             <t t-set="tot_sum_stiched_qty" t-value="tot_sum_stiched_qty + sum_qty"/>
+                                             <td >
+                                                 <span t-esc="stitched_to_stenter_days"/>  
+                                            </td>   
+                                            <td >
+                                                <span t-esc="'{0:,.2f}'.format(sum_qty_processed)"/>
+                                            </td>
+                                             <t t-set="tot_sum_processed_qty" t-value="tot_sum_processed_qty + sum_qty_processed"/> 
+                                             <td >
+                                                 <span t-esc="stenter_to_fold_days"/>  
+                                            </td>
+                                            <td >
+                                                <span t-esc="'{0:,.2f}'.format(sum_qty_finish)"/>
+                                            </td>
+                                             <t t-set="tot_sum_finish_qty" t-value="tot_sum_finish_qty + sum_qty_finish"/>  
+                                             <td>
+                                                <span t-esc="'{0:,.2f}'.format(sum_fresh_qty)"/>
+                                            </td>
+                                             <t t-set="tot_sum_fresh_qty" t-value="tot_sum_fresh_qty + sum_fresh_qty"/> 
+                                             <td>
+                                                <span t-esc="'{0:,.2f}'.format(sum_cutpiece_qty)" />
+                                            </td>
+                                             <t t-set="tot_sum_cutpiece_qty" t-value="tot_sum_cutpiece_qty + sum_cutpiece_qty"/> 
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(sum_bgrade_qty)"/>
+                                            </td>
+                                             <t t-set="tot_sum_bgrade_qty" t-value="tot_sum_bgrade_qty + sum_bgrade_qty"/> 
+                                           <!-- <td>
+                                                <span t-esc="round(((sum_fresh_qty + sum_cutpiece_qty +sum_bgrade_qty)- sum_qty),2)"/>
+                                            </td> -->
+                                            <t t-set="tot_sum_gain_qty" t-value="tot_sum_gain_qty + round(((sum_fresh_qty + sum_cutpiece_qty +sum_bgrade_qty)- sum_qty),2)"/>
+                                            
+
+                                            <td>     
+                                              <t t-if="sum_qty > 0">    
+                                                <span t-esc="round(((round(((sum_fresh_qty + sum_cutpiece_qty +sum_bgrade_qty)- sum_qty),2)/sum_qty) *100),2)"/>
+                                              </t> 
+                                            </td>
+                                           <t t-if="sum_qty > 0"> 
+                                             <t t-set="tot_sum_ratio_qty" t-value="tot_sum_ratio_qty + round(((round(((sum_fresh_qty + sum_cutpiece_qty +sum_bgrade_qty)- sum_qty),2)/sum_qty) *100),2)"/>
+                                           </t> 
+
+                                            <td>
+                                             <t t-if="sum_qty > 0"> 
+                                                <span t-esc="round(((sum_fresh_qty/sum_qty)*100),2)"/>
+                                             </t>
+                                            </td>
+                                            <t t-if="sum_qty > 0">         
+                                             <t t-set="tot_sum_fresh_gain_qty" t-value="tot_sum_fresh_gain_qty + round(((sum_fresh_qty/sum_qty)*100),2)"/> 
+                                            </t>  
+                                            <td>
+                                              <t t-if="sum_qty > 0">  
+                                                <span t-esc="round((((sum_cutpiece_qty +sum_bgrade_qty)/ sum_qty)*100),2)"/>
+                                              </t> 
+                                            </td>
+                                             <t t-if="sum_qty > 0">  
+                                               <t t-set="tot_sum_waste_gain_qty" t-value="tot_sum_waste_gain_qty + round((((sum_cutpiece_qty +sum_bgrade_qty)/ sum_qty)*100),2)"/>
+                                             </t>  
+                                         <!--   <td>     
+                                              <t t-if="round(((sum_fresh_qty + sum_cutpiece_qty +sum_bgrade_qty)- sum_qty),2) > 0">
+                                                <span t-esc="round(((round(((sum_fresh_qty + sum_cutpiece_qty +sum_bgrade_qty)- sum_qty),2)/sum_qty) *100),2)"/>
+                                            </t> 
+                                            </td>
+                                           <t t-if="round(((sum_fresh_qty + sum_cutpiece_qty +sum_bgrade_qty)- sum_qty),2) > 0">
+                                            <t t-set="tot_sum_ratio_qty" t-value="tot_sum_ratio_qty + round(((round(((sum_fresh_qty + sum_cutpiece_qty +sum_bgrade_qty)- sum_qty),2)/sum_qty) *100),2)"/>
+                                          </t> -->
+                                        </tr>
+                                      </t>
+                                        <tr>
+                                            <td>
+                                               <strong>Total</strong>
+                                            </td>
+                                           
+                                            <td>
+<!--                                                 <span t-esc="debit"/> -->
+                                            </td>
+                                              <td>
+<!--                                                 <span t-esc="debit"/> -->
+                                            </td>
+                                             <td>
+<!--                                                 <span t-esc="debit"/> -->
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(round(tot_sum_stiched_qty,2))"/>
+                                            </td>
+                                             <td>
+<!--                                                 <span t-esc="debit"/> -->
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(round(tot_sum_processed_qty,2))"/>
+                                            </td>
+                                             <td>
+<!--                                                 <span t-esc="debit"/> -->
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(round(tot_sum_finish_qty,2))" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(round(tot_sum_fresh_qty,2))" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(round(tot_sum_cutpiece_qty,2))" />
+                                            </td>
+                                             <td>
+                                                <span t-esc="'{0:,.2f}'.format(round(tot_sum_bgrade_qty,2))" />
+                                            </td>
+                                             <td>
+                                              <t t-if="tot_sum_stiched_qty > 0">
+                                                <span t-esc="round(((((tot_sum_fresh_qty + tot_sum_cutpiece_qty + tot_sum_bgrade_qty)-tot_sum_stiched_qty)/tot_sum_stiched_qty)* 100),2)"/>
+                                              </t>
+                                            </td>
+                                            <td>
+                                              <t t-if="tot_sum_fresh_qty > 0"> 
+                                                <span t-esc="round(((tot_sum_stiched_qty/tot_sum_fresh_qty)* 100),2)"/>
+                                              </t>
+                                            </td>
+                                            <td>
+                                               <t t-if="tot_sum_stiched_qty > 0"> 
+                                                <span t-esc="round((((tot_sum_cutpiece_qty + tot_sum_bgrade_qty)/tot_sum_stiched_qty)*100),2)"/>
+                                               </t>
+                                            </td>
+                                            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                            
+                                <br/>
+                                <br/>   
+                           
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

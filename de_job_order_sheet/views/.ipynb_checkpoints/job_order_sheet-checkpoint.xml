@@ -1,0 +1,127 @@
+<?xml version="1.0" ?>
+
+<odoo>
+
+<!--    <record id="mrp_production_sale_view_inherit" model="ir.ui.view">-->
+<!--        <field name="name">mrp.production.sale.form.view.inherit</field>-->
+<!--        <field name="model">mrp.production</field>-->
+<!--        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//field[@name='bom_id']" position="after">-->
+<!--&lt;!&ndash;                <field name="sale_order"/>&ndash;&gt;-->
+<!--                <field name="sale_id"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <record id="de_job_order_sheet.purchase_order_inherit_from_view" model="ir.ui.view">
+        <field name="name">purchase order inherit form view</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="jo_sheet_reference"/>
+            </xpath>
+      </field>
+    </record>
+    
+    <record id="job_order_sheet_line_view_tree" model="ir.ui.view">
+        <field name="name">job order sheet line tree view</field>
+        <field name="model">job.order.sheet.line</field>
+        <field name="arch" type="xml">
+            <tree string="Material Sheet lines"  create="false" editable="bottom" decoration-danger="created_po==True">
+               <field name="mo_order_id" readonly="1"/>
+               <field name="sheet_id" invisible="1"/>
+                <field name="product_id" readonly="1" />
+                <field name="po_process" invisible="1"/>
+                <field name="created_po"  invisible="1"/>
+                <field name="product_quantity"  attrs="{'readonly': [('created_po','=', True)]}"/>
+                <field name="in_house_production" attrs="{'readonly': [('created_po','=', True)]}" />
+                <field name="outsource_production" attrs="{'readonly': [('created_po','=', True)]}" /> 
+                <field name="vendor_id" attrs="{'required': [('po_process','=', True)],'readonly':[('created_po','=',True)]}"/>
+            </tree>
+        </field>
+    </record>  
+
+    <record id="de_job_order_sheet.job_order_sheet_view_form" model="ir.ui.view">
+        <field name="name">job order  sheet form view</field>
+        <field name="model">job.order.sheet</field>
+        <field name="arch" type="xml">
+            <form string="Job Order Sheet">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,done"/>
+<!--                     <button name="action_approve" type="object" string="Approve" class="oe_highlight"
+                            groups="hr.group_hr_manager"
+                            states="draft"/> -->
+                    <button name="action_done" type="object" string="Done" class="oe_highlight"
+                            states="approved"/>
+                </header>
+               
+                <sheet>
+                     <div class="oe_button_box" name="button_box">
+                            <button type="object" name="material_planning" string='Material Planning' class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible':[ ('state', '=', 'draft')]}">
+                        </button>
+                 </div>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Job Order Reference" nolabel="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date" attrs="{'readonly': [('state','!=', 'draft')]}" />
+                            <field name="sale_order_id" attrs="{'readonly': [('state','!=', 'draft')]}" />
+                            <field name="progress" invisible="1"/>
+                            <field name="po_created" invisible="1"/>
+                        </group>
+                    </group>
+                    <button name="get_sheet_lines" type="object" string="Process"
+                            attrs="{'invisible': [('progress', '=', 'done')]}"
+                            class="oe_highlight" style="margin:5px;"/>
+                    <button name="action_quantity_update" type="object" string="Update"
+                                    class="oe_highlight" style="margin:5px;"/>
+                    <button name="action_generate_po" type="object" string="Create PO"
+                            class="oe_highlight"/>
+                    <notebook>
+                        <page string="Material Planing" name="job_order_sheet_lines">
+                            <field name="sheet_ids">
+                                <tree editable="bottom"  decoration-danger="created_po==True">
+                                    <field name="mo_order_id" attrs="{'readonly': [('created_po','=', True)]}"/>
+                                    <field name="product_id" attrs="{'readonly': [('created_po','=', True)]}"/>
+                                    <field name="created_po" invisible="1"/>
+                                    <field name="product_name" invisible="1"/>
+                                    <field name="product_quantity" attrs="{'readonly': [('created_po','=', True)]}"/>
+                                    <field name="in_house_production" attrs="{'readonly': [('created_po','=', True)]}"/>
+                                    <field name="outsource_production"
+                                           attrs="{'invisible': [('product_name', '=like', '[Module]%')], 'readonly': [('created_po','=', True)]}"/>
+                                    <field name="vendor_id" attrs="{'readonly': [('created_po','=', True)]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="de_job_order_sheet.job_order_sheet_view_tree" model="ir.ui.view">
+        <field name="name">job order sheet tree view</field>
+        <field name="model">job.order.sheet</field>
+        <field name="arch" type="xml">
+            <tree string="Job Order Sheet">
+                <field name="date"/>
+                <field name="sale_order_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="de_job_order_sheet.job_order_sheet_action" model="ir.actions.act_window">
+        <field name="name">Job Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">job.order.sheet</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="de_job_order_sheet.job_order_sheet_menu" name="Job Order" parent="mrp.menu_mrp_manufacturing" action="de_job_order_sheet.job_order_sheet_action" sequence="2"/>
+    
+    <menuitem id="inventory_job_order_menu" name="Job Order" parent="stock.menu_stock_warehouse_mgmt" action="de_job_order_sheet.job_order_sheet_action" sequence="4"/>
+
+</odoo>
