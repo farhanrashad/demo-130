@@ -1,0 +1,20 @@
+{
+    'name': 'POS Return Order',
+    'version': '13.0.0.0',
+    'category': 'Point of Sale',
+    'summary': 'Return Orders in Previous History',
+    'description': 'Return Orders in Previous History,Return, re order, Return order, odoo13, duplicate order',
+    'author': 'Dynexcel',
+    'company': 'Dynexcel',
+    'maintainer': 'Dynexcel',
+    'images': ['static/description/banner.png'],
+    'website': 'https://www.dynexcel.co',
+    'depends': ['point_of_sale'],
+    'data': ['views/pos_template.xml'],
+    'qweb': ['static/src/xml/pos_repeat.xml'],
+    'license': 'AGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+
+}
