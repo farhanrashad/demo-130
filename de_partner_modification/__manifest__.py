@@ -3,11 +3,11 @@
     'name': "Partner Modification",
 
     'summary': """
-            Partner Modification
+            Vendor Only active when its Qualify
             """,
 
     'description': """
-        Long description of module's purpose
+        Their are some Qualification Stages for vendor
     """,
 
     'author': "Dynexcel",
@@ -17,14 +17,15 @@
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Partner',
-    'version': '0.1',
+    'version': '13.0.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale','purchase','account','stock'],
+    'depends': ['base','sale','purchase','account','stock','mail'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/views.xml',
         'views/templates.xml',
     ],
