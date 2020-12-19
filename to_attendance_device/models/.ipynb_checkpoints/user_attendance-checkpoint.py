@@ -68,11 +68,13 @@ class UserAttendance(models.Model):
     
     def action_attendace_validated(self):
         for record in self:
-            check_out = record.timestamp
             count_punch = 0
+            if count_punch == 2:
+                check_out = record.timestamp 
             for  employee in self:
                 if record.employee_id.id == employee.employee_id.id:
-                     count_punch = count_punch + 1
+                    count_punch = count_punch + 1
+                       
             if   count_punch >= 2:  
                 vals = {
                             'employee_id': record.employee_id.id,

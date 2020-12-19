@@ -16,11 +16,6 @@ _logger = logging.getLogger(__name__)
 
 
 
-# class UserAttendance(models.Model):
-#     _inherit = 'user.attendance'
-    
-
-
 
 class AttendanceDevice(models.Model):
     _name = 'attendance.device'
