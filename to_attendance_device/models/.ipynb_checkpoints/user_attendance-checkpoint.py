@@ -68,6 +68,7 @@ class UserAttendance(models.Model):
     
     def action_attendace_validated(self):
         for record in self:
+            check_out = record.timestamp
             count_punch = 0
             for  employee in self:
                 if record.employee_id.id == employee.employee_id.id:
