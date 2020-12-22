@@ -20,7 +20,7 @@ class CashCollection(models.Model):
     payment_lines_ids = fields.One2many('account.customer.collection.line', 'batch_payment_lines_id')
     amount = fields.Monetary(store=True, readonly=True)
     currency_id = fields.Many2one('res.currency', store=True, readonly=True)
-    batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, default='inbound')
+    batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, default='inbound', string='Type')
     payment_method_id = fields.Many2one(
         comodel_name='account.payment.method',
         string='Payment Method', store=True, readonly=False,
@@ -91,11 +91,14 @@ class CashCollection(models.Model):
             'journal_id': self.journal_id.id,
             'partner_id': i.partner_id.id,
             'amount': i.amount,
-            'date': self.date,
+            'payment_date': self.date,
+            'payment_type': self.batch_type,
+            'partner_type': 'customer',
             'destination_account_id': i.partner_id.property_account_receivable_id.id,
             'payment_method_id': self.payment_method_id.id,
               })
             i.name = batch.id
+            batch.post()
         self.write({'state':'payment'})
 
     
@@ -108,10 +111,10 @@ class CashCollection(models.Model):
         
         record = self.env['account.move'].create({
             'date': fields.Date.today(),
-            'line_ids': [(0, 0, {'account_id': self.bank.default_account_id.id,
+            'line_ids': [(0, 0, {'account_id': self.bank.default_debit_account_id.id,
                                         'name': self.name,
                                         'debit': amount_total, }),
-                         (0, 0, {'account_id': self.journal_id.default_account_id.id,
+                         (0, 0, {'account_id': self.journal_id.default_debit_account_id.id,
                                         'name': self.name,
                                         'credit': amount_total, })], 
               })
