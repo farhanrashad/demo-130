@@ -15,7 +15,7 @@ class CashCollection(models.Model):
         ('deposit', 'Deposit'),
     ], store=True, default='draft')
     city = fields.Char(string='City')
-    journal_id = fields.Many2one('account.journal', string='Cash Collection', domain=[('type', '=', 'bank')], required=True)
+    journal_id = fields.Many2one('account.journal', string='Cash Collection', domain=[('type', '=', 'cash')], required=True)
     bank = fields.Many2one('account.journal', string='Bank Account', domain=[('type', '=', 'bank')])
     payment_lines_ids = fields.One2many('account.customer.collection.line', 'batch_payment_lines_id')
     amount = fields.Monetary(store=True, readonly=True)
@@ -103,14 +103,15 @@ class CashCollection(models.Model):
 
     
     def cash_deposit_button(self):
-        if not self.bank:
-            raise UserError(_('You must define a Contact Name for this applicant.'))
+        if not (self.bank and self.journal_id):
+            raise UserError(_('You must define a Bank Account for this customer.'))
         amount_total = 0
         for i in self.payment_lines_ids:
             amount_total = amount_total + i.amount
         
         record = self.env['account.move'].create({
             'date': fields.Date.today(),
+            'journal_id': self.bank.id,
             'line_ids': [(0, 0, {'account_id': self.bank.default_debit_account_id.id,
                                         'name': self.name,
                                         'debit': amount_total, }),

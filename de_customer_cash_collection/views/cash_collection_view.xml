@@ -30,7 +30,7 @@
                         <group>
                             <field name="city" placeholder="enter exact city name of partner..." attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             <field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="bank" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="bank" attrs="{'readonly': [('state', '=', 'deposit')]}"/>
                             <field name="name" placeholder="auto ..." required="0" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                     </group>
@@ -60,12 +60,8 @@
         <field name="context">{}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new customer batch payment
-            </p><p>
-            Batch payments allow you grouping different payments to ease
-            reconciliation. They are also useful when depositing checks
-            to the bank.
-        </p>
+                Create a new customer cash collection record
+            </p>
         </field>
     </record>
 
