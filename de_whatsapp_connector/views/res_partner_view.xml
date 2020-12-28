@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+         <record id="whatsapp_res_partner" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button"
+                            icon="fa-whatsapp"
+                            name="send_msg"
+                            type="object"
+                            >
+                        <field name="message_counter" widget="statinfo" string="Whatsapp"/>
+                    </button>
+<!--                    <button class="oe_stat_button"-->
+<!--                            icon="fa-whatsapp"-->
+<!--                            name="wa_history"-->
+<!--                            type="object">-->
+<!--                            <field name="history_count" widget="statinfo" string="WA History"/>-->
+<!--                    </button>-->
+
+<!--                    <button class="oe_stat_button"-->
+<!--                            icon="fa-whatsapp"-->
+<!--                            name="wa_discuss"-->
+<!--                            type="object"-->
+<!--                            string="WA Chat">-->
+<!--                    </button>-->
+                </div>
+<!--                <form>-->
+<!--                     <field name="dicuss_history" invisible="1"/>-->
+
+<!--                </form>-->
+            </field>
+        </record>
+        <record model="ir.ui.view" id="partner_user_kanban_view">
+            <field name="name">partner.location</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+            <field name="arch" type="xml">
+                <field name="email" position="after">
+                    <field name="message_highliter"/>
+                </field>
+                <xpath expr="//kanban/templates/t/div/div/ul" position="inside">
+                    <li style="font-weight:bold; color:green;" >
+                        <field name="message_highliter"/>
+                    </li>
+                </xpath>
+            </field>
+        </record>
+
+ </data>
+</odoo>
