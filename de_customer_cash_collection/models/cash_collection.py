@@ -8,7 +8,8 @@ class CashCollection(models.Model):
     _order = "date desc, id desc"
 
     name = fields.Char(string='Reference')
-    date = fields.Date(required=True, copy=False, default=fields.Date.context_today, readonly=True)
+    date = fields.Date(required=True, copy=False, default=fields.Date.context_today, readonly=True, string='Cash Date')
+    bank_date = fields.Date(required=True, copy=False, default=fields.Date.context_today, readonly=True, string='Bank Date')
     state = fields.Selection([
         ('draft', 'New'),
         ('payment', 'Payment'),
@@ -21,6 +22,7 @@ class CashCollection(models.Model):
     amount = fields.Monetary(store=True, readonly=True)
     currency_id = fields.Many2one('res.currency', store=True, readonly=True)
     batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, default='inbound', string='Type')
+    payment_line = fields.Many2many('res.partner', compute='_compute_payment_line')
     payment_method_id = fields.Many2one(
         comodel_name='account.payment.method',
         string='Payment Method', store=True, readonly=False,
@@ -42,11 +44,19 @@ class CashCollection(models.Model):
     def write(self, vals):
         if 'batch_type' in vals:
             vals['name'] = self.with_context(default_journal_id=self.journal_id.id)._get_batch_name(vals['batch_type'], self.date, vals)
-
         rslt = super(CashCollection, self).write(vals)
-
         return rslt
-
+    
+    
+    @api.onchange('payment_lines_ids')
+    def _compute_payment_line(self):
+        data = []
+        for approver in self:
+            for line in approver.payment_lines_ids:
+                data.append(line.partner_id.id)
+            approver.payment_line = data
+            
+            
     @api.model
     def _get_batch_name(self, batch_type, sequence_date, vals):
         if not vals.get('name'):
@@ -111,6 +121,7 @@ class CashCollection(models.Model):
         
         record = self.env['account.move'].create({
             'date': fields.Date.today(),
+            'date': self.bank_date,
             'journal_id': self.bank.id,
             'line_ids': [(0, 0, {'account_id': self.bank.default_debit_account_id.id,
                                         'name': self.name,
@@ -149,16 +160,23 @@ class CustomerCollectionLine(models.Model):
     
     
     batch_payment_lines_id = fields.Many2one('account.customer.collection', ondelete='set null', copy=False, string='Cash Payment')
-    name = fields.Many2one('account.payment', string="Reference",)
-#     city = fields.Char(related='batch_payment_lines_id.city')
+    name = fields.Many2one('account.payment', string="Reference")
     city = fields.Char(compute='_compute_city_to_search_partner')
-    partner_id = fields.Many2one('res.partner', domain="[('city', '=', city)]" ,required=True)
+    partner_id = fields.Many2one('res.partner', domain="[('city', '=', city),('id', 'not in', payment_ids)]" ,required=True)
+    payment_ids = fields.Many2many('res.partner', compute='_compute_payment_ids')
     amount = fields.Integer(string='Amount')
-    
+     
     @api.onchange('partner_id', 'batch_payment_lines_id.city')
     def _compute_city_to_search_partner(self):
         for partner in self:
             partner.city = partner.batch_payment_lines_id.city
+            
+    
+    @api.onchange('partner_id')
+    def _compute_payment_ids(self):
+        for approver in self:
+            approver.payment_ids = approver.batch_payment_lines_id.payment_line
+            
             
     @api.constrains('amount')
     def check_commission_amount(self):
