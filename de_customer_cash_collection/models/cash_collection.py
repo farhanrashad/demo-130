@@ -119,32 +119,47 @@ class CashCollection(models.Model):
                                         'name': self.name,
                                         'credit': amount_total, })], 
               })
+        record.action_post()
         
         self.write({'state':'deposit'})
         
     def action_add_payments(self):
         return self.payments
+    
+    @api.onchange('city')
+    def _compute_line_cities(self):
+        for partner in self:
+            if partner.payment_lines_ids:
+                for i in partner.payment_lines_ids:
+                    i.city = partner.city
+            else:
+                pass
 
 class CustomerCollectionLine(models.Model):
     _name = "account.customer.collection.line"
     _description = 'Customer Cash Collection Line'
     
+    
     def get_partners(self):
-        my_list = []
-        partners = list(self.batch_payment_lines_id.partner_ids.ids)
-        for i in partners:
-            my_list.append(i)  
-        partners = my_list
-            
-        return [('id', 'in', partners)]
+        for rec in self:
+            if rec.city:
+                return [('city', '=', rec.city)]
+            else:
+                pass
     
     
     batch_payment_lines_id = fields.Many2one('account.customer.collection', ondelete='set null', copy=False, string='Cash Payment')
     name = fields.Many2one('account.payment', string="Reference",)
-    city = fields.Char(related='batch_payment_lines_id.city')
+#     city = fields.Char(related='batch_payment_lines_id.city')
+    city = fields.Char(compute='_compute_city_to_search_partner')
     partner_id = fields.Many2one('res.partner', domain="[('city', '=', city)]" ,required=True)
     amount = fields.Integer(string='Amount')
     
+    @api.onchange('partner_id', 'batch_payment_lines_id.city')
+    def _compute_city_to_search_partner(self):
+        for partner in self:
+            partner.city = partner.batch_payment_lines_id.city
+            
     @api.constrains('amount')
     def check_commission_amount(self):
         for rec in self:
