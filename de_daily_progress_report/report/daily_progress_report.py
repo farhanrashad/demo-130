@@ -11,7 +11,7 @@ from odoo import api, models
 from dateutil.parser import parse
 from odoo.exceptions import UserError
 
-class ReportReceivingUtilize(models.AbstractModel):
+class DailyProgressReport(models.AbstractModel):
     _name = 'report.de_daily_progress_report.progress_report_template'
 
     '''Find Purchase invoices between the date and find total outstanding amount'''
@@ -25,7 +25,7 @@ class ReportReceivingUtilize(models.AbstractModel):
                                                           ])
 
 
-         if lot_records:
+        if lot_records:
              return {
                 'docs': docs,
                  'lot_records': lot_records,

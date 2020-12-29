@@ -17,9 +17,11 @@
 		<field name="dpi">90</field>
 	</record>
 
+    
+    
 	<report id="daily_progress_report_id"
 			string="Daily Progress Report"
-			model="stock.move.line"
+			model="report.de_daily_progress_report.progress_report_template"
 			report_type="qweb-pdf"
 			name="de_daily_progress_report.progress_report_template"
 			file="de_daily_progress_report.progress_report_template"
