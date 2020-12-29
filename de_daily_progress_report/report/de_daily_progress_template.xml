@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+-     <template id="progress_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+               <div style="float:right;"><img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', docs.name, 600, 100)" style="width:300px;height:40px;"/></div>
+              <br></br><br></br>
+              <div style="text-align:center; margin-top:5px;">
+                   <h2 align="center" style="text-align:center;">Daily Progress Report</h2>
+
+                  <h2 align="center">
+                        <t t-esc="doc.name"/>
+                   </h2>
+                </div>
+                 <br></br>
+
+              <table class="table table-condensed">
+                   <thead>
+                       <tr>
+                            <th>Sr#</th>
+                            <th>SO</th>
+                            <th>LOT#</th>
+                           <th>Partner</th>
+                           <th>Cloth Desc.</th> 
+                           <th>Greige</th>
+                          <th>Stiched</th> 
+                          <th>Processed</th>
+                       </tr>
+                   </thead>
+                   <tbody> 
+                      <t t-set="row_number" t-value="1"/>
+                        <tr t-foreach="lot_records" t-as='o' >
+                           <td><t t-esc="row_number"/></td>
+                           <td><t t-esc="o.date"/></td>
+                           <td><t t-esc="o.lot_id.name"/></td> 
+                           <td><t t-esc="o.cloth_desc"/></td>
+                            <td><t t-esc="o.qty_done"/></td> 
+                          <td> 
+                     <table class="table table-condensed">
+                        <thead>
+                         <tr>
+                            <th>Issued Today</th>
+                            <th>Previous</th>
+                            <th>Total</th>
+                         </tr>
+                        </thead>
+                        <tbody> 
+
+                        <tr t-foreach="request.env['mrp.production'].search([('name','=', o.name)])" t-as='o' >
+                          <td><t t-esc="o.date"/></td>
+                           <td><t t-esc="o.reference"/></td>
+                           <td><t t-esc="o.qty_done"/></td> 
+
+                        </tr>
+                   </tbody>
+               </table> 
+           </td>
+                           <td>
+                        <table class="table table-condensed">
+                        <thead>
+                         <tr>
+                            <th>Issued Today</th>
+                            <th>Previous</th>
+                            <th>Total</th>
+                         </tr>
+                        </thead>
+                        <tbody> 
+
+                        <tr t-foreach="request.env['mrp.production'].search([('name','=', o.name)])" t-as='o' >
+                          <td><t t-esc="o.date"/></td>
+                           <td><t t-esc="o.reference"/></td>
+                           <td><t t-esc="o.qty_done"/></td> 
+
+                        </tr>
+                   </tbody>
+               </table> 
+              </td>
+                 
+                     <td>
+                        <table class="table table-condensed">
+                        <thead>
+                         <tr>
+                            <th>Issued Today</th>
+                            <th>Previous</th>
+                            <th>Total</th>
+                         </tr>
+                        </thead>
+                        <tbody> 
+
+                        <tr t-foreach="request.env['mrp.production'].search([('name','=', o.name)])" t-as='o' >
+                          <td><t t-esc="o.date"/></td>
+                           <td><t t-esc="o.reference"/></td>
+                           <td><t t-esc="o.qty_done"/></td> 
+
+                        </tr>
+                   </tbody>
+               </table> 
+              </td> 
+                         
+
+
+                       <t t-set="row_number" t-value="row_number + 1"/>
+                        </tr>
+                   </tbody>
+               </table> 
+                <div style="float:left;border-top: 1px solid ; width:100%">Note: <t t-esc="doc.note"/></div>
+             </t>
+        </t>
+    </template>
+
+</odoo>
+
