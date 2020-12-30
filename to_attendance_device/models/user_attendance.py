@@ -64,6 +64,22 @@ class UserAttendance(models.Model):
         if valid_attendances:
             valid_attendances.write({'valid': True})
         return attendances
-    
+
+    def action_attendace_validated(self):
+        for record in self:
+            count_punch = 0
+            if count_punch == 0:
+                check_out = record.timestamp
+            for employee in self:
+                if record.employee_id.id == employee.employee_id.id:
+                    count_punch = count_punch + 1
+                    if count_punch >= 2:
+                        vals = {
+                            'employee_id': record.employee_id.id,
+                            'check_in': record.timestamp,
+                            'check_out': check_out,
+                        }
+                        attendance = self.env['hr.attendance'].create(vals)
+
     
   
