@@ -81,5 +81,8 @@ class UserAttendance(models.Model):
                         }
                         attendance = self.env['hr.attendance'].create(vals)
 
+class Attendance(models.Model):
+    _inherit='hr.attendance'
+
     
   
