@@ -108,7 +108,7 @@ Phiên bản hỗ trợ
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Human Resources',
-    'version': '1.1.1',
+    'version': '13.1.1',
 
     # any module necessary for this one to work correctly
     'depends': ['hr_attendance', 'to_base', 'to_safe_confirm_button'],
