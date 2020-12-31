@@ -25,6 +25,7 @@
 							<group>
 								<field name="user_id" />
 								<field name="timestamp" />
+                                                                <field name="is_attedance_created" invisible="1"/>
 								<field name="status" groups="base.group_no_one" />
 								<field name="attendance_state_id" />
 								<field name="valid" />
@@ -58,6 +59,7 @@
 					edit="false">
 					<field name="timestamp" />
 					<field name="user_id" />
+                                        <field name="is_attedance_created" invisible="1"/>
 					<field name="status" groups="base.group_no_one" />
 					<field name="attendance_state_id" />
 					<field name="valid" />

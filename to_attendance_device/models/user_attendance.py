@@ -30,6 +30,7 @@ class UserAttendance(models.Model):
                            help="This field is to indicate if this attendance record is valid for HR Attendance Synchronization."
                            " E.g. The Attendances with Check out prior to Check in or the Attendances for users without employee"
                            " mapped will not be valid.")
+    is_attedance_created = fields.Boolean(string="Is Attendance")
 
     _sql_constraints = [
         ('unique_user_id_device_id_timestamp',
@@ -67,9 +68,14 @@ class UserAttendance(models.Model):
 
     def action_attendace_validated(self):
                   
-        total_employee = self.env['hr.employee'].search([])
-        for employee in total_employee:
-            attendance_test = self.env['user.attendance.test']
+        #total_employee = self.env['hr.employee'].search([])
+        #for employee in total_employee:
+        current_employee_list = [] 
+        for attende_line in self:
+            current_employee_list.append(attende_line.employee_id.id)
+        uniq_employee_list = set(current_employee_list)    
+        for employee in uniq_employee_list:     
+            attendance_test = self.env['user.attendance']
             count = attendance_test.search_count([('user_id','=',employee.id)])
             if count > 1:
                 attendance_checkin = attendance_test.search([('user_id','=',employee.id)], order="timestamp asc", limit=1)
@@ -82,6 +88,11 @@ class UserAttendance(models.Model):
                                 'check_out': attendance_checkout.timestamp,
                                  }
                     hr_attendance = self.env['hr.attendance'].create(vals)
+        for line in self:
+            line.update({
+               'is_attedance_created' : True
+})           
+                    
 
 #class Attendance(models.Model):
 #    _inherit='hr.attendance'
