@@ -66,24 +66,26 @@ class UserAttendance(models.Model):
         return attendances
 
     def action_attendace_validated(self):
-        for record in self:
-            count_punch = 0
-            if count_punch == 0:
-                check_out = record.timestamp
-            for employee in self:
-                if record.employee_id.id == employee.employee_id.id:
-                    count_punch = count_punch + 1
-                    if count_punch >= 2:
-                        vals = {
-                            'employee_id': record.employee_id.id,
-                            'check_in': record.timestamp,
-                            'check_out': check_out,
-                        }
-                        attendance = self.env['hr.attendance'].create(vals)
+                  
+        total_employee = self.env['hr.employee'].search([])
+        for employee in total_employee:
+            attendance_test = self.env['user.attendance.test']
+            count = attendance_test.search_count([('user_id','=',employee.id)])
+            if count > 1:
+                attendance_checkin = attendance_test.search([('user_id','=',employee.id)], order="timestamp asc", limit=1)
+                attendance_checkout = attendance_test.search([('user_id','=',employee.id)], order="timestamp desc", limit=1)
 
-class Attendance(models.Model):
-    _inherit='hr.attendance'
+                if attendance_checkin and attendance_checkout:
+                    vals = {
+                                'employee_id': attendance_checkin.user_id.id,
+                                'check_in': attendance_checkin.timestamp,
+                                'check_out': attendance_checkout.timestamp,
+                                 }
+                    hr_attendance = self.env['hr.attendance'].create(vals)
 
-    open_worked_hours = fields.Float(string='Worked Hours', )
-    attendance_reason_ids = fields.Char(string='Reason')
+#class Attendance(models.Model):
+#    _inherit='hr.attendance'
+
+    #open_worked_hours = fields.Float(string='Worked Hours')
+ #   attendance_reason_ids = fields.Char(string='Reason')
   
