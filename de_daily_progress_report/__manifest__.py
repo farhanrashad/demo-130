@@ -12,12 +12,12 @@
     "author": "Dynexcel",
     "website": "http://www.dynexcel.co",
     "version": '12.0.0.0',
-    "depends": ['base','stock','mrp','maintenance'],
+    "depends": ['base','stock','mrp'],
     "data": [
-        'wizard/daily_progress_report_wizard_view.xml', 
-        'security/ir.model.access.csv',
+#         'security/ir.model.access.csv',
         'report/de_daily_progress_report.xml',
         'report/de_daily_progress_template.xml',
+        'wizard/daily_progress_report_wizard_view.xml',
         'views/daily_progress_report_menu.xml',
     ],
 

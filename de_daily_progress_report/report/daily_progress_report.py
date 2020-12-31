@@ -21,9 +21,7 @@ class DailyProgressReport(models.AbstractModel):
         docs = self.env[self.model].browse(self.env.context.get('active_id'))
         outstanding_invoice = []       
         
-        lot_records = self.env['stock.move.line'].search([('date', '=', doc.date),
-                                                          ]
-        mrp_production = self.env['mrp.production'].search([('date_planned_start', '=', doc.date),
+        lot_records = self.env['stock.move.line'].search([('date', '=', docs.date),
                                                           ])
 
 
@@ -31,7 +29,6 @@ class DailyProgressReport(models.AbstractModel):
              return {
                 'docs': docs,
                  'lot_records': lot_records,
-                 'mrp_production': mrp_production,
              }
         else:
             raise UserError("There is not any Record between selected date")

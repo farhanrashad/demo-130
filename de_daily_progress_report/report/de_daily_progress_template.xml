@@ -3,7 +3,16 @@
 -     <template id="progress_report_template">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
-              <div class="page">
+               <div style="float:right;"><img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', docs.name, 600, 100)" style="width:300px;height:40px;"/></div>
+              <br></br><br></br>
+              <div style="text-align:center; margin-top:5px;">
+                   <h2 align="center" style="text-align:center;">Daily Progress Report</h2>
+
+                  <h2 align="center">
+                        <t t-esc="doc.name"/>
+                   </h2>
+                </div>
+                 <br></br>
 
               <table class="table table-condensed">
                    <thead>
@@ -37,10 +46,10 @@
                         </thead>
                         <tbody> 
 
-                        <tr t-foreach="mrp_production" t-as='o' >
-                          <td><t t-esc="o.date_planned_start"/></td>
-                           <td><t t-esc="o.product_qty"/></td>
-                           <td><t t-esc="o.product_qty"/></td> 
+                        <tr t-foreach="request.env['mrp.production'].search([('name','=', o.name)])" t-as='o' >
+                          <td><t t-esc="o.date"/></td>
+                           <td><t t-esc="o.reference"/></td>
+                           <td><t t-esc="o.qty_done"/></td> 
 
                         </tr>
                    </tbody>
@@ -57,11 +66,10 @@
                         </thead>
                         <tbody> 
 
-                        <tr t-foreach="mrp_production" t-as='o' >
-                           <td><t t-esc="o.date_planned_start"/></td>
-                           <td><t t-esc="o.product_qty"/></td>
-                           <td><t t-esc="o.product_qty"/></td> 
-
+                        <tr t-foreach="request.env['mrp.production'].search([('name','=', o.name)])" t-as='o' >
+                          <td><t t-esc="o.date"/></td>
+                           <td><t t-esc="o.reference"/></td>
+                           <td><t t-esc="o.qty_done"/></td> 
 
                         </tr>
                    </tbody>
@@ -79,10 +87,10 @@
                         </thead>
                         <tbody> 
 
-                        <tr t-foreach="mrp_production" t-as='o' >
-                           <td><t t-esc="o.date_planned_start"/></td>
-                           <td><t t-esc="o.product_qty"/></td>
-                           <td><t t-esc="o.product_qty"/></td> 
+                        <tr t-foreach="request.env['mrp.production'].search([('name','=', o.name)])" t-as='o' >
+                          <td><t t-esc="o.date"/></td>
+                           <td><t t-esc="o.reference"/></td>
+                           <td><t t-esc="o.qty_done"/></td> 
 
                         </tr>
                    </tbody>
@@ -95,7 +103,7 @@
                         </tr>
                    </tbody>
                </table> 
-                </div>
+                <div style="float:left;border-top: 1px solid ; width:100%">Note: <t t-esc="doc.note"/></div>
              </t>
         </t>
     </template>
