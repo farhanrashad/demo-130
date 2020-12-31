@@ -73,7 +73,7 @@ class UserAttendance(models.Model):
             date_end = datetime + relativedelta(hours =+ 23)
             total_employee = self.env['hr.employee'].search([])
             for employee in total_employee:
-                attendance_test = self.env['user.attendance.test']
+                attendance_test = self.env['user.attendance']
                 count = attendance_test.search_count([('user_id','=',employee.id)])
                 if count > 1:
                     attendance_checkin = attendance_test.search([('user_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end),('is_attedance_created','=',False)], order="timestamp asc", limit=1)
@@ -94,9 +94,5 @@ class UserAttendance(models.Model):
              })           
                     
 
-#class Attendance(models.Model):
-#    _inherit='hr.attendance'
 
-    #open_worked_hours = fields.Float(string='Worked Hours')
- #   attendance_reason_ids = fields.Char(string='Reason')
   
