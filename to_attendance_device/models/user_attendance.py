@@ -85,4 +85,5 @@ class Attendance(models.Model):
     _inherit='hr.attendance'
 
     open_worked_hours = fields.Float(string='Worked Hours', store=True,)
+    attendance_reason_ids = fields.Char(string='Reason')
   
