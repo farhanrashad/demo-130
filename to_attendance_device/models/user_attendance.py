@@ -76,10 +76,10 @@ class UserAttendance(models.Model):
         uniq_employee_list = set(current_employee_list)    
         for employee in uniq_employee_list:     
             attendance_test = self.env['user.attendance']
-            count = attendance_test.search_count([('user_id','=',employee.id)])
+            count = attendance_test.search_count([('user_id','=',employee)])
             if count > 1:
-                attendance_checkin = attendance_test.search([('user_id','=',employee.id)], order="timestamp asc", limit=1)
-                attendance_checkout = attendance_test.search([('user_id','=',employee.id)], order="timestamp desc", limit=1)
+                attendance_checkin = attendance_test.search([('user_id','=',employee)], order="timestamp asc", limit=1)
+                attendance_checkout = attendance_test.search([('user_id','=',employee)], order="timestamp desc", limit=1)
 
                 if attendance_checkin and attendance_checkout:
                     vals = {
