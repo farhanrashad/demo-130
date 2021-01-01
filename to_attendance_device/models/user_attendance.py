@@ -67,7 +67,7 @@ class UserAttendance(models.Model):
         return attendances
 
     def action_attendace_validated(self):
-        #for month_date in range(32):
+        # for month_date in range(32):
         datetime = fields.date.today() - timedelta(days=14)
         date_start = datetime + relativedelta(hours =+ 1)
         date_end = datetime + relativedelta(hours =+ 23)
@@ -76,8 +76,8 @@ class UserAttendance(models.Model):
             attendance_test = self.env['user.attendance']
             count = attendance_test.search_count([('employee_id','=',employee.id)])
             if count > 1:
-                attendance_checkin = attendance_test.search([('employee_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end),], order="timestamp asc", limit=1)
-                attendance_checkout = attendance_test.search([('employee_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end)], order="timestamp desc", limit=1)
+                attendance_checkin = attendance_test.search([('employee_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end),('is_attedance_created','=',False)], order="timestamp asc", limit=1)
+                attendance_checkout = attendance_test.search([('employee_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end),('is_attedance_created','=',False)], order="timestamp desc", limit=1)
                 if attendance_checkin and attendance_checkout:
                     vals = {
                            'employee_id': attendance_checkin.employee_id.id,
