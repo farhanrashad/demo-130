@@ -80,7 +80,7 @@ class UserAttendance(models.Model):
                 attendance_checkout = attendance_test.search([('employee_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end)], order="timestamp desc", limit=1)
                 if attendance_checkin and attendance_checkout:
                     vals = {
-                           'employee_id': attendance_checkin.user_id.id,
+                           'employee_id': attendance_checkin.employee_id.id,
                            'check_in': attendance_checkin.timestamp,
                            'check_out': attendance_checkout.timestamp,
                               }
