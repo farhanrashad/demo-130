@@ -74,10 +74,10 @@ class UserAttendance(models.Model):
         total_employee = self.env['hr.employee'].search([])
         for employee in total_employee:
             attendance_test = self.env['user.attendance']
-            count = attendance_test.search_count([('user_id','=',employee.id)])
+            count = attendance_test.search_count([('employee_id','=',employee.id)])
             if count > 1:
-                attendance_checkin = attendance_test.search([('user_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end),], order="timestamp asc", limit=1)
-                attendance_checkout = attendance_test.search([('user_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end)], order="timestamp desc", limit=1)
+                attendance_checkin = attendance_test.search([('employee_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end),], order="timestamp asc", limit=1)
+                attendance_checkout = attendance_test.search([('employee_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end)], order="timestamp desc", limit=1)
                 if attendance_checkin and attendance_checkout:
                     vals = {
                            'employee_id': attendance_checkin.user_id.id,
@@ -86,7 +86,7 @@ class UserAttendance(models.Model):
                               }
                     hr_attendance = self.env['hr.attendance'].create(vals)
 
-        attendancelist = attendance_test.search([('user_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end),('is_attedance_created','=',False)])
+        attendancelist = attendance_test.search([('employee_id','=',employee.id),('timestamp','>=',date_start),('timestamp','<=',date_end),('is_attedance_created','=',False)])
         for line in attendancelist:
             line.update({
                'is_attedance_created' : True
