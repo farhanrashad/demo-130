@@ -29,8 +29,8 @@ class pos_order(models.Model):
             dt = []
             rules = self.env['pos.commission.rule'].search([])
             for rule in rules:
-                if str(rule.start_date) <= values['date_order'].split()[0] and str(rule.end_date) >= \
-                        values['date_order'].split()[0]:
+                if str(rule.start_date) <= str(values['date_order']).split()[0] and str(rule.end_date) >= \
+                        str(values['date_order']).split()[0]:
 
                     rule_records = self.env['pos.commission.rule'].search([('id', '=', rule.id), ('state', '=', 'lock')])
                     if values['amount_total'] >= rule_records.minimum_order:
