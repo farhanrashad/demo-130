@@ -21,7 +21,18 @@ class ProjectTask(models.Model):
     order_ids = fields.One2many('sale.order', 'repair_task_id', string='Orders')
     
     remarks = fields.Html(string='Technician Remarks')
+#     description = fields.Html('Description', compute='get_remarks')
     
+#     @api.onchange('remarks')
+#     def get_remarks(self):
+# #         self.description = self.remarks
+# #         for rec in self:
+# #         if self.is_workorder == True:
+#         rec = self.env['project.task'].search([('id', '=', self.ticket_id.id)])
+#         rec.write({
+#             'description': rec.remarks
+#         })
+#         return rec
     
     @api.depends('order_ids.state', 'order_ids.currency_id', 'order_ids.amount_untaxed', 'order_ids.date_order', 'order_ids.company_id')
     def _compute_sale_data(self):
@@ -141,6 +152,7 @@ class ProjectTaskRepairPlanning(models.Model):
     
     invoice_amount = fields.Float(string='Invoiced Amount', compute='_get_invoice_amount')
     qty_delivered = fields.Float(string='Delivered Quantity', compute='_compute_qty_delivered')
+    warranty_status = fields.Char("Warranty Status")
 
     @api.depends('product_uom_qty')
     def _compute_qty_delivered(self):
