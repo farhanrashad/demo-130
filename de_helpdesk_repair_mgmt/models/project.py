@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-
+from odoo.exceptions import UserError
+from openerp.tools import html2plaintext
 
 class ProjectTask(models.Model):
     _inherit = 'project.task'
@@ -21,18 +22,15 @@ class ProjectTask(models.Model):
     order_ids = fields.One2many('sale.order', 'repair_task_id', string='Orders')
     
     remarks = fields.Html(string='Technician Remarks')
-#     description = fields.Html('Description', compute='get_remarks')
+    description = fields.Html('Description')
+    remedy_description = fields.Html('Remedy Description', compute='get_remarks')
     
-#     @api.onchange('remarks')
-#     def get_remarks(self):
-# #         self.description = self.remarks
-# #         for rec in self:
-# #         if self.is_workorder == True:
-#         rec = self.env['project.task'].search([('id', '=', self.ticket_id.id)])
-#         rec.write({
-#             'description': rec.remarks
-#         })
-#         return rec
+    def get_remarks(self):
+        ticket = self.env['project.task'].search([('ticket_id', '=', self.ticket_id.id),('is_diagnosys', '=', True)])
+        note = ''
+        for rec in self:
+            note = str(html2plaintext(ticket.remarks))
+            rec.remedy_description =  note
     
     @api.depends('order_ids.state', 'order_ids.currency_id', 'order_ids.amount_untaxed', 'order_ids.date_order', 'order_ids.company_id')
     def _compute_sale_data(self):
