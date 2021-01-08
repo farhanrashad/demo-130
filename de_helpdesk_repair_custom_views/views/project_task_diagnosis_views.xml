@@ -21,10 +21,11 @@
             <field name="inherit_id" ref="project.view_task_form2"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook/page[@name='description_page']" position="attributes">
-                    <attribute name="string">Remidy</attribute>
-                
+                    <attribute name="string">Remedy</attribute>               
                 </xpath>
-
+                <xpath expr="//notebook/page[@name='description_page']/field[@name='description']" position="replace">
+                    <field name='remedy_description'/>              
+                </xpath>
         </field>
     </record>
       
