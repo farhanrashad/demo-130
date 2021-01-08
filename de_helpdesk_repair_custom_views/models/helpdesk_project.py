@@ -33,7 +33,6 @@ class HelpdeskProjectTask(models.Model):
     site_name = fields.Char('Site Name', related='ticket_id.site_name')
     closed_date = fields.Datetime('Closed Date', related='ticket_id.closed_date')
     level = fields.Char('level', related='ticket_id.level')
-    
 
     barcode = fields.Char(related='ticket_id.barcode', string='Barcode')
     asset_no = fields.Char(related='ticket_id.asset_no', string='Asset Code')
@@ -46,7 +45,8 @@ class HelpdeskProjectTask(models.Model):
 
 class HelpdeskProjectTask(models.Model):
     _inherit = 'project.task.planning.line'
-
+    
+    task_id = fields.Many2one('project.task', string='Task', index=True, required=True, ondelete='cascade')
     ticket_id = fields.Many2one('helpdesk.ticket', related='task_id.ticket_id', string='Ticket')
     sap_no = fields.Char(related='ticket_id.name', string='Order Number')
     city = fields.Char(related='ticket_id.city', string='City Name')
@@ -56,6 +56,10 @@ class HelpdeskProjectTask(models.Model):
     # default_code = fields.Char(related='product_id.default_code', string='Material Code')
     total_amount = fields.Float('Amount', compute='_calculate_amount')
     warranty_status = fields.Char("Warranty Status")
+    date_deadline = fields.Datetime('Deadline', compute="get_date")
+    
+    def get_date(self):
+        self.date_deadline = self.task_id.date_deadline
 
     @api.depends('product_uom_qty', 'price_unit')
     def _calculate_amount(self):

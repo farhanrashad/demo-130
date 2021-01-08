@@ -32,11 +32,10 @@
 <!--       <record model="ir.ui.view" id="view_helpdesk_ticket_tree_inh">
         <field name="name">project.task.tree.inherit</field>
             <field name="model">project.task</field>
-            <field name="inherit_id" ref="de_helpdesk_repair_custom_views.project_task_tickets_feedback_list_view"/>
+            <field name="inherit_id" ref="de_helpdesk_repair_custom_views.project_task_tickets_feedback_list_view "/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='description']" position="attributes">
                     <attribute name="string">Fault &</attribute>
-                
                 </xpath>
 
         </field>
@@ -66,7 +65,7 @@
             <field name="barcode" optional="show"/>
             <field name="asset_no" optional="show"/>
             <field name="asset_model" optional="show"/>
-            <field name="description" optional="show"/>
+            <field name="description" string="Fault&amp;Causes" optional="show"/>
             <field name="remarks" optional="show"/>
             <field name="category_id" optional="show"/>
             <field name="ticket_tag_ids" optional="show"/>
@@ -109,6 +108,7 @@
             <field name="ticket_stage_id" optional="show"/>
             <field name="material" optional="show"/>
             <field name="name" optional="show"/>
+            <field name="date_deadline" optional="show"/>
             <field name="warranty_status" optional="show"/>
             <field name="product_uom_qty" optional="show"/>
             <field name="price_unit" optional="show"/>

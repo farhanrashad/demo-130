@@ -54,6 +54,7 @@
                         <field name="repair_planning_lines" widget="one2many_list">
                                 <tree string="Order lines" editable="bottom">
                                     <field name="product_id"/>
+                                    <field name="material_code" />
                                     <field name="name" />
                                     <field name="product_uom_qty"/>
                                     <field name="qty_delivered" />
