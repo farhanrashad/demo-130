@@ -81,7 +81,6 @@ class ProjectTask(models.Model):
         return action
 
 
-
     def action_view_so(self):
         self.ensure_one()
         return {
@@ -155,7 +154,8 @@ class ProjectTaskRepairPlanning(models.Model):
     material_code = fields.Char('Material Code', related='product_id.default_code')
 
     def get_desc(self):
-        self.name = self.product_id.name
+        for rec in self:
+            rec.name = rec.product_id.name
 
     @api.depends('product_uom_qty')
     def _compute_qty_delivered(self):

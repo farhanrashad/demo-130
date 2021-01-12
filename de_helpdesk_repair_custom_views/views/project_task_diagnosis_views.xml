@@ -108,6 +108,7 @@
             <field name="asset_model" optional="show"/>
             <field name="ticket_stage_id" optional="show"/>
             <field name="material" optional="show"/>
+             <field name="material_code" optional="show"/>
             <field name="name" optional="show"/>
             <field name="date_deadline" optional="show"/>
             <field name="warranty_status" optional="show"/>

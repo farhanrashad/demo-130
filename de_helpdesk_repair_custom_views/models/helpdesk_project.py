@@ -57,9 +57,11 @@ class HelpdeskProjectTask(models.Model):
     total_amount = fields.Float('Amount', compute='_calculate_amount')
     warranty_status = fields.Char("Warranty Status")
     date_deadline = fields.Datetime('Deadline', compute="get_date")
+    material_code = fields.Char('Material Code')
     
     def get_date(self):
-        self.date_deadline = self.task_id.date_deadline
+        for rec in self:
+            rec.date_deadline = rec.task_id.date_deadline
 
     @api.depends('product_uom_qty', 'price_unit')
     def _calculate_amount(self):
