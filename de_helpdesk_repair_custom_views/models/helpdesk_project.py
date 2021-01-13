@@ -10,6 +10,8 @@ class HelpdeskTicketSlaInh(models.Model):
     _inherit = 'helpdesk.ticket.sla'
     
     team_ids = fields.Many2many('helpdesk.ticket.team')
+    team_id = fields.Many2one('helpdesk.ticket.team', required=False)
+    
 
 
 class HelpdeskTicketInh(models.Model):
@@ -18,11 +20,7 @@ class HelpdeskTicketInh(models.Model):
 #     level = fields.Char("Level")
     sla_ids = fields.Many2many('helpdesk.ticket.sla', string="SLA")
 #     team_ids = fields.Many2many('helpdesk.ticket.team')
-    sla_status = fields.Selection([
-        ('none', 'None'),
-        ('successful', 'Successfull'),
-        ('failed', 'Failed'),
-        ], string='Achieved', index=True, copy=False, default='none', track_visibility='onchange')
+    sla_status = fields.Char('Achieved', compute='get_status')
     sla_status_lines = fields.One2many('sla.status.line', 'ticket_id')
     
     @api.onchange('team_id')
@@ -36,37 +34,47 @@ class HelpdeskTicketInh(models.Model):
         
         for line in self.sla_status_lines:
             line.unlink()
+        if self.create_date:
+            date = self.create_date
+        else:
+            date = datetime.today().date()
         
         for level in self.sla_ids:     
             self.env['sla.status.line'].create({
                 'ticket_id': self.id,
                 'name': level.name,
-                'completion_date': datetime.today().date() + relativedelta(days=level.time_days),
+                'completion_date': date + relativedelta(days=level.time_days),
                 'completion_stage': level.stage_id.id,   
             })
             
-#     @api.onchange('stage_id')
-#     def compute_level_dates(self):
-#         if self.stage_id.name == 'Done':
-#             pass
-#             for rec in self.sla_status_lines:
-#                 if datetime.today().date() <= rec.completion_date:
-# #                     raise UserError((rec.completion_date,"---", datetime.today().date()))
-# #                     rec.write({
-# #                         'sla_status': 'successful'
-# #                     })
-# #                     rec.sla_status = 'successful'
-#                     pass
-#                 else:
-#                     pass
-# #                     raise UserError(("Failed"))
-# #                     rec.write({
-# #                         'sla_status': 'failed'
-# #                     })
-# #                     raise UserError(("Hello"))
-        
-        
+    @api.onchange('stage_id')
+    def compute_level_dates(self):
+        if self.stage_id.name == 'Settled':
+            for rec in self.sla_status_lines:
+                if datetime.today().date() <= rec.completion_date:
+#                     raise UserError(("Successfull"))
+                    rec.sla_status = 'successful'
+                    break
+                else:
+                    rec.sla_status = 'failed'
     
+
+    def get_status(self):
+        if self.sla_status_lines:
+            for rec in self.sla_status_lines:
+                if rec.sla_status == 'successful':
+                    Line_id = rec.id
+                    break
+                else:
+                    Line_id = -1
+            if Line_id != -1:
+                self.sla_status = "Found"
+                line = self.env['sla.status.line'].browse([Line_id])
+                self.sla_status = line.name
+            else:
+                self.sla_status = "Failed"
+        
+        
 class SlaStatusLine(models.Model):
     _name = 'sla.status.line'
     
@@ -75,10 +83,9 @@ class SlaStatusLine(models.Model):
     completion_date = fields.Date('Reach Date')
     completion_stage = fields.Many2one('helpdesk.ticket.stage', string='Action Stage')
     sla_status = fields.Selection([
-        ('none', 'None'),
         ('successful', 'Successfull'),
         ('failed', 'Failed'),
-        ], string='SLA Status', index=True, copy=False, default='none', track_visibility='onchange')
+        ], string='SLA Status', index=True, copy=False, default='', track_visibility='onchange')
 
 
 class HelpdeskProjectTask(models.Model):
