@@ -25,6 +25,14 @@ class ProjectTask(models.Model):
 
     description = fields.Html('Description')
     remedy_description = fields.Html('Remedy Description', compute='get_remarks')
+    total = fields.Float('Total', compute='compute_total')
+    
+    
+    def compute_total(self):
+        sum = 0
+        for rec in self.repair_planning_lines:
+            sum = sum + rec.subtotal
+        self.total = sum
     
     def get_remarks(self):
         ticket = self.env['project.task'].search([('ticket_id', '=', self.ticket_id.id),('is_diagnosys', '=', True)])
@@ -152,6 +160,12 @@ class ProjectTaskRepairPlanning(models.Model):
     qty_delivered = fields.Float(string='Delivered Quantity', compute='_compute_qty_delivered')
     warranty_status = fields.Char("Warranty Status")
     material_code = fields.Char('Material Code', related='product_id.default_code')
+    subtotal = fields.Float('Total', compute='compute_subtotal')
+    
+    
+    def compute_subtotal(self):
+        for rec in self:
+            rec.subtotal = rec.price_unit * rec.product_uom_qty
 
     def get_desc(self):
         for rec in self:

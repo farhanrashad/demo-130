@@ -63,8 +63,17 @@
                                     <field name="price_unit" />
                                     <field name="warranty_status" />
                                     <field name="invoice_amount" />
+                                    <field name="subtotal" string="Subtotal"/>
                                 </tree>
                             </field>
+                
+                        <group class="oe_subtotal_footer oe_right">
+                                <div>
+                                    <label for="total"/>
+                                </div>
+                                <field name="total" nolabel="1" widget="monetary" />
+                        </group>
+                        
                     </page>
                 </xpath>
                 

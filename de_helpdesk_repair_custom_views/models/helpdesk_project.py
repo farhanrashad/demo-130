@@ -52,7 +52,6 @@ class HelpdeskTicketInh(models.Model):
         if self.stage_id.name == 'Settled':
             for rec in self.sla_status_lines:
                 if datetime.today().date() <= rec.completion_date:
-#                     raise UserError(("Successfull"))
                     rec.sla_status = 'successful'
                     break
                 else:
