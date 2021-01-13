@@ -1,23 +1,5 @@
 <odoo>
 
-    <record id="action_project_templates" model="ir.actions.act_window">
-            <field name="name">Projects</field>
-            <field name="res_model">project.project</field>
-            <field name="domain">[('is_project_template' ,'=', True)]</field>
-            <field name="view_mode">kanban,form</field>
-            <field name="view_id" ref="project.view_project_kanban"/>
-            <field name="search_view_id" ref="project.view_project_project_filter"/>
-            <field name="target">main</field>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    Create a new project
-                </p>
-                <p>
-                    Or <a type="action" name="%(project.ir_actions_server_project_sample)d" tabindex="-1">activate a sample project</a> to play with.
-                </p>
-            </field>
-    </record>
-
     <record id="project_task_template_form" model="ir.ui.view">
             <field name="name">project.task.inherit</field>
             <field name="model">project.task</field>
@@ -73,6 +55,8 @@
                 </p>
             </field>
     </record>
+
+
 
 
 	<menuitem action="de_project_template.action_project_templates"  id="menu_project_templates" name="Templates" parent="project.menu_main_pm" groups="project.group_project_manager" sequence="2"/>

@@ -1,60 +1,40 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="de_project_template.list">
-      <field name="name">de_project_template list</field>
-      <field name="model">de_project_template.de_project_template</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
-      </field>
-    </record>
--->
+    <data>
 
-    <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="de_project_template.action_window">
-      <field name="name">de_project_template window</field>
-      <field name="res_model">de_project_template.de_project_template</field>
-      <field name="view_mode">tree,form</field>
-    </record>
--->
+        <record id="action_project_templates" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="domain">[('is_project_template','=', True)]</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_id" ref="project.view_project_kanban"/>
+            <field name="search_view_id" ref="project.view_project_project_filter"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No projects found. Let's create one!
+                </p><p>
+                    Projects regroup tasks on the same topic and each have their own dashboard.
+                </p>
+            </field>
+        </record>
 
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="de_project_template.action_server">
-      <field name="name">de_project_template server</field>
-      <field name="model_id" ref="model_de_project_template_de_project_template"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
 
-    <!-- Top menu item -->
-<!--
-    <menuitem name="de_project_template" id="de_project_template.menu_root"/>
--->
-    <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="de_project_template.menu_1" parent="de_project_template.menu_root"/>
-    <menuitem name="Menu 2" id="de_project_template.menu_2" parent="de_project_template.menu_root"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="de_project_template.menu_1_list" parent="de_project_template.menu_1"
-              action="de_project_template.action_window"/>
-    <menuitem name="Server to list" id="de_project_template" parent="de_project_template.menu_2"
-              action="de_project_template.action_server"/>
--->
-  </data>
+<!--        <record id="action_project_templates" model="ir.actions.act_window">-->
+<!--            <field name="name">Projects</field>-->
+<!--            <field name="res_model">project.project</field>-->
+<!--            <field name="domain">[('is_project_template','=', True)]</field>-->
+<!--            <field name="view_mode">kanban,form</field>-->
+<!--            <field name="view_id" ref="project.view_project_kanban"/>-->
+<!--            <field name="search_view_id" ref="project.view_project_project_filter"/>-->
+<!--            <field name="target">main</field>-->
+<!--            <field name="help" type="html">-->
+<!--                <p class="o_view_nocontent_smiling_face">-->
+<!--                    Create a new project-->
+<!--                </p>-->
+<!--                <p>-->
+<!--                    Or <a type="action" name="%(project.ir_actions_server_project_sample)d" tabindex="-1">activate a sample project</a> to play with.-->
+<!--                </p>-->
+<!--            </field>-->
+<!--    </record>-->
+    </data>
 </odoo>
