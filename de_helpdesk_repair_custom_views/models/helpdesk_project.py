@@ -17,12 +17,21 @@ class HelpdeskTicketSlaInh(models.Model):
 class HelpdeskTicketInh(models.Model):
     _inherit = 'helpdesk.ticket'
     
-#     level = fields.Char("Level")
-    sla_ids = fields.Many2many('helpdesk.ticket.sla', string="SLA")
-#     team_ids = fields.Many2many('helpdesk.ticket.team')
+    sla_ids = fields.Many2many('helpdesk.ticket.sla', string="SLA", compute='_compute_helpdesk_ticket_sla')
     sla_status = fields.Char('Achieved', compute='get_status')
     sla_status_lines = fields.One2many('sla.status.line', 'ticket_id')
-    
+
+
+
+    @api.depends('team_id')
+    def _compute_helpdesk_ticket_sla(self):
+        record = self.env['helpdesk.ticket.sla'].search([])
+        my_list = []
+        for rec in record:
+            if self.team_id in rec.team_ids:
+                my_list.append(rec.id)
+        self.sla_ids = my_list
+
     @api.onchange('team_id')
     def get_levels(self):
         record = self.env['helpdesk.ticket.sla'].search([])
@@ -67,12 +76,13 @@ class HelpdeskTicketInh(models.Model):
                 else:
                     Line_id = -1
             if Line_id != -1:
-                self.sla_status = "Found"
                 line = self.env['sla.status.line'].browse([Line_id])
                 self.sla_status = line.name
             else:
                 self.sla_status = "Failed"
-        
+
+        else:
+            self.sla_status = "Failed"
         
 class SlaStatusLine(models.Model):
     _name = 'sla.status.line'
