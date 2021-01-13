@@ -3,6 +3,8 @@
 from odoo import models, fields, api
 
 
+
+
 class Module(models.Model):
     _inherit = 'ir.module.module'
 
