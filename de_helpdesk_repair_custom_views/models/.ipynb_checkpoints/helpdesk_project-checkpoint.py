@@ -20,7 +20,7 @@ class HelpdeskTicketInh(models.Model):
     sla_ids = fields.Many2many('helpdesk.ticket.sla', string="SLA", compute='_compute_helpdesk_ticket_sla', store=True)
     sla_status = fields.Char('Achieved', compute='get_status')
     sla_status_lines = fields.One2many('sla.status.line', 'ticket_id')
-
+    description = fields.Text('Descriptions')
 
 
     @api.depends('team_id')

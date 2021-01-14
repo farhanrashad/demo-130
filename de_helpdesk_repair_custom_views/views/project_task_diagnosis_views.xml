@@ -1,6 +1,20 @@
 <odoo>
   <data>
       
+      <record model="ir.ui.view" id="view_project_task_sla_inh">
+        <field name="name">project.task.form.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="asset_model"/>
+                </xpath>
+                
+            </field>
+    </record>
+      
+      
       <record model="ir.ui.view" id="view_helpdesk_ticket_sla_inh">
         <field name="name">helpdesk.ticket.sla.form.inherit</field>
             <field name="model">helpdesk.ticket.sla</field>
@@ -14,8 +28,6 @@
             </field>
     </record>
                 
-      
-      
       <record model="ir.ui.view" id="view_helpdesk_ticket_inh">
         <field name="name">helpdesk.ticket.form.inherit</field>
             <field name="model">helpdesk.ticket</field>
@@ -23,7 +35,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='reference']" position="after">
                     <field name="closed_date"/>
-                    <field name="sla_ids" widget="many2many_tags" force_save="1"/>
+                    <field name="sla_ids" widget="many2many_tags"/>
                     <field name="sla_status" readonly="1"/>
 <!--                     <field name="level"/> -->
                 </xpath>
@@ -34,7 +46,6 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
 
-                
                 <xpath expr="//notebook/page[@name='other_info']" position="after">
                     <page name="sla_status_page" string="SLA Status">
                         <field name='sla_status_lines' readonly='1' force_save="1">
@@ -49,10 +60,14 @@
                     </page>
                 </xpath>
                 
+                <xpath expr="//field[@name='description']" position="attributes">
+                    <attribute name="widget">0</attribute>
+                </xpath>
+                
         </field>
     </record>
       
-            <record model="ir.ui.view" id="view_project_task_form_inh">
+    <record model="ir.ui.view" id="view_project_task_form_inh">
         <field name="name">project.task.form.inherit</field>
             <field name="model">project.task</field>
             <field name="inherit_id" ref="project.view_task_form2"/>

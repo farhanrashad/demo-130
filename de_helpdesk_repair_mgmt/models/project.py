@@ -21,9 +21,9 @@ class ProjectTask(models.Model):
     sale_order_count = fields.Integer(compute='_compute_sale_data', string="Number of Sale Orders")
     order_ids = fields.One2many('sale.order', 'repair_task_id', string='Orders')
 
-    remarks = fields.Html(string='Technician Remarks')
+    remarks = fields.Text(string='Technician Remarks')
 
-    description = fields.Html('Description')
+    description = fields.Text('Fault & Causes')
     remedy_description = fields.Html('Remedy Description', compute='get_remarks')
     total = fields.Float('Total', compute='compute_total')
     
