@@ -17,7 +17,7 @@ class HelpdeskTicketSlaInh(models.Model):
 class HelpdeskTicketInh(models.Model):
     _inherit = 'helpdesk.ticket'
     
-    sla_ids = fields.Many2many('helpdesk.ticket.sla', string="SLA", compute='_compute_helpdesk_ticket_sla')
+    sla_ids = fields.Many2many('helpdesk.ticket.sla', string="SLA", compute='_compute_helpdesk_ticket_sla', store=True)
     sla_status = fields.Char('Achieved', compute='get_status')
     sla_status_lines = fields.One2many('sla.status.line', 'ticket_id')
 
@@ -31,16 +31,6 @@ class HelpdeskTicketInh(models.Model):
             if self.team_id in rec.team_ids:
                 my_list.append(rec.id)
         self.sla_ids = my_list
-
-    @api.onchange('team_id')
-    def get_levels(self):
-        record = self.env['helpdesk.ticket.sla'].search([])
-        my_list = []
-        for rec in record:
-            if self.team_id in rec.team_ids:
-                my_list.append(rec.id)
-        self.sla_ids = my_list
-        
         for line in self.sla_status_lines:
             line.unlink()
         if self.create_date:
@@ -55,6 +45,30 @@ class HelpdeskTicketInh(models.Model):
                 'completion_date': date + relativedelta(days=level.time_days),
                 'completion_stage': level.stage_id.id,   
             })
+
+#     @api.onchange('team_id')
+#     def get_levels(self):
+#         record = self.env['helpdesk.ticket.sla'].search([])
+#         my_list = []
+#         for rec in record:
+#             if self.team_id in rec.team_ids:
+#                 my_list.append(rec.id)
+#         self.sla_ids = my_list
+        
+#         for line in self.sla_status_lines:
+#             line.unlink()
+#         if self.create_date:
+#             date = self.create_date
+#         else:
+#             date = datetime.today().date()
+        
+#         for level in self.sla_ids:     
+#             self.env['sla.status.line'].create({
+#                 'ticket_id': self.id,
+#                 'name': level.name,
+#                 'completion_date': date + relativedelta(days=level.time_days),
+#                 'completion_stage': level.stage_id.id,   
+#             })
             
     @api.onchange('stage_id')
     def compute_level_dates(self):

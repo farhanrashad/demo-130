@@ -23,7 +23,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='reference']" position="after">
                     <field name="closed_date"/>
-                    <field name="sla_ids" widget="many2many_tags"/>
+                    <field name="sla_ids" widget="many2many_tags" force_save="1"/>
                     <field name="sla_status" readonly="1"/>
 <!--                     <field name="level"/> -->
                 </xpath>
