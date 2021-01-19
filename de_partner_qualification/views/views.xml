@@ -41,30 +41,7 @@
                                
                             </group>
                         </group>
-<!--                         <group string="Stage Description and Tooltips">
-                            <p class="text-muted" colspan="2">
-                                At each stage employees can block or make task/issue ready for next stage.
-                                You can define here labels that will be displayed for the state instead
-                                of the default labels.
-                            </p>
-                            <label for="legend_normal" string=" " class="o_status oe_project_kanban_legend"
-                                title="Task in progress. Click to block or set as done."
-                                aria-label="Task in progress. Click to block or set as done." role="img"/>
-                            <field name="legend_normal" nolabel="1"/>
-                            <label for="legend_blocked" string=" " class="o_status o_status_red oe_project_kanban_legend"
-                                title="Task is blocked. Click to unblock or set as done."
-                                aria-label="Task is blocked. Click to unblock or set as done." role="img"/>
-                            <field name="legend_blocked" nolabel="1"/>
-                            <label for="legend_done" string=" " class="o_status o_status_green oe_project_kanban_legend"
-                                title="This step is done. Click to block or set in progress."
-                                aria-label="This step is done. Click to block or set in progress." role="img"/>
-                            <field name="legend_done" nolabel="1"/>
 
-                            <p class="text-muted" colspan="2">
-                                You can also add a description to help your coworkers understand the meaning and purpose of the stage.
-                            </p>
-                            <field name="description" placeholder="Add a description..." nolabel="1" colspan="2"/>
-                        </group> -->
                     </sheet>
                 </form>
             </field>
@@ -144,7 +121,6 @@
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}</field>
             <field name="domain">['|',('active','=',False),('active','=',True)]</field>
-<!--            <field name="domain">[('active','=','False')]</field>-->
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
                 Create a new customer in your address book
@@ -162,7 +138,6 @@
             <field name="view_mode">kanban,tree,form</field>
             <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}</field>
             <field name="domain">['|',('active','=',False),('active','=',True)]</field>
-<!--            <field name="domain">[('active','=','False')]</field>-->
             <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
                 Create a new customer in your address book
@@ -174,6 +149,6 @@
         </record>
       
    <menuitem id="re_partner_menu" name="Partner Stages"
-            parent="sale.menu_sale_config" action="res_partner_action" sequence="5"/>
+            parent="purchase.menu_purchase_config" action="res_partner_action" sequence="5"/>
   </data>
 </odoo>
