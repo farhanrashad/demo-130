@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+
+        <record id="purchase_order_form_inherit_view" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit.view</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="purchase_revision" type="object" string="Create Revision" class="oe_highlight"/>
+                </xpath>
+
+                <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                    <button name="action_purchase_revision" type="object" icon="fa-tasks" class ="oe_stat_button">
+                        <field name="po_rev_count" widget="statinfo"/>
+                    </button>
+                </xpath>
+                <xpath expr="//notebook/page[@name='purchase_delivery_invoice']" position="after">
+                    <page name="revision_po" string="Purchase Revision">
+                        <group>
+                            <group>
+                                <field name="rev_po_name"/>
+                            </group>
+                            <group>
+                                <field name="revision_user"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>
