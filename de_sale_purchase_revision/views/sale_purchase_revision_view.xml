@@ -11,9 +11,7 @@
                 </xpath>
 
                 <xpath expr="//sheet/div[@name='button_box']" position="inside">
-                    <button name="action_purchase_revision" type="object" icon="fa-tasks" class ="oe_stat_button">
-                        <field name="po_rev_count" widget="statinfo"/>
-                    </button>
+                    <button name="action_purchase_revision" string="PO Revisions" type="object" icon="fa-tasks" class ="oe_stat_button"/>
                 </xpath>
                 <xpath expr="//notebook/page[@name='purchase_delivery_invoice']" position="after">
                     <page name="revision_po" string="Purchase Revision">

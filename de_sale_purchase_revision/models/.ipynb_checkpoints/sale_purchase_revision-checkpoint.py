@@ -11,14 +11,13 @@ class ProjectTaskInherit(models.Model):
 
     rev_po_name = fields.Char(string='Name')
     revision_user = fields.Char(string='Revision User')
-    po_rev_count = fields.Integer(string='PO Revisions')
 
     def action_purchase_revision(self):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Purchase Orders',
             'view_id': self.env.ref('purchase.purchase_order_tree', False).id,
-            'target': 'new',
+            'target': 'current',
             'res_model': 'purchase.order',
             'view_mode': 'tree',
         }
