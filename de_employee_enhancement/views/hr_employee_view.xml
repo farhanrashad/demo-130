@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	
+	<record id="hr_employee_inherit_tree_view" model="ir.ui.view">
+		<field name="name">hr.employee.inherit.tree.view</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='name']" position="after">
+				<field name="relation_with" />
+			</xpath>
+			
+			<xpath expr="//field[@name='parent_id']" position="after">
+				<field name="salary" />
+			</xpath>
+				
+		</field>
+	</record>
+	
+	
+	
+	
+	<record id="hr_employee_inherit_form_view" model="ir.ui.view">
+		<field name="name">hr.employee.inherit.form.view</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='birthday']" position="after">
+				<field name="age" />
+			</xpath>
+			
+			<xpath expr="//field[@name='address_home_id']" position="before">
+				<field name="relation_with" />
+			</xpath>
+			
+			<xpath expr="//field[@name='km_home_work']" position="after">
+				<field name="is_disable" />
+				<field name="religion" />
+				<field name="referee_person" />
+				<field name="equipment_acquired" />
+			</xpath>
+				
+			<xpath expr="//field[@name='parent_id']" position="after">
+				<field name="contract_start_date" />
+				<field name="salary" />
+			</xpath>	
+				
+		</field>
+	</record>
+	
+	
+	
+	
+	
+	
+
+
+</odoo>
+
+
