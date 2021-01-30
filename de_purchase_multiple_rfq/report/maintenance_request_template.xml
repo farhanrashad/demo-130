@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_maintenance_request_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <div class="row justify-content-end">
+                            <div class="col-12">
+                                <p style="margin-top: 50px; margin-bottom: 50px; margin-left: 290px; padding: 0px; font-weight: bold; font-size: 24px !important;">
+                                    Maintenance Request 
+                                </p>
+                                <p style="margin: 0px; padding: 0px; font-weight: bold;">
+                                     <span t-field="o.name"/>
+                                </p>
+                                <table class="table table-bordered" style="table-layout: fixed">
+
+                                    <tbody>
+                                        <tr>
+                                            <th>
+                                                Created By
+                                            </th>
+                                            <td>
+                                                <span t-field="o.employee_id"/>
+                                            </td>
+                                            <th>
+                                                Team
+                                            </th>
+                                            <td>
+                                                <span t-field="o.maintenance_team_id"/>
+                                            </td>
+                                     
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                Equipment
+                                            </th>
+                                            <td>
+                                                <span t-field="o.equipment_id"/>
+                                            </td>
+                                            <th>
+                                                Priority
+                                            </th>
+                                            <td>
+                                                <span t-field="o.priority"/>
+                                            </td>
+                                        </tr>
+                                         <tr>
+                                            <th>
+                                                Parent Equipment
+                                            </th>
+                                            <td>
+                                                <span t-field="o.pfiled"/>
+                                            </td>
+                                            <th>
+                                                Responsible
+                                            </th>
+                                            <td>
+                                                <span t-field="o.user_id"/>
+                                            </td>
+                                        </tr>
+                                         <tr>
+                                            <th>
+                                                Request Date
+                                            </th>
+                                            <td>
+                                                <span t-field="o.request_date"/>
+                                            </td>
+                                            <th>
+                                                Close Date
+                                             </th>
+                                            <td>
+                                                <span t-field="o.close_date"/>
+                                            </td>
+                                        </tr>
+                                         <tr>
+                                            <th>
+                                                Maintenance Type
+                                            </th>
+                                            <td>
+                                                <span t-field="o.maintenance_type"/>
+                                            </td>
+                                            <th>
+                                                Duration
+                                             </th>
+                                            <td>
+                                                <span t-field="o.duration"/>
+                                            </td>
+                                        </tr>
+                                         <tr>
+                                            <th>
+                                                Manufacturing Order
+                                             </th>
+                                            <td>
+                                                <span t-field="o.production_id"/>
+                                            </td>
+                                            <th>
+                                                Work Order
+                                            </th>
+                                            <td>
+                                                <span t-field="o.workorder_id"/>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                                 <p style="margin: 0px; padding: 0px; font-weight: bold;">
+                                    <span t-field="o.description"/>
+                                </p>
+
+                                <table class="table table-bordered" style="table-layout: fixed">
+
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Product</th>
+                                            <th  class="text-left">Quantity</th>
+
+
+                                        </tr>
+                                    </thead>
+                                   <tbody> 
+
+                                            <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr>
+                                              <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr>
+                                           <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr>
+                                             <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr>
+                                             <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr> 
+                                            <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr> 
+                                            <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr> 
+                                            <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr> 
+                                             <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr> 
+                                             <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr>   
+                                             <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr>   
+                                            <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr>   
+                                            <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr>   
+                                            <tr>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                <td  class="text-center" style="height: 20px">
+                                                    
+                                                </td>
+                                                
+                                            </tr>   
+                                              
+                                     </tbody>  
+                                </table>                               
+
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+  <!--  <template id="maintenance_request_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="de_purchase_multiple_rfq.report_maintenance_request_template"/>
+            </t>
+        </t>
+    </template> -->
+</odoo>

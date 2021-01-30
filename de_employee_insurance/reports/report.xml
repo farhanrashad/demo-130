@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <report
+            id="report_employee_insurance_pdf"
+            model="hr.employee.insurance"
+            string="Employee Insurance"
+            report_type="qweb-pdf"
+            name="de_employee_insurance.report_insurance"
+            file="de_employee_insurance.report_insurance"
+
+        />
+    </data>
+</odoo>

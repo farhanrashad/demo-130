@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_quotation_form" model="ir.actions.act_window">
+            <field name="name">Create a Quotation Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.estimate</field>
+            <field name="view_mode">form,tree</field>
+        </record>
+
+        <!--       Sales Estimates form View    -->
+        <record id="sale_estimates_form" model="ir.ui.view">
+            <field name="name">sale.estimate.form</field>
+            <field name="model">sale.estimate</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                        <button name="action_confirm" id="action_confirm" states="draft" string="Confirm"
+                                class="btn-primary" type="object"/>
+                        <button name="action_sale_quotations" string="Create Quotation" type="object"
+                                class="oe_highlight"
+                                attrs="{'invisible': ['|','|',('state', 'in', 'cancel'), ('state', 'in', 'draft'),('state', 'in', 'create')]}"/>
+                        <button name="action_approved" string="Approved" type="object" class="oe_highlight"
+                                attrs="{'invisible': ['|','|',('state', 'in', ['cancel', 'done', 'draft']),('state', 'in', 'create')]}"/>
+                        <button name="action_quotation_estimate" string="Send by Email" type="object"
+                                class="btn-primary" states="draft,done"/>
+                        <button name="action_cancel" states="draft,sent,create" type="object" string="Cancel"
+                                attrs="{'invisible': ['|','|',('state', 'in', 'done'),('state', 'in', 'create')]}"/>
+                        <button name="reset" string="Reset to Draft" type="object" class="btn-primary"
+                                attrs="{'invisible': ['|','|',('state', 'not in', ['cancel','create']), ('state', 'in', 'done')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,confirm,done,create,cancel"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="payment_term_id"/>
+                            </group>
+                            <group>
+                                <field name="date_estimate" eval="(DateTime.today() - relativedelta(months=1)).strftime('%Y-%m-%d %H:%M')"/>
+                                <field name="origin" invisible="1"/>
+                                <field name="user_id" />
+                                <field name="team_id"/>
+                                <field name="sale_id" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Estimation Lines">
+                                <field name="est_order_line">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="name"/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="product_uom"/>
+                                        <field name="price_unit"/>
+                                        <field name="discount"/>
+                                        <field name="currency_id" invisible="True"/>
+                                        <field name="price_subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    </tree>
+                                </field>
+                                <!--     group for subtotal     -->
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <label for="amount_total"/>
+                                    <field name="amount_total" nolabel="1" widget='monetary'
+                                           options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                            </page>
+                            <page string="Notes">
+                                <group name="note_group" col="6">
+                                    <group colspan="4">
+                                        <field name="note" nolabel="1" placeholder="Terms and conditions..."/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Other info">
+                                <group>
+                                    <group>
+                                        <field name="client_ref"
+                                               attrs="{'readonly': [('state', 'in', ['done','create'])]}"/>
+                                        <field name="opportunity_id"
+                                               attrs="{'readonly': [('state', 'in', ['done','create'])]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--        Sales Estimates Tree View      -->
+        <record id="sale_estimates_tree" model="ir.ui.view">
+            <field name="name">sale.estimates.tree</field>
+            <field name="model">sale.estimate</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name" readonly="1"/>
+                    <field name="partner_id"/>
+                    <field name="date_estimate"/>
+                    <field name="amount_total"/>
+                    <field name="user_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

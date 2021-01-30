@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_propert,product.property,model_product_property,,1,1,1,1
+access_product_long,product.long,model_product_long,,1,1,1,1
+access_product_short,product.short,model_product_short,,1,1,1,1
+access_product_property_line,product.property.line,model_product_property_line,,1,1,1,1

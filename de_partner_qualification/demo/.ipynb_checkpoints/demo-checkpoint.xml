@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+
+          <record id="object0" model="partner.stages">
+            <field name="name">New</field>
+            <field name="is_quality">False</field>
+          </record>
+
+          <record id="object1" model="partner.stages">
+             <field name="name">In Progress</field>
+            <field name="is_quality">False</field>
+          </record>
+
+          <record id="object2" model="partner.stages">
+              <field name="name">Qualify</field>
+            <field name="is_quality">True</field>
+          </record>
+
+        
+    </data>
+</odoo>

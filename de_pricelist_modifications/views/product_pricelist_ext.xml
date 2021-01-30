@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<odoo>
+
+    <record id="de_pricelist_modifications.price_list_ext_view_form" model="ir.ui.view">
+        <field name="name">product price list ext view form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="ref_price_list_ids" widget="many2many_tags"
+                       attrs="{'invisible':[('currency_id','!=',4)]}"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
