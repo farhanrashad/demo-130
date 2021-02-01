@@ -6,7 +6,7 @@
     "website" : "https://www.youtube.com/channel/UCTj66IUz5M-QV15Mtbx_7yg",
     "description": "Module for the connection between odoo and zkteco devices for the control of employee assistance. This module is a demo version to test the compatibility of your device with our module.d Odoo.",
     'license': 'AGPL-3',
-    "depends" : ["base","hr"],
+    "depends" : ["base","hr","hr_attendance"],
     "data" : [
 				"views/biometric_machine_view.xml",
 				"secuirty/res_groups.xml",
