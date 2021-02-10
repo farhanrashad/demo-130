@@ -1,0 +1,67 @@
+<odoo>
+
+    <record id="view_data_form" model="ir.ui.view">
+		<field name="name">data.form</field>
+		<field name="model">material.requirement.data</field>
+		<field name="arch" type="xml">
+
+			<form string="Data">
+				<sheet>
+					<h4>Data Form</h4>
+					<group>
+						<group>
+							<field name="activity_id"/>
+							<field name="product_id"/>
+							<field name="quantity"/>
+							<field name="mr_demand"/>
+							<field name="mr_uom"/>
+							<field name="mr_reserved"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+
+		</field>
+	</record>
+
+	<record id="view_material_tree" model="ir.ui.view">
+		<field name="name">data.tree</field>
+		<field name="model">material.requirement.data</field>
+		<field name="arch" type="xml">
+
+			<tree string="Data">
+				<field name="activity_id"/>
+				<field name="product_id"/>
+				<field name="quantity"/>
+				<field name="mr_demand"/>
+				<field name="mr_uom"/>
+				<field name="mr_reserved"/>
+			</tree>
+
+		</field>
+	</record>
+
+	<record id="action_data_allocation_view" model="ir.actions.act_window">
+		<field name="name">Material Data</field>
+		<field name="res_model">material.requirement.data</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="view_material_tree"/>
+		<field name="help" type="html">
+
+			<p class="o_view_nocontent_smiling_face">
+				Add Data's .............
+			</p>
+
+		</field>
+	</record>
+
+    <menuitem
+		  id="data_menu_item"
+		  name="Material Data"
+		  parent="stock.menu_stock_config_settings"
+		  action="action_data_allocation_view"
+		  sequence="10"
+	/>
+
+</odoo>
