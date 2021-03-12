@@ -26,7 +26,7 @@
 								<!-- =================For loop start========================= -->
 								<t t-set="i" t-value="1" />
 								<t t-foreach="all_employees" t-as='employee_id'>
-                                    <tr t-foreach="get_attendance(eployee_id)" t-as='att'>
+                                    <tr t-foreach="get_attendance(employee_id, date_from, date_to)" t-as='att'>
 									<td align="center">
 										<span t-esc="i" />
 									</td>
@@ -34,22 +34,20 @@
 										<span t-esc="att.employee_id.name" />
 									</td>
 									<td>
-										<span t-esc="att.employee_id.name" />
+										<span t-esc="att.employee_id.barcode" />
 									</td>
 									<td>
-										<span t-esc="att.employee_id.name" />
+										<span t-esc="att.check_in" />
 									</td>
 									<td>
-										<span t-esc="att.employee_id.name" />
+										<span t-esc="att.check_out" />
 									</td>
 									<td>
-										<span t-esc="att.employee_id.name" />
 									</td>
 									<td>
-										<span t-esc="att.employee_id.name" />
 									</td>
 									<td>
-										<span t-esc="att.employee_id.name" />
+                                        <span t-esc="att.worked_hours" />
 									</td>
 									<t t-set="i" t-value="i+1" />
 								</tr>

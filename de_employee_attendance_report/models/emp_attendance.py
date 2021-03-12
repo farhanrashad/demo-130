@@ -10,11 +10,11 @@ class HrAttendance(models.Model):
     _inherit = 'hr.attendance'
 
 
-    check_in_date = fields.Datetime(string="Check in", compute='compute_checkin_checkout', required=True )
-    check_out_date = fields.Datetime(string="Check out", compute='compute_checkin_checkout', required=True )
+    check_in_date = fields.Date(string="Check in", compute='compute_checkin_checkout', required=True )
+    check_out_date = fields.Date(string="Check out", compute='compute_checkin_checkout', required=True )
 
 
-    @api.depends('check_in','check_out')
+#     @api.depends('check_in','check_out')
     def compute_checkin_checkout(self):
         for rec in self:
             if rec.check_in:
