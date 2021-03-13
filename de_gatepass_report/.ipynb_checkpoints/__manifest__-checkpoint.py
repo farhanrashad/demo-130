@@ -5,7 +5,7 @@
     'description': """Gatepass Report for DUT""",
     "sequence": 1,
     'author': "Dynexcel",
-    'website': "http://www.dynexcel.com",
+    'website': "http://www.dynexcel.co",
     'category': 'inventorty gatepass report',
     'version': '13.0.0.0',
     'depends': ['base','stock'],
@@ -14,12 +14,7 @@
     'data': [
         'security/ir.model.access.csv',
         'wizards/gatepass_report.xml',
-        'views/gatepass_report_menu.xml',
-        
-
+        'views/gatepass_report_menu.xml',   
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+   
 }
