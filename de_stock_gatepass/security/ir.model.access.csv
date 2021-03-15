@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_stock_gatepass,stock.gatepass,de_stock_gatepass.model_stock_gatepass,,1,1,1,1
-access_stock_gatepass_line,stock.gatepass.line,de_stock_gatepass.model_stock_gatepass_line,,1,1,1,1
