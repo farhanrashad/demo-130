@@ -1,0 +1,44 @@
+<odoo>
+  <data>
+      
+      <record model="ir.ui.view" id="view_helpdesk_ticket_inhrt">
+        <field name="name">helpdesk.ticket.inherit</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="de_helpdesk_site.ticket_view_form_inherit"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//notebook/page[@name='extra_info']" position="after">
+                            <page string="Domestic Cash Received" name="domestic_cash_received">
+                                <div>
+                                    <field name="domestic_cash" />
+
+                                </div>
+                            </page>
+                </xpath>
+                
+            </field>
+    </record>
+      
+    <record model="ir.ui.view" id="view_helpdesk_ticket_tree_inhrt">
+            <field name="name">helpdesk.ticket.inherit</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="de_helpdesk.ticket_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='stage_id']" position="before">
+                    <field name="barcode" />
+                </xpath>
+            </field>
+    </record>
+      <record id="view_helpdesk_srch_inhrt" model="ir.ui.view">
+		<field name="name">helpdesk.ticket.search</field>
+		<field name="model">helpdesk.ticket</field>
+		<field name="inherit_id" ref="de_helpdesk.helpdesk_ticket_view_search" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name = 'user_id']" position="after">
+                <field name="barcode" />
+			</xpath>
+		</field>
+	</record>
+      
+  </data>
+</odoo>
