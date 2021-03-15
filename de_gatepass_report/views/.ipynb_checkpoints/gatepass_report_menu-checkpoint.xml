@@ -1,8 +1,0 @@
-<odoo>
-	<data noupdate="0">
-		<menuitem id="gatepass_report_wizard" name="Gatepass & Delivery report" parent="stock.menu_stock_root"
-			action="action_gatepass_report_wizard"
-			sequence="99" />	
-	</data>
-</odoo>
-

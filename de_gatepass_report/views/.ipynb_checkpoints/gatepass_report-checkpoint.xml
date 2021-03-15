@@ -1,9 +1,0 @@
-<odoo>
-    
-<!--     <menuitem id="gatepass_delivery_report"
-              name="Attendance Report"
-              parent="hr_attendance.menu_gatepass_delivery_report_root"
-              action="de_gatepass_report.action_gatepass_report_wizard"
-              sequence="98" />
-     -->
-</odoo>
