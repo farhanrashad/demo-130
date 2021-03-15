@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Gatepass & Delivery Report",
+    'name': "Gatepass Delivery Report",
     'summary': """ Gatepass Report """,
     'description': """Gatepass Report for DUT""",
     "sequence": 5,

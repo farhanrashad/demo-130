@@ -19,7 +19,7 @@
                     </group>
                 </group>
                 <footer>
-					<button name="action_report_gen" type="object" string="Generate Excel" class="oe_highlight" />
+					<button name="generate_pdf_report" type="object" string="Generate Excel" class="oe_highlight" />
                     or
                     <button string="Cancel" class="oe_link" special="cancel" />
 				</footer>

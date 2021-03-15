@@ -1,7 +1,7 @@
 <odoo>
 	<data noupdate="0">
 		<menuitem id="gatepass_report_wizard" name="Gatepass And Delivery Report" parent="stock.menu_warehouse_report"
-			action="action_gatepass_report_wizard"
+			action="action_gatepass_report"
 			sequence="99" />	
 	</data>
 </odoo>

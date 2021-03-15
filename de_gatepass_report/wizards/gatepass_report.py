@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
+import datetime
+import calendar
+
+
 class GatepassReportReport(models.TransientModel):
     _name = "gatepass.report.wizard"
     _description = "Employee Wizard"
@@ -13,11 +21,12 @@ class GatepassReportReport(models.TransientModel):
     
     
     def generate_pdf_report(self):
-        result = self.env('stock.gatepass').search([('date','<=','date_from'),('date','>=','date_to')])
+        result = self.env('stock.gatepass').search([('date','>=',self.date_from),('date','<=',dself.date_to)])
         data = {}
         for rec in result:
             
             data = {
-                'product':rec.product_id.name
+                'product':rec.product_id
                 }
+            
         return self.env.ref('de_gatepass_report.de_gatepass_report_id').report_action([], data=data)
