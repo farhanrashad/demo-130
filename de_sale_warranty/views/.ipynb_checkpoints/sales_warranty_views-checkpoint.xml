@@ -3,14 +3,15 @@
     <!-- Sales Warranty Tree View  --> 
      <record id="view_sales_warranty_tree" model="ir.ui.view">
             <field name="name">view.sales.warranty.tree</field>
-            <field name="model">sales.warranty</field>
+            <field name="model">sale.warranty</field>
             <field name="arch" type="xml">
                 <tree string="Sales Warranty">
                     <field name="name"/>
                     <field name="partner_id"/>
                     <field name="product_id"/>
+                    <field name="barcode"/>
                     <field name="sale_id"/>
-                    <field name="warranty_type"/>
+                    <field name="warranty_type_id"/>
                     <field name="warranty_start_date"/>
                     <field name="warranty_end_date"/>
                     <field name="state"/>
@@ -21,7 +22,7 @@
       <!-- Sales Warranty Form View -->  
     <record id="view_sales_warranty_form" model="ir.ui.view">
             <field name="name">view.sales.warranty.form</field>
-            <field name="model">sales.warranty</field>
+            <field name="model">sale.warranty</field>
             <field name="arch" type="xml">
             
             <form string="Sales Warranty Details">
@@ -34,32 +35,35 @@
 					<sheet>
 						<div class="oe_title">
 		                	<h1>
-	                            <field name="name" readonly="1" required="True"/>
+	                            <field name="name" readonly="1" />
 	                        </h1>
 		                </div>     
 					    <group>
 	                    	<group>
                                 <field name="active" invisible="1"/>
 	                     		<field name="partner_id" />
-                                <field name="warranty_type" />
+                                <field name="warranty_type_id" />
 	                     		<field name="product_id" domain="[('is_warranty','=',True)]" />
-		                    	<field name="sale_id" />
-		                    	<field name="picking_id" attrs="{'invisible':[('warranty_type', '!=', 'product')]}" />
-                                <field name="invoice_id" attrs="{'invisible':[('warranty_type', '!=', 'product')]}" />
+                                <field name="barcode"/>
+                                <field name="origin"/>
+		                    	<field name="sale_id" attrs="{'invisible':[('sale_id', '!=', True)]}" />
+		                    	<field name="picking_id" attrs="{'invisible':[('picking_id', '!=', True)]}" />
+                                <field name="invoice_id" attrs="{'invisible':[('invoice_id', '!=', True)]}" />
 		                    </group>
 		                    <group>
 		                    	<field name="purchase_date"/>
                                 <field name="warranty_start_date" />
 		                       	<field name="warranty_end_date" />
-		                       	<field name="lot_id" attrs="{'invisible':[('warranty_type', '!=', 'product')]}" />
+                                <field name="tracking" invisible="1" />
+		                       	<field name="lot_id" attrs="{'invisible':[('tracking', '!=', False)]}" />
                                 <field name="user_id"/>
                                 <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
 			                </group>
 			           </group>
 		                <notebook>
-		                	<page string="Internal Reference">
+		                	<page string="Description">
 								<separator orientation="vertical"/>
-		                		<field name="notes" placeholder="Add internal reference notes here..." />
+		                		<field name="notes" placeholder="Add warranty notes here..." />
 		                	</page>
 		                </notebook>
 		         	</sheet>
@@ -75,7 +79,7 @@
         <record id="action_sales_warranty" model="ir.actions.act_window">
             <field name="name">Sales Warranty</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sales.warranty</field>
+            <field name="res_model">sale.warranty</field>
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">

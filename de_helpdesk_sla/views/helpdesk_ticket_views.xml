@@ -6,15 +6,14 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='user_id']" position="after">
                 <field name="ticket_type_id"/>
-                <field name="helpdesk_sla_id"/>
             </xpath>
-           
             <xpath expr="//field[@name='partner_email']" position="after">
-                <separator colspan="2" class="mt32"/>
+                <separator colspan="2" string="Deadline" class="mt32"/>
                 <field name="create_date" readonly="1"/>
+                <field name="sla_deadline_date" readonly="1"/>
+                <field name="total_time_spent" readonly="1"/>
+                
             </xpath>
-            
-            
         </field>
     </record>
 </odoo>

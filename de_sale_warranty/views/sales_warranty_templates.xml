@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="portal_layout_warranty" name="Portal layout: sales warrany menu entry" inherit_id="portal.portal_breadcrumbs">
+    <template id="portal_layout_warranty" name="Portal layout: sales warrany menu entry" inherit_id="portal.portal_breadcrumbs" priority="50">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <li t-if="page_name == 'warranty' or warranty" t-attf-class="breadcrumb-item #{'active ' if not warranty else ''}">
                 <a t-if="warrany" t-attf-href="/my/warrany?{{ keep_query() }}">Sales Warranty(s)</a>
@@ -12,7 +12,7 @@
         </xpath>
     </template>
     
-    <template id="portal_my_warranty" name="Portal My Home : sales warranty entries" inherit_id="portal.portal_my_home">
+    <template id="portal_my_warranty" name="Portal My Home : sales warranty entries" inherit_id="portal.portal_my_home" priority="40">
           <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
               <t t-if="warranty_count" t-call="portal.portal_docs_entry">
                 <t t-set="title">Warranty</t>
