@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="de_gatepass_report_id"
+            string="Gatepass And Delivery Report"
+            model="gatepass.report.pdf"
+            report_type="qweb-pdf"
+            name="de_gatepass_report.gatepass_report_print"
+            file="de_gatepass_report.gatepass_report_print"
+    />
+    <template id="gatepass_report_print">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+
+                    <h1 style=" text-align: center">Gatepass And Delivery Report</h1>
+
+                      <div class="row">
+                        <div class="column">
+                            <table class="table table-condensed"
+                                   style="max-width:100%; border:1px solid black;">
+                                <!-- row 1 -->
+                                <tr>
+                                    <td style="border: 1px solid black">
+                                        <b>Product</b>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -2,12 +2,11 @@
 <odoo>
     <report id="de_gatepass_report_id"
             string="Gatepass And Delivery Report"
-            model="stock.move.line"
+            model="gatepass.report.pdf"
             report_type="qweb-pdf"
             name="de_gatepass_report.gatepass_report_print"
             file="de_gatepass_report.gatepass_report_print"
     />
-
     <template id="gatepass_report_print">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
@@ -35,6 +34,4 @@
             </t>
         </t>
     </template>
-
-
 </odoo>
