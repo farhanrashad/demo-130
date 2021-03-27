@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <report
-        id="hr_employee_print_badge"
-        string="Print Badge"
-        model="hr.employee"
-        report_type="qweb-pdf"
-        name="hr.employee_card_badge"
-        file="hr.employee_card_badge"
-        print_report_name="'Print Badge - %s' % (object.name).replace('/', '')"
-    />
 
-    <template id="hr_employee_card_badge" inherit_id="hr.print_employee_badge">
+    <template id="employee_badge_print" inherit_id="hr.print_employee_badge">
         
             <xpath expr="//t/div/t/div/table" position="replace">
                 <table style="width:243pt; height:153pt; border: 1pt solid black; border-collapse:separate; border-radius:8pt; margin:5pt">
@@ -24,6 +15,7 @@
                                     <tr style="height:70%;">
                                         <td align="center" valign="center">
                                             <img t-if="employee.image_1920" t-att-src="image_data_uri(employee.image_1920)" style="max-height:85pt;max-width:90%" alt="Employee Image"/>
+                                            <tr><td><div align="center" style="font-size:10pt;margin-bottom:15pt;">EMP <t t-esc="employee.sequence_no"/></div></td></tr>
                                         </td>
                                     </tr>
                                 </table>
@@ -32,10 +24,10 @@
                                 <table style="width:155pt; height:85pt">
                                     <tr><th><div style="font-size:15pt; margin-bottom:0pt;margin-top:0pt;" align="center"><t t-esc="company_id"/></div></th></tr>
                                     <tr><th><div style="font-size:15pt; margin-bottom:0pt;margin-top:0pt;" align="center"><p>Arian Sports Ltd Sialkot</p></div></th></tr>
-                                    <tr><td><div align="center" style="font-size:10pt;color:red;margin-bottom:5pt;"><t t-esc="employee.name"/></div></td></tr>
-                                    <tr><td><div align="center" style="font-size:10pt;margin-bottom:5pt;"><t t-esc="employee.job_id.name"/></div></td></tr>
-                                    <tr><th><div style="font-size:15pt; margin-bottom:0pt;margin-top:0pt;" align="center"><p>Employee ID</p></div></th></tr>
-                                    <tr><td><div align="center" style="font-size:10pt;margin-bottom:5pt;">0909458</div></td></tr>
+                                    <tr><td><div style="font-size:13pt;color:red;margin-bottom:5pt;"><t t-esc="employee.name"/></div></td></tr>
+                                    <tr><td><div style="font-size:12pt;margin-bottom:5pt;"><t t-esc="employee.job_id.name"/></div></td></tr>
+                                    <tr><td><div align="center" style="font-size:20pt;color:goldenrod;margin-top:20pt;"><t t-esc="employee.department_id.name"/></div></td></tr>
+                                    
                                     <tr><td><img alt="barcode" t-if="employee.barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', employee.barcode, 600, 120)" style="max-height:50pt;max-width:100%;" align="center"/></td></tr>
                                 </table>
                             </td>
@@ -46,4 +38,4 @@
 </odoo>
 
 
-<!-- <t t-esc="employee.sequence_no"/> -->
+
