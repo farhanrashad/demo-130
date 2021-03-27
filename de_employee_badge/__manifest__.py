@@ -10,11 +10,11 @@
     "author": "Dynexcel",
     "website": "http://www.dynexcel.co",
     'license': 'LGPL-3',
-    'depends': ['base','hr.employee'],
+    'depends': ['base','hr'],
     'data': [
 
-#         'security/ir.model.access.csv',
-        'report/gtn_report.xml',
+
+        #'report/gtn_report.xml',
         #'views/transfer_tab.xml',
 
     ],
