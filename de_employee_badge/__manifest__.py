@@ -14,7 +14,7 @@
     'data': [
 
 
-        #'report/gtn_report.xml',
+        'report/employee_badge_print.xml',
         #'views/transfer_tab.xml',
 
     ],

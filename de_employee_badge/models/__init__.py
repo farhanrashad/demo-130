@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import de_gtn_report
+from . import employee_badge_print
