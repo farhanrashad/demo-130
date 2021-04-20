@@ -1,24 +1,25 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Picking Report",
-    'summary': ""Picking Report""",
-    'description': """Stock Picking Report""",
-	'sequence':'-100',
+    'name': "Stock Picking",
+    'summary': """Stock Picking Summary""",
+	'description': """
+    This Module Reflects Changes on Transfers on Quantity Calculation Field
+    """,
+
     'author': "Dynexcel",
-    'website': "http://www.dynexcel.com",
-    'category': 'Inventory',
-    'version': '0.1',
+    'website': "https://www.dynexcel.co",
+
+    'category': 'Warehouse',
+    'version': '13.0.0.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base','stock'],
 
     # always loaded
     'data': [
-         'report/report_stockpicking_operations.xml',
+        'report/report_stockpicking_operations.xml',
         'views/stock_picking_views.xml',
+        # 'security/ir.model.access.csv',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+
 }
