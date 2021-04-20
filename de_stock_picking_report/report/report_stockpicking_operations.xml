@@ -1,27 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="report_picking_inherit" inherit_id="stock.report_picking">
-        <!--
-        <xpath expr="/t/t/t/t/div/table[1]/tbody/t/t/tr/td[1]" position="replace">
-            <td>
-                <t t-if="move.product_id.default_code != False">                    
-                    <span t-field="ml.product_id.default_code"/>
-                </t>
-                <t t-if="move.product_id.default_code == False">                    
-                    <span t-field="ml.product_id.display_name"/>
-                </t>
-            </td>
-        </xpath>
-            <xpath expr="/t/t/t/t/div/table[1]/tbody/t/t/tr/td[6]" position="replace">
-                <td class="text-center" t-if="has_barcode">
-                    <t t-if="product_barcode != move.product_id.barcode">
-                        <span t-if="move.product_id and move.product_id.barcode">
-                            <span t-field="move.product_id.barcode"/>
-                        </span>
-                    </t>
-                </td>                
-            </xpath>
-    -->
+    <data>
+    <template id="report_picking_inherit" inherit_id="stock.report_picking">\
+        
         <xpath expr="/t/t/t/t/div/table[1]/tbody" position="replace">
             <tbody>
                 <t t-set="product_category" t-value="[]"/>
@@ -51,9 +32,11 @@
                                     </td>
                                     <td>
                                         <span t-if="o.state != 'done'" t-field="ml.product_uom_qty"/>
-                                    <t t-if="o.state != 'done'" t-set="current_subtotal" t-value="current_subtotal + ml.product_uom_qty"/>             
+                                        <t t-if="o.state != 'done'" t-set="current_subtotal"
+                                           t-value="current_subtotal + ml.product_uom_qty"/>
                                         <span t-if="o.state == 'done'" t-field="ml.qty_done"/>
-                                    <t t-if="o.state == 'done'" t-set="current_subtotal" t-value="current_subtotal + ml.qty_done"/>            
+                                        <t t-if="o.state == 'done'" t-set="current_subtotal"
+                                           t-value="current_subtotal + ml.qty_done"/>
                                         <span t-field="ml.product_uom_id" groups="uom.group_uom"/>
                                     </td>
                                     <td t-if="o.picking_type_id.code != 'incoming'"
@@ -87,12 +70,19 @@
                             </t>
                         </t>
                     </t>
-                        <tr>
-                            <td><strong>Sub Total for 
-                            <t t-esc="category.name"/></strong></td>
-							<td><strong><t t-esc="current_subtotal"/></strong></td>
-                            <td/>
-                        </tr>
+                    <tr>
+                        <td>
+                            <strong>Sub Total for
+                                <t t-esc="category.name"/>
+                            </strong>
+                        </td>
+                        <td>
+                            <strong>
+                                <t t-esc="current_subtotal"/>
+                            </strong>
+                        </td>
+                        <td/>
+                    </tr>
                 </t>
             </tbody>
         </xpath>
@@ -101,7 +91,9 @@
                 <tbody>
                     <tr class="border-black " style="">
                         <td>
-                            <strong>Total Quantity: <span t-field="o.sum_qty"/></strong>
+                            <strong>Total Quantity:
+                                <span t-field="o.sum_qty"/>
+                            </strong>
                         </td>
                         <td>
                         </td>
@@ -113,5 +105,5 @@
             </table>
         </xpath>
     </template>
-
+    </data>
 </odoo>
