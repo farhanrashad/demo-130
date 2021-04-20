@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_enhancement_wizard,access.purchase.enhancement.wizard,model_purchase_enhancement_wizard,base.group_user,1,1,1,1
+access_purchase_enhancement_line_wizard,access_purchase.enhancement.line.wizard,model_purchase_enhancement_line_wizard,base.group_user,1,1,1,1
+access_stock_enhancement_wizard,access.stock.enhancement.wizard,model_stock_enhancement_wizard,base.group_user,1,1,1,1
+access_stock_enhancement_line_wizard,access_stock.enhancement.line.wizard,model_stock_enhancement_line_wizard,base.group_user,1,1,1,1

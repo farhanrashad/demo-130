@@ -1,0 +1,27 @@
+<odoo>
+    <record id="purchase_order_enhancement_form_view_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//field[@name='order_line']//tree" position="inside">
+                <button name="%(de_po_enhancement.action_po_enhancement_wizard)d"
+                        string="check"
+                        type="action"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_picking_enhancement_form_view_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//field[@name='move_ids_without_package']//page[1]" position="inside">
+                <button name="%(de_po_enhancement.action_po_enhancement_wizard)d"
+                        string="check"
+                        type="action"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

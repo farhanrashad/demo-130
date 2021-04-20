@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_purchase_enhancement_wizard" model="ir.ui.view">
+        <field name="name">purchase.enhancement.wizard</field>
+        <field name="model">purchase.enhancement.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <group>
+                    <field name="products_po"/>
+                    <field name="demand_po"/>
+                    <field name="quantity_po"/>
+                </group>
+
+            </form>
+
+            <notebook>
+                <page string="Sale Order">
+                    <field name="purchase_order" widget="one2many_list">
+                        <tree editable="bottom">
+                            <field name='sale_order_po'/>
+                            <field name='quantity'/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+
+        </field>
+    </record>
+
+    <record id="action_po_enhancement_wizard" model="ir.actions.act_window">
+        <field name="name">Detailed Information</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.enhancement.wizard</field>
+        <field name="view_id" ref="view_purchase_enhancement_wizard"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>
