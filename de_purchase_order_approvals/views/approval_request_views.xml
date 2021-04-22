@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_form_inherited" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="approval_request"
+                       attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                <field name="is_approval_pending" invisible="1"/>
+                <field name="approval_request_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" attrs="{'invisible': [('approval_request_id','=',False)]}"
+                        name="action_open_approvals" type="object" icon="fa-check">
+                    <field name="approver_count" widget="statinfo" style="font-size:11px;"/>
+                </button>
+            </xpath>
+            <xpath expr="//header" position="inside" >
+                <button name="button_approval" type="object" string="Submit for Approval"
+                         state="draft" attrs="{'invisible': [('state', '=', 'waiting')]}"/>
+            </xpath>
+            <xpath expr="//header" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_approval_pending','!=',True)]}
+                </attribute>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="approval_category_view_form_inherited_for_invoice" model="ir.ui.view">
+        <field name="name">approval.category.view.form</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='approval_type']" position="after">
+                <field name="is_invoice"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="approval_request_view_form_inherited_for_invoice" model="ir.ui.view">
+        <field name="name">approval.request.view.form</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='button_box_for_sale_purchase']" position="inside">
+                <button string="PO" attrs="{'invisible': [('invoice_id','=',False)]}" class="oe_stat_button"
+                        type="object" name="action_open_invoice" icon="fa-check"/>
+            </xpath>
+            <xpath expr="//field[@name='has_date']" position="before">
+                <field name="invoice_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
