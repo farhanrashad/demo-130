@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_stock_enhancement_wizard_0" model="ir.ui.view">
-            <field name="name">stock.enhancement.wizard.3</field>
-            <field name="model">stock.enhancement.wizard</field>
+        <record id="view_stock_enhancement" model="ir.ui.view">
+            <field name="name">stock.enhancement</field>
+            <field name="model">stock.enhancement</field>
             <field name="arch" type="xml">
                 <form>
                     <group>
                         <field name="products_sp"/>
                         <field name="demand_sp"/>
                         <field name="quantity_sp"/>
+                        <field name="ps_line_id"/>
+                        <field name="ps_line_ref"/>
                     </group>
 
 
@@ -27,11 +29,11 @@
             </field>
         </record>
 
-        <record id="action_sp_enhancement_wizard" model="ir.actions.act_window">
+        <record id="action_sp_enhancement" model="ir.actions.act_window">
             <field name="name">Detailed Information</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">stock.enhancement.wizard</field>
-            <field name="view_id" ref="view_stock_enhancement_wizard_0"/>
+            <field name="res_model">stock.enhancement</field>
+            <field name="view_id" ref="view_stock_enhancement"/>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>

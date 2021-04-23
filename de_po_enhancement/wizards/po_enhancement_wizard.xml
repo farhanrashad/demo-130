@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="view_purchase_enhancement_wizard_1" model="ir.ui.view">
-            <field name="name">purchase.enhancement.wizard.2</field>
-            <field name="model">purchase.enhancement.wizard</field>
+        <record id="view_purchase_enhancement" model="ir.ui.view">
+            <field name="name">purchase.enhancement</field>
+            <field name="model">purchase.enhancement</field>
             <field name="arch" type="xml">
                 <form>
                     <group>
                         <field name="products_po"/>
                         <field name="demand_po"/>
                         <field name="quantity_po"/>
+                        <field name="po_line_ref"/>
+                        <field name="po_line_id"/>
+                        
                     </group>
                     <notebook>
                         <page string="Sale Order">
@@ -28,8 +31,8 @@
         <record id="action_po_enhancement_wizard" model="ir.actions.act_window">
             <field name="name">Detailed Information</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">purchase.enhancement.wizard</field>
-            <field name="view_id" ref="view_purchase_enhancement_wizard_1"/>
+            <field name="res_model">purchase.enhancement</field>
+            <field name="view_id" ref="view_purchase_enhancement"/>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
