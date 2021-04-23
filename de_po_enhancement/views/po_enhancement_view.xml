@@ -9,7 +9,8 @@
                         string="check"
                         context="{'default_po_line_ref' : id}"
                         type="action"
-                        attrs="{'invisible':[('check_id','!=',True )]}"/>
+                        />
+<!--                 attrs="{'invisible':[('check_id','!=',True )]}" -->
                 <button name="view_save_data"
                         string="check data"
                         type="object"/>
@@ -33,7 +34,8 @@
                         string="check"
                         context="{'default_ps_line_ref' : id}"
                         type="action"
-                        attrs="{'invisible':[('check_id_stock','!=',True)]}"/>
+                        />
+<!--                 attrs="{'invisible':[('check_id_stock','!=',True)]}" -->
                 <button name="view_stock_data"
                         string="check data"
                         type="object"/>

@@ -6,7 +6,7 @@ class StockPickingWizard(models.Model):
     _name = "stock.enhancement"
     _description = "Stock Picking Wizard"
 
-    products_sp = fields.Char(string='Products')
+    products_sp = fields.Many2one('product.product', 'Products')
     demand_sp = fields.Float(string='Demand')
     quantity_sp = fields.Float(string='Quantity Done')
     stock_pick = fields.One2many('stock.enhancement.line', 'stock_order_ids')
@@ -18,7 +18,13 @@ class StockPickingWizard(models.Model):
         res = super(StockPickingWizard,self).create(vals)
         res.ps_line_id = res.ps_line_ref
         res.ps_line_id.check_id_stock = res.id
-#         raise UserError(res.po_line_id.id)
+        res.products_sp = res.ps_line_id.product_id.id
+        for line in res.stock_pick:
+#             for sale in line.sale_order_sp:
+            delivery = self.env['stock.picking'].search([('origin', '=', line.sale_order_sp.name)])
+            for dell in delivery.move_ids_without_package:
+                if dell.product_id.id == res.products_sp.id:
+                    dell.quatity_done = 2
         return res
 
 class StockPickingWizardLine(models.Model):
