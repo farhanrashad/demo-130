@@ -31,6 +31,7 @@ class SrockMoveLineInherit(models.Model):
 
     name= fields.Char('Name')
     check_id_stock = fields.Many2one('stock.move')
+    test
     
     def view_stock_data(self):
         return {
