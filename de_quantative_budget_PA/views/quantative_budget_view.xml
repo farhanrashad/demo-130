@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_purchase_requisition_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.requisition.form</field>
+        <field name="model">purchase.requisition</field>
+        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="subject"/>
+                <field name="budget"/>
+            </xpath>
+            <xpath expr="//notebook//field[@name='line_ids']//tree" position="inside">
+                <field name="analytic_acc"/>
+                <field name="budgetary_position"/>
+                <field name="analytic_tag"/>
+                <field name="unit_price"/>
+                <field name="tax"/>
+                <field name="subtotal"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
