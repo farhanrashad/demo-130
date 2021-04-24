@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Tags -->
+        <record model="ir.ui.view" id="purchase_demand_type_search_view">
+            <field name="name">purchase.demand.type.search.view</field>
+            <field name="model">purchase.demand.type</field>
+            <field name="arch" type="xml">
+                <search string="Requisition Version">
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="purchase_demand_type_form_view">
+            <field name="name">purchase.demand.type.form.view</field>
+            <field name="model">purchase.demand.type</field>
+            <field name="arch" type="xml">
+                <form string="Types">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="purchase_demand_type_tree_view">
+            <field name="name">purchase.demand.type.tree.view</field>
+            <field name="model">purchase.demand.type</field>
+            <field name="arch" type="xml">
+                <tree string="Tags" editable="bottom" sample="1">
+                    <field name="name"/>
+                    <field name="color" widget="color_picker"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_purchase_demand_type_view" model="ir.actions.act_window">
+            <field name="name">Requisition Type</field>
+            <field name="res_model">purchase.demand.type</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No requisition type found. Let's create one!
+              </p>
+              <p>
+                  types are perfect to categorize your requisitions.
+              </p>
+            </field>
+        </record>
+        
+        <menuitem action="action_purchase_demand_type_view" name="Requisition Type" id="menu_purchase_requisition_type_act" groups="purchase.group_purchase_manager" parent="purchase.menu_purchase_config" sequence="0"/>
+        
+    </data>
+</odoo>
