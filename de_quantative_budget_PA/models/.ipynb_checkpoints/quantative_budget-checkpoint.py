@@ -7,7 +7,7 @@ class QuantativeBudgetPurchaseAgreement(models.Model):
     
     name = fields.Char(string="Name")
     subject = fields.Char(string="Subject")
-    budget = fields.Many2one('crossovered.budget', string="Budget")
+    budget_po = fields.Many2one('crossovered.budget', string="Budget")
 
     def _current_user(self):
         user = self.env.user
