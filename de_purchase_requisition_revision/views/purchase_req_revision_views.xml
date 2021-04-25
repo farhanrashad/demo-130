@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+        <record id="purchase_req_revision_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.demand.form.view</field>
+            <field name="model">purchase.demand</field>
+            <field name="inherit_id" ref="de_purchase_requisition.purchase_demand_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header/button[@name='action_cancel']" position="after">
+                    <button name="action_req_revision"
+                            string="Revision"
+                            class="oe_highlight"
+                            state="draft"
+                            type="object"
+                            attrs="{'invisible':[('state', '=', 'cancel')]}"/>
+                </xpath>
+
+                <xpath expr="//sheet/div" position="inside">
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="req_view_revision" icon="fa-pencil-square-o"
+                                type="object">
+                            <field name="req_revisions_count" string="Revisions" widget="statinfo"
+                                   attrs="{'invisible':[('req_revisions_count', '=', 0 )]}"/>
+                        </button>
+                    </div>
+                </xpath>
+
+                <xpath expr="//field[@name='department_id']" position="after">
+                    <field name="purchase_req_revision"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_req_line_form_view" model="ir.ui.view">
+            <field name="name">purchase.demand.form.view</field>
+            <field name="model">purchase.demand</field>
+            <field name="inherit_id" ref="de_purchase_requisition.purchase_demand_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[1]" position="after">
+                    <page string="Revisions" attrs="{'invisible':[('old_req_revision_ids','=',[])]}">
+                        <field name="old_req_revision_ids"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
