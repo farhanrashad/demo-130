@@ -44,7 +44,7 @@
 <!--                 attrs="{'invisible':[('check_id_stock','=',False)]}" -->
             </xpath>
             <xpath expr="//notebook//field[@name='move_ids_without_package']//tree//field[@name='quantity_done']" position="after">
-                <field name="check_id_stock"/>
+                <field name="check_id_stock" invisible="1"/>
             </xpath>
         </field>
     </record>

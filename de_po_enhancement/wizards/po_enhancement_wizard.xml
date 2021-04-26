@@ -7,10 +7,10 @@
             <field name="arch" type="xml">
                 <form>
                     <group>
-                        <fields name="name"/>
+                        <fields name="name" default="Detail"/>
                         <field name="products_po" invisible="1"/>
-                        <field name="demand_po"/>
-                        <field name="quantity_po"/>
+                        <field name="demand_po" invisible="1"/>
+                        <field name="quantity_po" invisible="1"/>
                         <field name="po_line_ref" invisible="1"/>
                         <field name="po_line_id" invisible="1"/>
 
