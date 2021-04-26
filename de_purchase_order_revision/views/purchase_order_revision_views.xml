@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+        <record id="purchase_order_revision_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header/button[@name='button_cancel']" position="after">
+                    <button name="action_order_revision"
+                            string="Revision"
+                            class="oe_highlight"
+                            type="object"
+                            attrs="{'invisible':['|',('state', '=', 'cancel' ),('state', '=', 'done' )]}"/>
+                </xpath>
+
+                <xpath expr="//sheet//div" position="inside">
+                    <button name="order_view_revision"
+                            string="Revisions"
+                            class="oe_stat_button"
+                            type="object"
+                            widget="statinfo"
+                            icon="fa-pencil-square-o" attrs="{'invisible':[('order_revisions_count', '=', 0 )]}">
+                        <field name="order_revisions_count" attrs="{'invisible':[('order_revisions_count', '=', 0 )]}"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_line_form_view" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[1]" position="after">
+                    <page string="Revisions" attrs="{'invisible':[('old_order_revision_ids','=',[])]}">
+                        <field name="old_order_revision_ids"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
