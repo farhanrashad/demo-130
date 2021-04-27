@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report id="po_report_id"
+            string="Purchase Quotation Report"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            name="de_PO_report.po_report"
+            file="de_PO_report.po_report"
+            menu="{'False':[('local_vendor', '!=', True)]}"
+    />
+    
+    <template id="po_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-if="docs.cutomers == 'foreign_vendor' ">
+                    <div class="page">
+                        <h1 style="float:left; border-bottom: 2px solid black;">PURCHASE ORDER</h1>
+    <!--             table 1 -->
+                    <div style="width: 50%; float:right; margin-bottom: 15px">
+                        <table align="right" class="table table-condensed" style="border: 1px solid black;">
+                            <tr>
+                                <td style="border: 1px solid black">
+                                    <b>DATE</b>
+                                </td>
+                                <td style="border: 1px solid black">
+                                    <span t-field="docs.date_order" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black">
+                                    <b>ORDER#</b>
+                                </td>
+                                <td style="border: 1px solid black">
+                                    <span t-field="docs.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black">
+                                    <b>PROJECT ID</b>
+                                </td>
+                                <td style="border: 1px solid black">
+                                    <b></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black">
+                                    <b>QUOTATION REF</b>
+                                </td>
+                                <td style="border: 1px solid black">
+                                    <span t-field="docs.quotation_ref" class="col-3 bm-5" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+    <!--                 table 1 end -->
+                     <div style="width: 100%;">
+                        <table  class="table table-condensed" style="border: 1px solid black;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid black; background-color:#3C456E">
+                                        <b style="color:white">Bill To</b>
+                                    </th>
+                                    <th style="border: 1px solid black; background-color:#3C456E">
+                                        <b style="color:white">Shipp To</b>
+                                    </th>
+                                    <th style="border: 1px solid black; background-color:#3C456E">
+                                        <b style="color:white">Supplier To</b>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border: 1px solid black">
+                                        <span t-field="docs.vendor_name" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                    </td>
+                                    <td style="border: 1px solid black">
+                                        <address t-field="docs.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                    </td>
+                                    <td style="border: 1px solid black">
+                                        <span t-field="docs.partner_id"  t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                         </table>
+                    </div>
+    <!--                 start table 2 -->
+                    <div style="width: 100%;">
+                        <table  class="table table-condensed" style="border: 1px solid black;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid black; background-color:#3C456E">
+                                        <b style="color:white">PART NO:  &#160; DESCRIPTION</b>
+                                    </th>
+                                    <th style="border: 1px solid black; background-color:#3C456E">
+                                        <b style="color:white">UNIT</b>
+                                    </th>
+                                    <th style="border: 1px solid black; background-color:#3C456E">
+                                        <b style="color:white">QTY</b>
+                                    </th>
+                                    <th style="border: 1px solid black; background-color:#3C456E">
+                                        <b style="color:white">UNIT PRICE</b>
+                                    </th>
+                                    <th style="border: 1px solid black; background-color:#3C456E">
+                                        <b style="color:white">EXT. PRICE</b>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="current_subtotal" t-value="0"/>
+                                    <t t-foreach="docs.order_line" t-as="line">
+                                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                        <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                                        <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                            <t t-if="not line.display_type">
+                                                <td id="product">
+                                                    <span t-esc="line.name"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span t-field="line.product_uom.name"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-field="line.product_qty"/>
+                                                </td>
+                                                <td >
+                                                    <span t-field="line.price_unit"/>
+                                                </td>
+                                                <td >
+                                                    <span t-field="line.price_subtotal"
+                                                        t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                                </td>
+                                            </t>
+                                            <t t-if="line.display_type == 'line_section'">
+                                                <td colspan="99" id="section">
+                                                    <span t-field="line.name"/>
+                                                </td>
+                                                <t t-set="current_section" t-value="line"/>
+                                                <t t-set="current_subtotal" t-value="0"/>
+                                            </t>
+                                            <t t-if="line.display_type == 'line_note'">
+                                                <td colspan="99" id="note">
+                                                    <span t-field="line.name"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                        <t t-if="current_section and (line_last or docs.order_line[line_index+1].display_type == 'line_section')">
+                                            <tr class="is-subtotal text-right">
+                                                <td colspan="99" id="subtotal">
+                                                    <strong class="mr16">Subtotal</strong>
+                                                    <span
+                                                        t-esc="current_subtotal"
+                                                        t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                            </tbody>
+                        </table>
+    <!--                     table 3 total -->
+                         <div id="total" class="row justify-content-end" >
+                            <div class="col-4" >
+                                <table class="table table-sm" style="border: 1px solid black;">
+                                    <tr style="border: 1px solid black;">
+                                        <td name="td_subtotal_label" ><strong>Total</strong></td>
+                                        <td class="text-right" >
+                                            <span t-field="docs.amount_untaxed"
+                                                t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br/>
+    <!--                note part -->
+                        <span>Note:</span>
+                            <p t-field="docs.notes"/>
+                        </div>
+                        <br/>
+                        <br/>
+    <!--                 last part authorized -->
+                        <div style="width: 100%;">
+                            <table  class="table table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td >
+                                            <br/>
+                                            <span><strong>Prepared By:</strong></span>
+                                            <br/>
+                                            <p t-field="docs.partner_id"/>
+                                        </td>
+                                        <td >
+                                           <br/>
+                                            <span><strong>Authorized By:</strong></span>
+                                            <br/>
+                                            <span>Dr Muhammad Mansoor (CEO)</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                             </table>
+                        </div>
+                    </div>
+                </t>
+                
+<!--            second template one condition base -->
+                <t t-if="docs.cutomers == 'local_vendor' ">
+                    <div class="page">
+                    <h1 style="float:left; border-bottom: 2px solid black;">PURCHASE ORDER</h1>
+<!--                 table 1 -->
+                <div style="width: 50%; float:right; margin-bottom: 15px">
+					<table align="right" class="table table-condensed" style="border: 1px solid black;">
+                        <tr>
+                            <td style="border: 1px solid black">
+                                <b>DATE</b>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <span t-field="docs.date_order" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid black">
+                                <b>REV.ORDER #.</b>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <span t-field="docs.name"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid black">
+                                <b>PROJECT</b>
+                            </td>
+                            <td style="border: 1px solid black">
+                                <b></b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+<!--                 table 1 end -->
+                 <div style="width: 100%;">
+					<table  class="table table-condensed" style="border: 1px solid black;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid black; background-color:#3C456E">
+                                    <b style="color:white">Bill To/Ship To:</b>
+                                </th>
+                                <th style="border: 1px solid black; background-color:#3C456E">
+                                    <b style="color:white">Supplier To:</b>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border: 1px solid black">
+                                    <address t-field="docs.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                </td>
+                                <td style="border: 1px solid black">
+                                    <span t-field="docs.partner_id"  t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                     </table>
+                </div>
+<!--                 start table 2 -->
+                <div style="width: 100%;">
+					<table  class="table table-condensed" style="border: 1px solid black;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid black; background-color:#3C456E">
+                                    <b style="color:white">MODEL: &#160; &#160; DESCRIPTION</b>
+                                </th>
+                                <th style="border: 1px solid black; background-color:#3C456E">
+                                    <b style="color:white">UNIT</b>
+                                </th>
+                                <th style="border: 1px solid black; background-color:#3C456E">
+                                    <b style="color:white">QTY</b>
+                                </th>
+                                <th style="border: 1px solid black; background-color:#3C456E">
+                                    <b style="color:white">NET PRICE</b>
+                                </th>
+                                <th style="border: 1px solid black; background-color:#3C456E">
+                                    <b style="color:white">EXT. PRICE</b>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="current_subtotal" t-value="0"/>
+                                <t t-foreach="docs.order_line" t-as="line">
+                                    <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+
+                                    <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                        <t t-if="not line.display_type">
+                                            <td id="product">
+                                                <span t-esc="line.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.product_uom.name"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="line.product_qty"/>
+                                            </td>
+                                            <td >
+                                                <span t-field="line.price_unit"/>
+                                            </td>
+                                            <td >
+                                                <span t-field="line.price_subtotal"
+                                                    t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                            </td>
+                                        </t>
+                                        <t t-if="line.display_type == 'line_section'">
+                                            <td colspan="99" id="section">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <t t-set="current_section" t-value="line"/>
+                                            <t t-set="current_subtotal" t-value="0"/>
+                                        </t>
+                                        <t t-if="line.display_type == 'line_note'">
+                                            <td colspan="99" id="note">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <t t-if="current_section and (line_last or docs.order_line[line_index+1].display_type == 'line_section')">
+                                        <tr class="is-subtotal text-right">
+                                            <td colspan="99" id="subtotal">
+                                                <strong class="mr16">Subtotal</strong>
+                                                <span
+                                                    t-esc="current_subtotal"
+                                                    t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                        </tbody>
+                     </table>
+<!--                  total part -->
+                     <div id="total" class="row justify-content-end">
+                        <div class="col-4">
+                            <table class="table table-sm" style="border: 1px solid black;">
+                                <tr class="border-black">
+                                    <td name="td_subtotal_label"><strong>Subtotal PKR:</strong></td>
+                                    <td class="text-right">
+                                        <span t-field="docs.amount_untaxed"
+                                            t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td name="td_taxes_label">GST PKR:</td>
+                                    <td class="text-right">
+                                        <span t-field="docs.amount_tax"
+                                            t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                    </td>
+                                </tr>
+                                <tr class="border-black o_total">
+                                    <td name="td_amount_total_label"><strong>Grand Total with GST PKR:</strong></td>
+                                    <td class="text-right">
+                                        <span t-field="docs.amount_total"
+                                            t-options='{"widget": "monetary", "display_currency": docs.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+<!--                 note part -->
+                    <span>Note:</span>
+                        <p t-field="docs.notes"/>
+                    </div>
+                    <br/>
+                    <br/>
+<!--                last part -->
+                    <div style="width: 100%;">
+                        <table  class="table table-condensed">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <br/>
+                                        <span><strong>Prepared By:</strong></span>
+                                        <br/>
+                                        <p t-field="docs.partner_id"/>
+                                    </td>
+                                    <td >
+                                       <br/>
+                                        <span><strong>Authorized By:</strong></span>
+                                        <br/>
+                                        <span>Dr Muhammad Mansoor (CEO)</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                         </table>
+                    </div>
+                </div>    
+                </t>
+                
+<!--          end table 2 -->   
+            </t>
+        </t>
+    </template> 
+</odoo>
+
