@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id="contact_bank_form_iban" model="ir.ui.view">
+        <field name="name">res.bank.iban</field>
+        <field name="model">res.bank</field>
+        <field name="inherit_id" ref="base.view_res_bank_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='email']" position="after">
+                <field name="iban"/>
+                <field name="swift"/>
+                <field name="note_line"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="contact_bank_form_nts_gst" model="ir.ui.view">
+        <field name="name">res.company.ntn.gst</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page/group/group" position="inside">
+                <field name="ntn"/>
+                <field name="gst"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="account_move_report" model="ir.ui.view">
+        <field name="name">account.move.report</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_reference']" position="after">
+                <field name="commercial_sales_invoice" widget="radio"/>
+                <field name="dispatch_date"/>
+                <field name="dispatch_via"/>
+                <field name="bank_id"/>
+            </xpath>
+        </field>
+    </record>
+    
+</odoo>
+
