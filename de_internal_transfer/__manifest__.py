@@ -2,18 +2,15 @@
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
 
 {
-    "name": "Transfer Enhacement",
+    "name": "Transfer Enhancement",
     "category": 'Inventory',
-    "summary": 'Transfer Enhacement Summary',
-    "description": """
-	 
-   
-    """,
+    "summary": 'Transfer Enhancement Summary',
+    "description": """ """,
     "sequence": 1,
     "author": "Dynexcel",
     "website": "http://www.dynexcel.co",
-    "version": '13.0.0.0',
-    "depends": ['base','stock'],
+    "version": '14.0.0.0',
+    "depends": ['base', 'stock', 'point_of_sale'],
     "data": [
         'views/transfer_view.xml',
     ],
