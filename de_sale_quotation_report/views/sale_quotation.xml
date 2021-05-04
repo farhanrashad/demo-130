@@ -9,6 +9,7 @@
           <field name="arch" type="xml">
               <xpath expr="//form//field[@name='partner_id']" position="after">
                   <field name="customer"/>
+                  <field name="notes"/>
 			  </xpath>
               <xpath expr="//notebook//field[@name='user_id']" position="before">
                   <field name="technical_representative"/>
