@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <record id="view_product_product_custom" model="ir.ui.view">
+            <field name="name">product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="categ_id" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
+                </field>
+                <field name="default_code" position="after">
+                    <field name="internal_code" />
+                </field>
+               <xpath expr="//field[@name='barcode']" position="after">
+					<field name="fabric_product_id" options="{'no_create': True}"/>
+                   <field name="style_product_id" options="{'no_create': True}"/>
+				</xpath>     
+               <xpath expr="//notebook" position="inside">
+                  
+                        <page string="Product Property">
+                            <field name="product_property_line">
+                               <tree string="Product Property " editable="bottom" >
+                               <field name="sequence" widget="handle"/>
+                                   <field name="categ_id" invisible="1"/>
+                                   <field name="long_sequence" invisible="1"/>
+                                    <field name="short_sequence" invisible="1"/>
+
+                                        <field name="product_property_id" options="{'no_create': True}"/>
+                                   <field name="product_property_line_id" options="{'no_quick_create': True, 'no_create_edit' : True}" />
+                                   <field name="description"/>
+                                     <field name="is_short"/> 
+            	                    <field name="is_long"/>
+                                   <field name="property_factory_ref_no"/>
+                                    <field name="is_property_factory_ref_no"/>
+                                   
+                                </tree>
+                            </field>
+                           
+                           
+                        </page>
+                  
+                    
+                       
+                    
+                </xpath>
+                </field>
+                </record>
+                
+          <record id="view_product_product_custom_inh" model="ir.ui.view">
+            <field name="name">product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">   
+               <xpath expr="//notebook" position="inside">
+                  
+                        <page string="Product Property">
+                            <field name="product_property_line">
+                               <tree string="Product Property " editable="bottom" >
+                               <field name="sequence" widget="handle"/>
+                                   <field name="categ_id" invisible="1"/>
+                                        <field name="product_property_id" />
+                                   <field name="product_property_line_id" options="{'no_quick_create': True, 'no_create_edit' : True}" />
+                                   <field name="description"/>
+                                     <field name="is_short"/> 
+            	                    <field name="is_long"/>
+                                </tree>
+                            </field>
+                        
+                        </page>
+   
+                </xpath>
+                </field>
+                </record>
+
+
+            
+            </odoo>
