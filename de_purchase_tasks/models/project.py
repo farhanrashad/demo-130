@@ -18,41 +18,33 @@ class PurchaseConfigSettings(models.TransientModel):
     
     purchase_project = fields.Many2one('project.project', string="Project")
     
-    note = fields.Char(string='Default Note')
-    module_crm = fields.Boolean(string='CRM')
-    product_ids = fields.Many2many('product.product', string='Medicines')
+    @api.model
+    def get_values(self):
+        res = super(PurchaseConfigSettings, self).get_values()
 
+        params = self.env['ir.config_parameter'].sudo()
+        purchase_project = params.get_param('purchase_project', default=False)
+        res.update(
+            purchase_project=int(purchase_project),
+        )
+        return res
+
+    def set_values(self):
+        super(PurchaseConfigSettings, self).set_values()
+        self.env['ir.config_parameter'].sudo().set_param("purchase_project", self.purchase_project.id)
+
+    
 #     def set_values(self):
 #         res = super(PurchaseConfigSettings, self).set_values()
-#         self.env['ir.config_parameter'].set_param('de_purchase_tasks.note', self.note)
-#         print("test", self.product_ids.ids)
-#         self.env['ir.config_parameter'].set_param('de_purchase_tasks.product_ids', self.product_ids.ids)
+#         self.env['ir.config_parameter'].set_param('de_purchase_tasks.purchase_project', self.purchase_project)
 #         return res
 
 #     @api.model
 #     def get_values(self):
-#         res = super(PurchaseConfigSettings, self).get_values()
+#         result = super(PurchaseConfigSettings, self).get_values()
 #         ICPSudo = self.env['ir.config_parameter'].sudo()
-#         notes = ICPSudo.get_param('de_purchase_tasks.note')
-#         product_ids = self.env['ir.config_parameter'].sudo().get_param('de_purchase_tasks.product_ids')
-#         if product_ids:
-#             res.update(
-#                 note=notes,
-#                 product_ids=[(6, 0, literal_eval(product_ids))],
-#             )
-#         return res
-    
-    def set_values(self):
-        res = super(PurchaseConfigSettings, self).set_values()
-        self.env['ir.config_parameter'].set_param('de_purchase_tasks.purchase_project', self.purchase_project)
-        return res
-
-    @api.model
-    def get_values(self):
-        result = super(PurchaseConfigSettings, self).get_values()
-        ICPSudo = self.env['ir.config_parameter'].sudo()
-        purchase_setting.id = ICPSudo.get_param('de_purchase_tasks.purchase_project')
-        result.update(
-            purchase_project = purchase_setting
-        )
-        return result
+#         purchase_setting = ICPSudo.get_param('de_purchase_tasks.purchase_project')
+#         result.update(
+#             purchase_project = purchase_setting
+#         )
+#         return result
