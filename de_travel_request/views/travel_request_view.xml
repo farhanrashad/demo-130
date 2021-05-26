@@ -1,0 +1,79 @@
+<odoo>
+    <record id="view_travel_request_form" model="ir.ui.view">
+        <field name="name">travel.request.form</field>
+        <field name="model">travel.request</field>
+        <field name="arch" type="xml">
+            <form string="Travel Request">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                    <button name="action_submit" string="Submit" type="object" states='draft'
+                            class='oe_highlight'/>
+                    <button name="action_refuse" string="Refuse" type="object" states='submitted'
+                            class='oe_highlight'/>
+                    <button name="action_approve" string="Approve" type="object" states='submitted'
+                            class='oe_highlight'/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <h3>
+                                <field name="travel_request"/>
+                            </h3>
+                            <field name='name'/>
+                            <field name='description'/>
+                            <field name='travel_type'/>
+                            <field name='ticket_arr_paid'/>
+                            <field name='duration'/>
+                            <field name='days'/>
+                            <field name='employee_id'/>
+                            <field name='department_id'/>
+                            <field name='designation_id'/>
+                            <field name='nrc_other_id'/>
+                            <field name='passport_no'/>
+                            <field name='dob'/>
+                        </group>
+                    </group>
+                    <!--                    <notebook>-->
+                    <!--                        <page string="Details" name="Details">-->
+                    <!--                            <field name='topup_balance_lines' attrs="{'readonly': [('state','=','confirmed')]}">-->
+                    <!--                                <tree editable='bottom'>-->
+                    <!--                                    <field name='operator'/>-->
+                    <!--                                    <field name='opening_balance'/>-->
+                    <!--                                    <field name='purchase_qty'/>-->
+                    <!--                                    <field name='distributed_qty'/>-->
+                    <!--                                    <field name='balance'/>-->
+                    <!--                                    <field name='remarks'/>-->
+                    <!--                                </tree>-->
+                    <!--                            </field>-->
+                    <!--                        </page>-->
+                    <!--                    </notebook>-->
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_travel_request_tree" model="ir.ui.view">
+        <field name="name">travel.request.tree</field>
+        <field name="model">travel.request</field>
+        <field name="arch" type="xml">
+            <tree string="Travel Request Tree">
+                <field name='employee_id'/>
+                <field name='travel_type'/>
+                <field name='name'/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_travel_request_view" model="ir.actions.act_window">
+        <field name="name">Travel Request</field>
+        <field name="res_model">travel.request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_travel_request_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Records Here.......
+            </p>
+        </field>
+    </record>
+</odoo>
