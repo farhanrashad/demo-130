@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="pos_cash_in_out_rule_manager" model="ir.rule">
+            <field name="name">Show Manager Cash Control</field>
+            <field name="model_id" ref="model_pos_cash_in_out"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('account.group_account_user'))]"/>
+        </record>
+        <record id="pos_cash_in_out_rule_user" model="ir.rule">
+            <field name="name">Show User Cash Control</field>
+            <field name="model_id" ref="model_pos_cash_in_out"/>
+            <field name="domain_force">[('user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+        </record>
+    </data>
+</odoo>
