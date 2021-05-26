@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data>
-    	<record id="group_sale_stock_report" model="res.groups">
-            <field name="name">Sale Vs Inventory Report</field>
-        </record>
-    </data>
-</odoo>

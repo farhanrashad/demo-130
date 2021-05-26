@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_pos_coupons_setting,access_pos_coupons_setting,model_pos_coupons_setting,point_of_sale.group_pos_manager,1,1,1,1
-access_pos_gift_coupon,access_pos_gift_coupon,model_pos_gift_coupon,point_of_sale.group_pos_manager,1,1,1,1
-access_pos_gift_coupon_create,access_pos_gift_coupon,model_pos_gift_coupon,pos_coupon.group_create_coupon,1,1,1,1
-access_pos_gift_coupon_view,access_pos_gift_coupon,model_pos_gift_coupon,point_of_sale.group_pos_user,1,0,0,0
-access_pos_coupons_setting_create,access_pos_coupons_setting,model_pos_coupons_setting,pos_coupon.group_create_coupon,1,1,1,1
-access_pos_coupons_setting_view,access_pos_coupons_setting,model_pos_coupons_setting,point_of_sale.group_pos_user,1,0,0,0
