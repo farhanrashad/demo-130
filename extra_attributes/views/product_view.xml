@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="view_product_template_search_fabric" model="ir.ui.view">
+        <field name="name">product.template.search.fabric</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="product_fabric_id"/>
+                <field name="product_quality_id"/>
+                <field name="product_season_id"/>
+                <field name="product_year_id"/>
+                <field name="launch_date"/>
+                <field name="fabric_consumption_id"/>
+                <field name="style_id"/>
+                <field name="collection_id"/>
+                <field name="product_fit_id"/>
+                <filter string="Fabric" name="groupby_fabric" domain="[]"
+                        context="{'group_by' : 'product_fabric_id'}"/>
+                <filter string="Product Quality" name="groupby_product_quality" domain="[]"
+                        context="{'group_by' : 'product_quality_id'}"/>
+                <filter string="Season" name="groupby_season" domain="[]"
+                        context="{'group_by' : 'product_season_id'}"/>
+                <filter string="Year" name="groupby_year" domain="[]"
+                        context="{'group_by' : 'product_year_id'}"/>
+                <filter string="Launch Date" name="groupby_l_date" domain="[]"
+                        context="{'group_by' : 'launch_date'}"/>
+                <separator/>
+                <filter string="Fit" name="groupby_fit" domain="[]"
+                        context="{'group_by' : 'product_fit_id'}"/>
+                <filter string="Collection" name="groupby_collection" domain="[]"
+                        context="{'group_by' : 'collection_id'}"/>
+                <filter string="Style" name="groupby_style" domain="[]"
+                        context="{'group_by' : 'style_id'}"/>
+                <filter string="Fabric Composition" name="groupby_fabcon" domain="[]"
+                        context="{'group_by' : 'fabric_consumption_id'}"/>
+                <separator/>
+            </field>
+        </field>
+    </record>
+	<record id="product_product_inherit_form_view" model="ir.ui.view">
+		<field name="name">product.product.inherit.form.view</field>
+		<field name="model">product.product</field>
+		<field name="inherit_id" ref="product.product_normal_form_view"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='default_code']" position="after">
+				<field name="sku" invisible="1"/>
+			</xpath>
+			<xpath expr="//field[@name='default_code']" position="before">
+				<field name="design_code_id" options="{'no_create': True, 'no_create_edit':True}"/>
+			</xpath>
+		</field>
+	</record>
+	<record id="product_product_inherit_tree_view" model="ir.ui.view">
+		<field name="name">product.product.inherit.tree.view</field>
+		<field name="model">product.product</field>
+		<field name="inherit_id" ref="product.product_product_tree_view"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='default_code']" position="after">
+				<field name="sku" invisible="1"/>
+			</xpath>
+			<xpath expr="//field[@name='default_code']" position="before">
+				<field name="design_code_id" options="{'no_create': True, 'no_create_edit':True}"/>
+			</xpath>
+		</field>
+	</record>
+	<record id="product_template_form_view_inherit" model="ir.ui.view">
+		<field name="name">product.template.form.view.inherit</field>
+		<field name="model">product.template</field>
+		<field name="inherit_id" ref="product.product_template_only_form_view"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='default_code']" position="after">
+				<field name="sku" invisible="1"/>
+			</xpath>
+			<xpath expr="//field[@name='default_code']" position="before">
+				<field name="design_code_id" options="{'no_create': True, 'no_create_edit':True}"/>
+			</xpath>
+		</field>
+	</record>
+    <record id="product_template_form_fabric_add" model="ir.ui.view">
+        <field name="name">product.template.form.fabric.add</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+        	<xpath expr="//div[hasclass('oe_title')]" position="before">
+        		<label for="product_id"/>
+        		<field name="product_id"/>
+			</xpath>
+        	<!-- <xpath expr="//field[@name='default_code']" position="after">
+				<field name="sku"/>
+			</xpath> -->
+        	<xpath expr="//page[@name='general_information']" position="after">
+        		<page string="Extra Attributes">
+        			<group>
+        				<group>
+        					<field name="product_fabric_id"/>
+        					<field name="product_quality_id"/>
+        					<field name="product_season_id"/>
+        				</group>
+        				<group>
+        					<field name="product_year_id"/>
+        					<field name="launch_date"/>
+        					<field name="product_fit_id"/>
+                			<field name="fabric_consumption_id"/>
+                			<field name="collection_id"/>
+                			<field name="style_id"/>
+        				</group>
+        			</group>
+        		</page>
+        	</xpath>
+        </field>
+    </record>
+
+    <record id="view_product_template_kanban_fabric" model="ir.ui.view">
+        <field name="name">product kanban view: add fabric</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_details')]/strong[1]" position="after">
+                <div>
+                    <a t-if="record.product_fabric_id" type="action"
+                       name="%(extra_attributes.action_open_single_product_fabric)d">
+                        <field name="product_fabric_id"/>
+                    </a>
+                    <a t-if="record.product_quality_id" type="action"
+                       name="%(extra_attributes.action_open_single_product_quality)d">
+                        <field name="product_quality_id"/>
+                    </a>
+                    <a t-if="record.product_season_id" type="action"
+                       name="%(extra_attributes.action_open_single_product_season)d">
+                        <field name="product_season_id"/>
+                    </a>
+                    <a t-if="record.product_year_id" type="action"
+                       name="%(extra_attributes.action_open_single_product_year)d">
+                        <field name="product_year_id"/>
+                    </a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_variant_kanban_fabric" model="ir.ui.view">
+        <field name="name">product variant kanban view: add fabric</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_kanban_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_details')]/strong[1]" position="after">
+                <div>
+                    <a t-if="record.product_fabric_id" type="open">
+                        <field name="product_fabric_id"/>
+                    </a>
+                    <a t-if="record.product_quality_id" type="open">
+                    	<field name="product_quality_id"/>
+                    </a>
+                    <a t-if="record.product_season_id" type="open">
+                        <field name="product_season_id"/>
+                    </a>
+                    <a t-if="record.product_year_id" type="open">
+                        <field name="product_year_id"/>
+                    </a>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_template_tree_fabric" model="ir.ui.view">
+        <field name="name">product tree view: add fabric</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="product_fabric_id"/>
+                <field name="product_quality_id"/>
+                <field name="product_season_id"/>
+                <field name="product_year_id"/>
+                <field name="launch_date"/>
+                <field name="product_fit_id"/>
+                <field name="fabric_consumption_id"/>
+                <field name="collection_id"/>
+                <field name="style_id"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_product_variant_tree_fabric" model="ir.ui.view">
+        <field name="name">product variant tree view: add fabric</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="product_fabric_id"/>
+                <field name="product_quality_id"/>
+                <field name="product_season_id"/>
+                <field name="product_year_id"/>
+                <field name="launch_date"/>
+                <field name="product_fit_id"/>
+                <field name="fabric_consumption_id"/>
+                <field name="collection_id"/>
+                <field name="style_id"/>
+            </field>
+        </field>
+    </record>
+	</data>
+</odoo>

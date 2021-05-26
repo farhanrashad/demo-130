@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="fit_view" model="ir.ui.view">
+			<field name="name">fit.view</field>
+			<field name="model">attribute.fit</field>
+			<field name="arch" type="xml">
+				<form>
+	                <sheet>
+	                	<group>
+	                		<group>
+	                			<field name="name"/>
+	                		</group>
+	                	</group>
+	                </sheet>
+            </form>
+			</field>
+		</record>
+		<record id="fit_tree_view" model="ir.ui.view">
+			<field name="name">fit.tree.view</field>
+			<field name="model">attribute.fit</field>
+			<field name="arch" type="xml">
+				<tree string="Fit">
+	                <field name="name"/>
+            	</tree>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="action_fit">
+        	<field name="name">Fit</field>
+        	<field name="res_model">attribute.fit</field>
+        	<field name="view_mode">tree,form</field>
+    	</record>
+    	<menuitem
+        name="Fit"
+        id="menu_fit"
+        action="action_fit"
+        parent="extra_attributes.extra_attribute_menu"/>
+	</data>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    	<record id="group_restrict_department" model="res.groups">
+            <field name="name">Restrict Department</field>
+        </record>
+
+        <record id="filter_allowed_purchase_order_by_departments" model="ir.rule">
+            <field name="name">Filter Purchase Order Allowed user new</field>
+            <field name="model_id" search="[('model','=','purchase.order')]" model="ir.model"/>
+            <field name="groups" eval="[(4, ref('group_restrict_department'))]"/>
+            <field name="domain_force">[('department_restrict_id','in', user.department_ids.mapped('department_id').ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Restrict product by departments -->
+
+
+        <record id="filter_allowed_purchase_department_by_departments" model="ir.rule">
+            <field name="name">Filter Purchase Order Allowed user new</field>
+            <field name="model_id" search="[('model','=','purchase.department')]" model="ir.model"/>
+            <field name="groups" eval="[(4, ref('group_restrict_department'))]"/>
+            <field name="domain_force">[('id','in', user.department_ids.mapped('department_id').ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="filter_product_variant_by_allow_departments" model="ir.rule">
+            <field name="name">Filter Variant by department</field>
+            <field name="model_id" search="[('model','=','product.product')]" model="ir.model"/>
+            <field name="groups" eval="[(4, ref('group_restrict_department'))]"/>
+            <field name="domain_force">[('department_restrict_id','in', user.department_ids.mapped('department_id').ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="filter_product_by_allow_departments" model="ir.rule">
+            <field name="name">Filter Product by department</field>
+            <field name="model_id" search="[('model','=','product.template')]" model="ir.model"/>
+            <field name="groups" eval="[(4, ref('group_restrict_department'))]"/>
+            <field name="domain_force">[('department_restrict_id','in', user.department_ids.mapped('department_id').ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+
+    </data>
+</odoo>

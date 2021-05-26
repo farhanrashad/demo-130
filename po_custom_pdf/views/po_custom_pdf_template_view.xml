@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="po_custom_pdf_template">
+			<t t-call="web.html_container">
+			<t t-call="web.external_layout">
+				<t t-foreach="docs" t-as="o">
+				<div class="page">
+            		<div class="oe_structure"/>
+            		<table width="100%">
+            			<tr>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-left:1px solid black;border-right:1px solid black;">
+            					<strong style="color:white">Category</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-right:1px solid black;">
+            					<strong style="color:white">Season</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-right:1px solid black;">
+            					<strong style="color:white">Color</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-right:1px solid black;">
+            					<strong style="color:white">Design Code</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-right:1px solid black;">
+            					<strong style="color:white">Style#</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong style="color:white">S</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong style="color:white">M</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong style="color:white">L</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong>Sizes &amp; Quantities</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong style="color:white">XL</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong style="color:white">XXL</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong style="color:white">XXXL</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong style="color:white">.</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong style="color:white">.</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong>Price &amp; Amount in PKR</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-center" style="border-top:1px solid black;border-bottom:1px solid black;">
+            					<strong style="color:white">.</strong>
+            				</th>
+            				<th width="5.882352941%" class="text-left" style="border-top:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong style="color:white">.</strong>
+            				</th>
+            			</tr>
+            			<tr>
+            				<th width="5.882352941" class="text-left" style="border-left:1px solid black;border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>Category</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>Season</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>Color</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>Design Code</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>Style#</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>S</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>M</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>L</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>XL</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>XXL</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>XXXL</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>Total Pcs</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>Price Without TAX</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>Total Amount Without TAX</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>G.S.T. Rate</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>G.S.T. Amount</strong>
+            				</th>
+            				<th width="5.882352941" class="text-left" style="border-bottom:1px solid black;border-right:1px solid black;">
+            					<strong>Total Amount with G.S.T.</strong>
+            				</th>
+            			</tr>
+            		</table>
+            	</div>
+			</t>
+			</t>
+			</t>
+		</template>
+		<report 
+            string="PO Custom PDF" 
+            id="report_po_custom_pdf" 
+            model="purchase.order" 
+            report_type="qweb-pdf"
+            name="po_custom_pdf.po_custom_pdf_template" 
+            file="po_custom_pdf.po_custom_pdf_template"
+        />
+        <template id="custom_product_template_matrix_id" inherit_id="product_matrix.matrix">
+        	<xpath expr="//table[hasclass('o_view_grid','o_product_variant_grid')]//thead//tr[1]//th[1]" position="after">
+        		<th>
+        			<strong>Total</strong>
+        		</th>
+        	</xpath>
+        	<xpath expr="//table[hasclass('o_view_grid','o_product_variant_grid')]//tbody//tr[1]" position="before">
+        		<t t-set="total_qty" t-value="0.0"/>
+        		<t t-set="qty" t-value="0.0"/>
+        	</xpath>
+        	<xpath expr="//table[hasclass('o_view_grid','o_product_variant_grid')]//tbody//tr[1]//t[@t-foreach='row']" position="before">
+        		<t t-set="qty" t-value="0.0"/>
+        	</xpath>
+        	<xpath expr="//table[hasclass('o_view_grid','o_product_variant_grid')]//tbody//tr[1]//t[@t-foreach='row']//td[1]" position="before">
+        		<t t-set="qty" t-value="qty+cell.get('qty', 0)"/>
+        	</xpath>
+        	<xpath expr="//table[hasclass('o_view_grid','o_product_variant_grid')]//tbody//tr[1]//t[@t-foreach='row']" position="after">
+        		<t t-set="total_qty" t-value="total_qty+qty"/>
+        		<td>
+                  	<strong><span t-esc="qty"/></strong>
+               	</td>
+        	</xpath>
+        	<xpath expr="//table[hasclass('o_view_grid','o_product_variant_grid')]//tbody//tr[1]" position="after">
+        		<tr>
+        			<td>
+        			</td>
+        			<td>
+        			</td>
+        			<td>
+        			</td>
+        			<td>
+        			</td>
+        			<td>
+                  		<strong><span t-esc="total_qty"/></strong>
+               		</td>
+        		</tr>
+        	</xpath>
+        </template>
+	</data>
+</odoo>

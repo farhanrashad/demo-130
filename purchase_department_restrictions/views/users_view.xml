@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_restrict_purchase_order_department_security_users_form" model="ir.ui.view">
+            <field name="name">purchase.order.department.restriction.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <field name="is_alert" invisible="1"/>
+                    <div class="alert alert-danger" role="alert" style="margin-bottom:0px;" attrs="{'invisible': [ ('is_alert', '=',False)]}">
+                        You can't create purchase order because no department is assigned to your user ID. Contact IT Department. 
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="department_restrict_id" required="1"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']//tree/field[@name='product_id']" position="attributes">
+                    <attribute name="domain">[('purchase_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id), ('department_restrict_id', '=', parent.department_restrict_id)]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_template_department_form_view_inheri" model="ir.ui.view">
+            <field name="name">product.template.department.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="priority" eval="50"/>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name='type' position='after'>
+                    <field name="department_restrict_id" options="{'no_create': True}"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="purchase_department_restriction_form_view" model="ir.ui.view">
+            <field name="name">purchase.department.form.inherit</field>
+            <field name="model">purchase.department</field>
+            <field name="priority" eval="50"/>
+            <field name="arch" type="xml">
+                <form string="Department">
+                    <field name="name"/>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="purchase_department_restriction_tree_view" model="ir.ui.view">
+            <field name="name">purchase.department.tree.inherit</field>
+            <field name="model">purchase.department</field>
+            <field name="priority" eval="50"/>
+            <field name="arch" type="xml">
+                <tree string="Department">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+         <record id="action_purchase_department_restriction" model="ir.actions.act_window">
+            <field name="name">Department</field>
+            <field name="res_model">purchase.department</field>
+            <field name="view_id" ref="purchase_department_restriction_tree_view"/>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    <menuitem id="menu_purchase_request_department" name="Department" parent="purchase.menu_purchase_config"
+        sequence="10" action="action_purchase_department_restriction"/>
+
+
+
+
+        <record id="view_restrict_department_security_users_form" model="ir.ui.view">
+            <field name="name">restrict.department.users.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <group name="messaging" position="before">
+                    <group string="Department" attrs="{'invisible': [('login','=', 'admin')]}">
+                        <field name="restrict_department" attrs="{'invisible': [('login','=', 'admin')]}"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Allowed Departments" attrs="{'invisible': [('restrict_department','!=', True)]}">
+                        <field name="department_count" invisible="1"/>
+                        <field name="temp_department_ids" invisible="1"/>
+                        <field name="department_ids" widget="one2many" nolabel="1">
+                            <tree string="Departments" editable="bottom">
+                                <field name="department_id" domain="[('id', 'not in', parent.temp_department_ids)]"/>
+                                <field name="is_default"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</openerp>

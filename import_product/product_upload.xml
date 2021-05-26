@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+     <record id="wizard_import_script_form_view" model="ir.ui.view">
+        <field name="name">wizard.import.script.form </field>
+        <field name="model">wizard.import.script</field>
+        <field name="arch" type="xml">
+            <form string="Import Invoice">
+                <group>
+                    <field name="file" filename="name"/>
+                </group>
+                <footer>
+                    <button name="import_product" string="Import Product" type="object" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+        <record id="action_wizard_import_script" model="ir.actions.act_window">
+            <field name="name">Import Product</field>
+            <field name="res_model">wizard.import.script</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    <menuitem
+        action="action_wizard_import_script"
+        id="menu_action_wizard_import_script"
+        parent="stock.menu_stock_inventory_control"
+        groups="import_product.group_import_product"
+        sequence="150"/>
+
+    <!-- <record model="ir.ui.view" id="inherit_product_upload_product_template_hs_code">
+        <field name="name">l10n_in.product.template.form.hs_code</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="categ_id" position="after">
+                <field name="vendor_product_name"/>
+                <field name="vendor_code"/>
+            </field>
+        </field>
+    </record> -->
+
+  </data>
+</odoo>
+ 

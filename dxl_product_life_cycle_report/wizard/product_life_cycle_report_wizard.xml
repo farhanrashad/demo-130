@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="product_life_cycle_wizard_view_form" model="ir.ui.view">
+            <field name="name">product.life.cycle.report.wizard.form</field>
+            <field name="model">product.life.cycle.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Product Life Cycle Report">
+                    <group>
+                        <group >
+                            <field name="start_at"/>
+                            <field name="category_ids" widget="many2many_tags"/>
+                        </group>
+                        <group >
+                            <field name="stop_at"/>
+                            <field name="product_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="print_product_life_cycle_report_xls" type="object" string="Print XLS" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_life_cycle_report" model="ir.actions.act_window">
+            <field name="name">Product Life Cycle Report</field>
+            <field name="res_model">product.life.cycle.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_product_life_cycle_report"
+            action="action_product_life_cycle_report"
+            parent="stock.menu_warehouse_report"
+            sequence="80"
+        />
+    </data>
+</odoo>

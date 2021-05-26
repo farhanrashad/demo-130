@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="product_attribute_fabric_search_form_view" model="ir.ui.view">
+        <field name="name">product.attribute.fabric.search.form.view</field>
+        <field name="model">attribute.fabric</field>
+        <field name="arch" type="xml">
+            <search string="Fabric">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <act_window
+        id="action_open_attribute_fabric"
+        name="Product Fabric"
+        res_model="product.template"
+        view_mode="kanban,form,tree"
+        domain="[('product_fabric_id', '=', active_id)]"/>
+
+    <act_window
+        id="action_open_single_product_fabric"
+        name="Product Fabric"
+        res_model="attribute.fabric"
+        view_mode="kanban,form,tree"
+        target="current"
+        domain="[('fabric_product_ids', 'in', active_id)]"/>
+
+    <record id="view_product_fabric_form" model="ir.ui.view">
+        <field name="name">view.product.fabric.form</field>
+        <field name="model">attribute.fabric</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_open_attribute_fabric)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-cubes">
+                            <field name="products_count" widget="statinfo" string="Products"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                            <label for="name" string="Fabric" class="oe_edit_only"/>
+                            <h1><field name="name"/></h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_fabric_tree" model="ir.ui.view">
+        <field name="name">product.fabric.tree</field>
+        <field name="model">attribute.fabric</field>
+        <field name="arch" type="xml">
+            <tree string="Fabric">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_fabric_kanban" model="ir.ui.view">
+        <field name="name">product.fabric.kanban</field>
+        <field name="model">attribute.fabric</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="products_count"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <h4>
+                                    <field name="name"/>
+                                </h4>
+                                <div>
+                                    <a name="%(extra_attributes.action_open_attribute_fabric)d" type="action">
+                                        <t t-esc="record.products_count.value"/> Products
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_product_fabric">
+        <field name="name">Fabric</field>
+        <field name="res_model">attribute.fabric</field>
+        <field name="view_mode">kanban,form,tree</field>
+    </record>
+	<menuitem name="Extra Attributes" id="extra_attribute_menu" parent="stock.menu_stock_config_settings"/>
+    <menuitem
+        name="Fabric"
+        id="menu_product_fabric"
+        action="action_product_fabric"
+        parent="extra_attribute_menu"/>
+	</data>
+</odoo>

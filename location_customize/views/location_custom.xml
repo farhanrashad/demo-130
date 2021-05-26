@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_category_form_view12" model="ir.ui.view">
+        <field name="name">stock.location.form12</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='removal_strategy_id']" position="before">
+                <field name='location_trans_ids' invisible='1'/>
+                <field name="transit_loc" domain="[('id', 'in', location_trans_ids)]" attrs="{'invisible':[('usage','!=','internal')]}" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
