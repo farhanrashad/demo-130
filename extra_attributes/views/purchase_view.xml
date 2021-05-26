@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	    <record id="view_purchase_order_search_extended_extra" model="ir.ui.view">
+	        <field name="name">purchase.report.extended.search</field>
+	        <field name="model">purchase.report</field>
+	        <field name="inherit_id" ref="purchase.view_purchase_order_search"/>
+	        <field name="arch" type="xml">
+	            <xpath expr="//filter[@name='group_date_approve_month']" position='after'>
+	                <separator/>
+	                <filter string="Fabric" name="product_fabric_id" domain="[]" context="{'group_by':'product_fabric_id'}"/>
+	                <filter string="Product Quality" name="product_quality_id" domain="[]" context="{'group_by':'product_quality_id'}"/>
+	                <filter string="Season" name="product_season_id" domain="[]" context="{'group_by':'product_season_id'}"/>
+	                <filter string="Year" name="product_year_id" domain="[]" context="{'group_by':'product_year_id'}"/>
+	                <filter string="Launch Date" name="launch_date" domain="[]" context="{'group_by':'launch_date'}"/>
+	                <filter string="Fit" name="product_fit_id" domain="[]" context="{'group_by':'product_fit_id'}"/>
+	                <filter string="Fabric Composition" name="fabric_consumption_id" domain="[]" context="{'group_by':'fabric_consumption_id'}"/>
+	                <filter string="Collection" name="collection_id" domain="[]" context="{'group_by':'collection_id'}"/>
+	                <filter string="Style" name="style_id" domain="[]" context="{'group_by':'style_id'}"/>
+	            </xpath>
+	        </field>
+	    </record>
+	</data>
+</odoo>

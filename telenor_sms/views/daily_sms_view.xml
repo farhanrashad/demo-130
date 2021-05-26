@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="daily_sms_view_tree" model="ir.ui.view">
+        <field name="name">daily.sms.tree.view</field>
+        <field name="model">daily.sms</field>
+        <field name="arch" type="xml">
+           <tree string="Daily Sales SMS">
+                <field name="name"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+
+   <record id="daily_sms_view_form" model="ir.ui.view">
+        <field name="name">daily.sms.view.form</field>
+        <field name="model">daily.sms</field>
+        <field name="arch" type="xml">
+            <form string="Daily Sales SMS">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="status" widget="radio"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="partner_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_daily_sms" model="ir.actions.act_window">
+        <field name="name">Daily Sales SMS</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">daily.sms</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="daily_sms_menu"
+        name="Daily Sales SMS"
+        parent="point_of_sale.menu_point_config_product"
+        sequence="6"
+        action="action_daily_sms"/>
+</odoo>

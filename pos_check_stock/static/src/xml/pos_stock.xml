@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="pos_check_stock_template" inherit_id="point_of_sale.template" xml:space="preserve">
+	<t t-name="CheckStockWidget" name="Check Stock">
+	 	<div class="control-button button confirm">
+			<i class="fa fa-list"></i>Check Inventory 
+		 </div>
+	</t>
+	<t t-name="StockPopupWidget">
+		<div class="modal-dialog">
+			<div class="popup popup-textinput" style="">
+				<p class="title">Check Inventory</p>
+				<div class="body">
+					<table class="table table-responsive stock_table">
+						<thead>
+							<tr style="border: 1px solid gainsboro;">
+								<th><strong>Location</strong></th>
+								<th><strong>On Hand</strong></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr style="line-height: 25px;" t-foreach="widget.options.stock_lines || []" t-as="line">
+								<td style="border: 1px solid gainsboro;"><t t-esc="line.location"/></td>
+								<td style="border: 1px solid gainsboro;"><t t-esc="line.qty"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="footer">
+					<div class="button cancel text-center">Cancel</div>
+				</div>
+			</div>
+		</div>
+	</t>
+</templates>

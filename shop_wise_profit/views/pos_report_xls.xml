@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <report
+            id="pos_xlsx"
+            model="pos.order"
+            string="Shop Wise Report"
+            report_type="xlsx"
+            name="shop_wise_profit.pos_xlsx"
+            file="shop_wise_profit.pos_xlsx"
+            attachment_use="True"
+        />
+
+    </data>
+</odoo>

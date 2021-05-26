@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_resupply_stock,resupply_stock.group_user,model_resupply_stock,base.group_user,1,1,1,1
+access_resupply_orderline,resupply_orderline.group_user,model_resupply_orderline,base.group_user,1,1,1,1
+access_resupply_stock_manager,resupply_stock.group_dysf_request_manager,model_resupply_stock,resupply_stock.group_dysf_request_manager,1,1,1,1
+access_resupply_orderline_manager,resupply_stock.group_dysf_request_manager,model_resupply_orderline,resupply_stock.group_dysf_request_manager,1,1,1,1
+access_resupply_stock_user,resupply_stock.group_dysf_request_user,model_resupply_stock,resupply_stock.group_dysf_request_user,1,1,1,1
+access_resupply_orderline_user,resupply_stock.group_dysf_request_user,model_resupply_orderline,resupply_stock.group_dysf_request_user,1,1,1,1

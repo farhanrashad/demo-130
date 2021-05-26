@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_backend" name="tis_pos_order_notes assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+
+            <script type="text/javascript" src="/tis_pos_order_notes/static/src/js/buttons.js"/>
+            <script type="text/javascript" src="/tis_pos_order_notes/static/src/js/order.js"/>
+            <script type="text/javascript" src="/tis_pos_order_notes/static/src/js/popups.js"/>
+
+        </xpath>
+    </template>
+</odoo>

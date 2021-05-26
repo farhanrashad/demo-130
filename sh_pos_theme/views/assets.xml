@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="sh_pos_theme" name="sh_pos_theme_assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/sh_pos_theme/static/src/css/pos_common.css"></link>
+                <script type="text/javascript" src="/sh_pos_theme/static/src/js/pos_numpad_toggle.js"></script>
+            </xpath>
+        </template>
+
+        <!-- Assets for PoS numpad column for the button -->
+        <template id="assets_numpad_col_1_left" active="False" name="numpad_col_1_left" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/sh_pos_theme/static/src/css/pos_button_col_1_left.css"/>
+            </xpath>
+        </template>
+        <template id="assets_numpad_col_1_right" active="False" name="numpad_col_1_right" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/sh_pos_theme/static/src/css/pos_button_col_1_right.css"/>
+            </xpath>
+        </template>
+        <template id="assets_numpad_col_2_left" active="False" name="numpad_col_2_left" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/sh_pos_theme/static/src/css/pos_button_col_2_left.css"/>
+            </xpath>
+        </template>
+        <template id="assets_numpad_col_2_right" active="False" name="numpad_col_2_right" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/sh_pos_theme/static/src/css/pos_button_col_2_right.css"/>
+            </xpath>
+        </template>
+        <template id="assets_numpad_col_3_left" active="False" name="numpad_col_3_left" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/sh_pos_theme/static/src/css/pos_button_col_3_left.css"/>
+            </xpath>
+        </template>
+        <template id="assets_numpad_col_3_right" active="False" name="numpad_col_3_right" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/sh_pos_theme/static/src/css/pos_button_col_3_right.css"/>
+            </xpath>
+        </template>
+
+        <!-- Theme Color assets -->
+		    <template id="assets_backend_green_2" name="sh pos theme assets green" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_green.less"/>
+          	</xpath>
+        </template>
+        <template id="assets_backend_blue_2" active="False" name="sh pos theme assets blue" inherit_id="point_of_sale.assets">
+          	<xpath expr="//link[@id='pos-stylesheet']" position="after">
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_blue.less"/>
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_style.less"/>              	
+          	</xpath>
+        </template>
+        <template id="assets_backend_cyan_2" active="False" name="sh pos theme assets cyan" inherit_id="point_of_sale.assets">
+          	<xpath expr="//link[@id='pos-stylesheet']" position="after">
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_cyan.less"/>
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_style.less"/>              	
+          	</xpath>
+        </template>
+        <template id="assets_backend_green_2" active="False" name="sh pos theme assets green" inherit_id="point_of_sale.assets">
+          	<xpath expr="//link[@id='pos-stylesheet']" position="after">
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_green.less"/>
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_style.less"/>              	
+          	</xpath>
+        </template>
+        <template id="assets_backend_indigo_2" active="False" name="sh pos theme assets indigo" inherit_id="point_of_sale.assets">
+          	<xpath expr="//link[@id='pos-stylesheet']" position="after">
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_indigo.less"/>
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_style.less"/>              	
+          	</xpath>
+        </template>
+        <template id="assets_backend_org_2" active="False" name="sh pos theme assets org" inherit_id="point_of_sale.assets">
+          	<xpath expr="//link[@id='pos-stylesheet']" position="after">
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_org.less"/>
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_style.less"/>              	
+          	</xpath>
+        </template>
+        <template id="assets_backend_red_2" active="False" name="sh pos theme assets red" inherit_id="point_of_sale.assets">
+          	<xpath expr="//link[@id='pos-stylesheet']" position="after">
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_red.less"/>
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_style.less"/>              	
+          	</xpath>
+        </template>                                         
+        <template id="assets_backend_teal_2" active="False" name="sh pos theme assets teal" inherit_id="point_of_sale.assets">
+          	<xpath expr="//link[@id='pos-stylesheet']" position="after">
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_teal.less"/>
+              	<link rel="stylesheet" href="/sh_pos_theme/static/src/less/pos_style.less"/>              	
+          	</xpath>
+        </template>        
+    </data>
+</openerp>

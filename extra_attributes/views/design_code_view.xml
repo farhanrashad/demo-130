@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="design_code_form_view" model="ir.ui.view">
+			<field name="name">design.code.form.view</field>
+			<field name="model">design.code</field>
+			<field name="arch" type="xml">
+				<form string="Design Code">
+	                <sheet>
+	                	<group>
+	                		<group>
+	                			<field name="name"/>
+	                		</group>
+	                	</group>
+	                </sheet>
+            	</form>
+			</field>
+		</record>
+		<record id="design_code_tree_view" model="ir.ui.view">
+			<field name="name">design.code.tree.view</field>
+			<field name="model">design.code</field>
+			<field name="arch" type="xml">
+				<tree string="Design Code">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="action_design_code">
+        	<field name="name">Design Code</field>
+        	<field name="res_model">design.code</field>
+        	<field name="view_mode">tree,form</field>
+    	</record>
+    	<menuitem
+        name="Design Code"
+        id="menu_design_code"
+        action="action_design_code"
+        parent="stock.menu_stock_config_settings" groups="stock.group_stock_manager"/>
+	</data>
+</odoo>

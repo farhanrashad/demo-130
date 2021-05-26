@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <record id="sh_inherit_view_users_form" model="ir.ui.view">
+   		<field name="name">sh.inherit.theme.pos.config.settings</field>
+   		<field name="model">pos.config.settings</field>
+   		<field name="inherit_id" ref="point_of_sale.view_sale_config_settings_form_pos"/>
+   		<field name="arch" type="xml">
+   			<xpath expr="//group[2]" position="inside">   			
+   				<field name="pos_config_theme" widget="radio"/>   				  				
+   			</xpath>
+   		</field>
+   </record>
+</odoo>

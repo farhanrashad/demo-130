@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->	 
+<templates id="template" xml:space="preserve">
+
+    <t t-extend='PaymentScreen-Paymentmethods'>
+        <t t-jquery='.paymentmethods' t-operation='replace'>
+            <div class='paymentmethods'>
+                <t t-foreach="widget.pos.payment_methods" t-as="cashregister">
+                    <t t-if='!cashregister.used_for_rounding or cashregister.visible_in_pos'>
+                        <div class="button paymentmethod" t-att-data-id="cashregister.id">
+                            <t t-esc="cashregister.name" />
+                        </div>
+                    </t>
+                </t>
+            </div>
+        </t>
+    </t>
+
+     <t t-extend='PaymentScreen-Paymentlines'>
+        <t t-jquery='.delete-button' t-operation='after'>
+            <t t-if="line.payment_method and line.payment_method.used_for_rounding">
+                <td class='refresh-button' t-att-data-cid='line.cid'> <i style="font-size:20px;color:white" class='fa fa-refresh fa-spin fa-3x fa-fw' />
+                </td>
+            </t>
+        </t>
+        <t t-jquery="tbody tr.paymentline.selected">
+            this.removeAttr("class");
+            this.attr('t-attf-class', 'paymentline selected #{line.payment_method.used_for_rounding ? "o_pos_rounding" : ""}');
+        </t>
+        <t t-jquery="tbody tr.paymentline[t-att-data-cid*='line.cid']">
+            this.removeAttr("class");
+            this.attr('t-attf-class', 'paymentline #{line.payment_method.used_for_rounding ? "o_pos_rounding" : ""}');
+        </t>
+        <t t-jquery="tbody tr td.col-tendered.edit">
+            this.removeAttr("class");
+            this.attr('t-attf-class', 'col-tendered edit #{line.payment_method.used_for_rounding ? "o_pos_rounding" : ""}');
+        </t>
+         <t t-jquery="tbody tr td.refresh-button">
+                this.removeAttr("class");
+                this.attr('t-attf-class', 'refresh-button #{(line.order and line.order.previous_amount == line.order.get_total_with_tax()) ? "oe_hidden" : ""}');
+        </t>
+        
+    </t>
+    
+</templates>

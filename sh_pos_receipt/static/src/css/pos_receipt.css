@@ -1,0 +1,114 @@
+@media print 
+{
+    .receipt-header
+    {
+        background-color: black !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+    }
+}
+.receipt-header {
+    background-color: black;
+    color: white;
+    height: 22px;
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+    padding-top: 3px;
+    margin-bottom: 5px;
+}
+.line{
+	width: 300px;
+	border-bottom: 1px solid black;
+	margin-top: 6px;
+	margin-bottom: 5px;
+}
+.receipt-terms {
+	font-size: 12px;
+    text-align: center;
+}
+.footer_date_time {
+	display: flex;
+	font-size: 10px;
+	margin-top: 10px;
+}
+.footer_date_time .time {
+	text-align: right;
+	flex: 1;
+}
+.tax-content {
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    margin-left: 30px;
+}
+.tax-content .tax-header {
+    text-align: center;
+    flex: 1;
+    margin-right: 20px;
+}
+.receipt-amount {
+    font-size: 10px;
+    font-weight: bold;
+}
+.receipt-amount .pos-receipt-saving {
+    padding-left: 2em;
+}
+.pos-receipt-paid {
+    padding-left: 80px;
+    margin-top: 15px;
+    font-size: 13px;
+}
+.pos-total {
+    font-size: 16px;
+}
+.pos-orderline {
+    font-size: 10px;
+    font-weight: 900;
+    display: flex;
+    border: solid 2px black;
+}
+.pos-orderline div {
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.pos-line {
+    display: flex;
+    margin-top: 5px;
+    font-size: 12px;
+}
+.pos-line .line-right {
+    text-align: right;
+}
+.pos-customer {
+    font-size: 11px;
+    font-weight: 800;
+    padding-bottom: 5px;
+}
+.pos-customer span {
+    padding-left: 20px;
+    font-weight: normal;
+}
+.pos-details {
+    display: flex;
+    font-weight: 800;
+    font-size: 12px;
+}
+.pos-details-line {
+    display: flex;
+    font-size: 12px;   
+}
+.pos-details-right {
+    text-align: right;
+}
+.pos-details-center {
+    text-align: center;
+}
+.pos-discount {
+    display: flex;
+    font-size: 12px;
+}
+.pos-discount div {
+    text-align: right;
+}
