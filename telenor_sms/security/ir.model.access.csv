@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_sms_session,access_sms_session,model_sms_session,base.group_user,1,1,1,0
-access_telenor_sms,access_telenor_sms,model_telenor_sms,base.group_user,1,1,1,0
-access_daily_sms,access_daily_sms,model_daily_sms,base.group_user,1,1,1,1

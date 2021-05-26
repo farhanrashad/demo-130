@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-purchase.access_account_move_purchase,account_move purchase,account.model_account_move,purchase.group_purchase_user,1,0,0,0
-purchase.access_account_move_line,account.move.line,account.model_account_move_line,purchase.group_purchase_user,1,0,0,0
