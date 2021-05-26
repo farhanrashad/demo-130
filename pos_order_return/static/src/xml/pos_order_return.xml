@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+<templates id="template" xml:space="preserve">
+    <t t-name="MyMessagePopup">
+        <div class="modal-dialog">
+            <div class="popup popup-textinput" style="height:260px !important">
+                <p class="title">
+                    <t t-esc=" widget.options.title || 'Message' " />
+                </p>
+                <p class="body">
+                    <t t-esc="  widget.options.body || '' " />
+                </p>
+                <div class="footer">
+                    <div class="button cancel">
+                        OK
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-extend="PaymentScreen-Paymentlines">
+        <t t-jquery="div.paymentlines-empty" t-operation="replace">
+            <t t-if="order != null">
+                <t t-if="order.is_return_order and order.get_total_with_tax() &lt;=0">
+                    <div class='paymentlines-empty'>
+                        <div class='total' style="color:#2b8b8e">
+                            <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
+                        </div>
+                        <div class='message'>
+                            Please select a refund method. 
+                        </div>
+                    </div>
+                </t>
+                <t t-if="!(order.is_return_order and order.get_total_with_tax() &lt;=0)">
+                    <div class='paymentlines-empty'>
+                        <div class='total'>
+                            <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
+                        </div>
+                        <div class='message'>
+                            Please select a payment method. 
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </t>
+
+    <t t-extend="ProductScreenWidget">
+        <t t-jquery=".rightpane .layout-table" t-operation="after">
+            <div id="refund_order_notify" style="color: rgb(0, 0, 0);top: 238px;left:10%;position: absolute;font-size: -webkit-xxx-large;font-family: fantasy;text-shadow: -5px 4px 2px #c5c5c5;display:none;">
+                THIS IS A REFUND ORDER
+            </div>
+             <span id="cancel_refund_order" class="cancel_refund_order" style="cursor: pointer;position: absolute;top: 298px;left:45%;color: white;font-size: xx-large;z-index: 333;text-align: center;height: 38px;border-radius: 5%;font-family: fantasy;font-style: normal;padding: 6px;opacity: 0.7;width: 112px;display: block;">
+                Cancel
+            </span>
+        </t>
+    </t>
+
+    <t t-extend="PaymentScreenWidget">
+        <t t-jquery=".top-content .button.next" t-operation="before">
+             <span class='button cancel_refund_order' style="cursor: pointer;color:white;width:86px;height:34px;right:0px; margin-right:158px;">
+                Cancel
+            </span>
+        </t>
+    </t>
+
+    <t t-name="OrderReturnPopup">
+        <div class="modal-dialog">
+            <div class="popup popup-textinput return_popup_style">
+                <div class="title">
+                    <span>
+                        Return Products 
+                    </span>
+                    <span class="button" id="complete_return" style="position: absolute;right: 1%;top: -1%;background-color: #5c92a7;color: white;width: 28%;">
+                        Complete Return
+                    </span>
+                </div>
+                <div class="body">
+                    <div class='container_div'>
+                        <table border="1" frame="void" rules="rows" class="return_popup_table">
+                            <tr class="return_popup_tr">
+                                <th class="table_data_cells"><p>Product (<span style="color:#2f6e75">Qty</span>.)</p></th>
+                                <th class="table_data_cells">Return Qty.</th>
+                            </tr>
+
+                            <t t-foreach="widget.orderlines || []" t-as="line">
+                                <tr class="return_popup_tr">
+                                    <td class="table_data_cells"><t t-esc="line.product_id[1]"/> (<b style="color:#2f6e75"><t t-esc="line.qty - line.line_qty_returned"/></b>)</td>
+                                    <td class="table_data_cells return_qty"><input t-att-line-qty-remaining='line.qty - line.line_qty_returned' t-att-line-id="line.id" type="number" value="0"></input></td>
+                                </tr>
+                            </t>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="button" id="return_order">
+                        Return
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="OrderDetails">
+        <section class='order-details' style="border-bottom: solid 5px rgb(110,200,155);">
+            <div class='client-details-box clearfix' style="background-color: rgb(252, 252, 252);">
+                <div class='client-details-left' style="margin-bottom: 1%;">
+                    <div class='client-detail'>
+                        <h2 style="margin-left: 5.6%;color: rgb(67, 134, 111);">Order Details</h2>
+                    </div>
+                    <div class='client-detail' style="margin-left: 6.3%;">
+                        <span class='label' style="text-align: left;">Name:</span>
+                        <span class='detail client-address'><t t-esc='order.name' /></span>
+                    </div>
+                    <t t-if="order.partner_id">
+                        <div class='client-detail' style="margin-left: 6.3%;">
+                            <span class='label'>Customer:</span>
+                            <span class='detail client-address'><t t-esc='order.partner_id[1]' /></span>
+                        </div>
+                    </t>
+                    <t t-if="!order.partner_id">
+                        <div class='client-detail' style="margin-left: 6.3%;">
+                            <span class='label'>Customer:</span>
+                            -
+                        </div>
+                    </t>
+                </div>
+                <div class='client-details-right' style="margin-right: -20%;">
+                    <t t-if="!order.refunded">
+                        <div class='client-detail'>
+                            <div style="margin: 20px;">
+                                <!-- <button id="wk_refund" class="button return-order" style="font-size: 15px;">Return/Refund</button> -->
+                                <button id="wk_reprint" class="button return-order" style="font-size: 15px;">Reprint</button>
+                            </div>
+                        </div>
+                    </t>
+                    <img id="close_order_details" src="/pos_order_return/static/src/img/icon-cross.png" style="cursor: pointer;position: absolute;left: 96%;top: 3%;"/>
+                    <div class='client-detail'>
+                        <span class='label' style="text-align: left;">Date:</span>
+                        <span class='detail client-id'><t t-esc='order.date_order'/></span>
+                    </div>
+                    <div class='client-detail'>
+                        <span class='label' style="text-align: left;width: 27%;">Return/Refund:</span>
+                        <span class='detail client-id'><t t-esc='order.return_status'/></span>
+                    </div>
+                </div>
+
+                <div class='order-detail' style="width: 100%;text-align: left;margin-left: 3%;">
+                    <table border="1" frame="void" rules="rows" id="order_line_content" style="width: 94%;text-align:center;border-bottom: 3px solid rgb(70, 150, 110);">
+                        <tr style="color: rgb(51, 112, 39);border-bottom: 3px solid rgb(67, 134, 111);">
+                            <th style="text-align:left;width: 35%;">Product</th>
+                            <th style="width: 10%;">Quantity</th>
+                            <th style="width: 10%;">Returns</th>
+                            <th style="width: 10%;">Unit Price</th>
+                            <th style="width: 10%;">Tax</th>
+                            <th style="width: 10%;">Discount(%)</th>
+                            <th style="width: 10%;">Price</th>
+                        </tr>
+                        <t t-foreach='orderlines' t-as='line'>
+                            <tr>
+                                <td style="text-align:left">
+                                    <t t-if="widget.pos.db.get_product_by_id(line.product_id[0])">
+                                        <t t-if="widget.pos.db.get_product_by_id(line.product_id[0]).not_returnable">
+                                            <t t-esc="widget.pos.db.get_product_by_id(line.product_id[0]).variant_name"/> <b style="color: rgb(160, 89, 89);">(Non-Returnable)</b>
+                                        </t>
+                                        <t t-if="!widget.pos.db.get_product_by_id(line.product_id[0]).not_returnable">
+                                            <t t-esc="widget.pos.db.get_product_by_id(line.product_id[0]).variant_name"/>
+                                        </t>
+                                    </t>
+                                    <t t-if="!widget.pos.db.get_product_by_id(line.product_id[0])">
+                                        <t t-esc="line.product_id[1]"/> <b style="color: rgb(160, 89, 89);">(Unavailable In POS)</b>
+                                    </t>
+                                </td>
+                                <td>
+                                    <t t-esc="line.qty"/>
+                                </td>
+                                <td>
+                                    <t t-if="line.line_qty_returned == 0">
+                                        -
+                                    </t>
+                                    <t t-if="line.line_qty_returned != 0">
+                                        <t t-esc="line.line_qty_returned"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <t t-esc="widget.chrome.screens.payment.format_currency(line.price_unit)"/>
+                                </td>
+                                <td>
+                                    <t t-if="line.price_subtotal_incl - line.price_subtotal != 0.0">
+                                        <t t-esc="widget.chrome.screens.payment.format_currency(Math.abs(line.price_subtotal_incl - line.price_subtotal))"/>
+                                    </t>
+                                    <t t-if="line.price_subtotal_incl - line.price_subtotal == 0.0">
+                                        -
+                                    </t>
+                                </td>
+                                <td>
+                                    <t t-if="line.discount == 0">
+                                        -
+                                    </t>
+                                    <t t-if="line.discount != 0">
+                                        <t t-esc="line.discount"/>%
+                                    </t>
+                                </td>
+                                <td>
+                                    <t t-esc="widget.chrome.screens.payment.format_currency(line.price_subtotal_incl)"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+                <div class='client-details-box clearfix'>
+                    <div class='client-details-left' style="margin-top: 1%;">
+                        <div class='client-detail'>
+                            <span class='label' style="width: 27.5%;color: rgb(67, 134, 111);text-align: left;margin-left: 5.7%;">Payment modes:</span>
+                            <ul style="margin-left: 5.7%;">
+                            <t t-foreach='statements' t-as='statement'>
+                                <li><t t-esc="statement.journal_id[1]"/> (<t t-esc="widget.chrome.screens.payment.format_currency(statement.amount)"/>)</li>
+                            </t>
+                        </ul>
+                        </div>
+                    </div>
+                    <div class='client-details-right' style="margin-top: 1%;margin-right: -26%;">
+                        <div class='client-detail'>
+                            <span class='label'>Total</span>
+                            <span class='detail client-id' style="color: rgb(67, 134, 111);font-weight: bold;"><t t-esc='widget.chrome.screens.payment.format_currency(order.amount_total)'/></span>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+            </div>
+        </section>
+    </t>
+    <t t-name="ReceiptAllScreenWidgetWK">
+        <div class='receipt-screen screen'>
+            <div class='screen-content'>
+                <div class='top-content'>
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        back
+                    </span>
+                </div>
+                <div class="centered-content">
+                    <div class="button print ayaz">
+                        <i class='fa fa-print'></i> Print Receipt
+                    </div>
+                    <div class="pos-receipt-container">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    <t t-name="OrderReceipt1">
+        <div class="pos-receipt">
+            <t t-if='shop_image !== false'>
+                <img class="pos-receipt-logo" t-att-src='shop_image' alt="Logo"/>
+            </t>
+            <t t-else="">
+                <t t-if='receipt.company_logo_base64'>
+                    <img class="pos-receipt-logo" t-att-src='receipt.company_logo_base64' alt="Logo"/>
+                </t>
+            </t>
+            <t t-if='!widget.pos.config.shop_id'>
+                <div class="pos-receipt-center-align" style="font-size:12px;">
+                    <t t-esc='receipt.company.name' />
+                </div>
+            </t>
+            <div class="pos-receipt-contact">
+                <t t-if="widget.pos.config.shop_id">
+                    <!--<t t-if='receipt.shop_address.name'>
+                        <div><t t-esc='receipt.shop_address.name' /></div>
+                    </t>-->
+                    <div>
+                        <t t-if='receipt.company.name'>
+                            <t t-esc='receipt.company.name' />
+                        </t>                    
+                        <br/>
+                        <t t-if='receipt.company.vat'>
+                            <t t-esc='receipt.company.vat' />
+                        </t>
+                    </div>
+                    <div style="width: 65%;margin-left: 50px;">
+                        <t t-if='shop_address.street'>
+                            <t t-esc='shop_address.street'/>
+                        </t>
+                        <t t-if="shop_address.city">
+                            <t t-esc='shop_address.city'/>
+                        </t>
+                    </div>
+                    <t t-if='shop_address.phone'>
+                        <div>Ph:<t t-esc='shop_address.phone' /></div>
+                    </t>
+                    <t t-if='receipt.header_html'>
+                        <t t-raw='receipt.header_html' />
+                    </t>
+                    <t t-if='!receipt.header_html and receipt.header'>
+                        <div><t t-esc='receipt.header' /></div>
+                    </t>
+                </t>
+                <t t-else="">
+                    <t t-if='receipt.company.contact_address'>
+                        <div><t t-esc='receipt.company.contact_address' /></div>
+                    </t>
+                    <t t-if='receipt.company.phone'>
+                        <div>Tel:<t t-esc='receipt.company.phone' /></div>
+                    </t>
+                    <t t-if='receipt.company.vat'>
+                        <div>VAT:<t t-esc='receipt.company.vat' /></div>
+                    </t>
+                    <t t-if='receipt.company.email'>
+                        <div><t t-esc='receipt.company.email' /></div>
+                    </t>
+                    <t t-if='receipt.company.website'>
+                        <div><t t-esc='receipt.company.website' /></div>
+                    </t>
+                    <t t-if='receipt.header_html'>
+                        <t t-raw='receipt.header_html' />
+                    </t>
+                    <t t-if='!receipt.header_html and receipt.header'>
+                        <div><t t-esc='receipt.header' /></div>
+                    </t>
+                </t>
+            </div>
+            <br/>
+            <div class="receipt-header">
+                Sale Receipt
+            </div>
+ 
+            <div class="pos-details">
+                <div class="pos-details-center" style="width:50%;">Sale Invoice#</div>
+                <div class="pos-details-center" style="width:50%;">Date &amp; Time</div>
+            </div>
+            <div class="pos-details-line">
+                <div class="pos-details-center" style="width:50%;">
+                    <t t-esc='order.pos_reference'/>
+                </div>
+                <div class="pos-details-center" style="width:50%;">
+                    <t t-esc="moment(order.creation_date).format('DD-MMM-YYYY hh:mm:ss A')"/>
+                </div>
+            </div>
+            <br/>
+            <div class="pos-details">
+                <div style="width:33%;">Payment Mode</div>
+                <div class="pos-details-center" style="width:33%;">User Name</div>
+                <div class="pos-details-right" style="width:33%;">POS Name</div>
+            </div>
+            <div class="pos-details-line">
+                <div style="width:33%;">
+                    <t t-foreach='paymentlines' t-as='line'>
+                        <t t-esc='line.name'/>
+                    </t>
+                </div>
+                <div class="pos-details-center" style="width:33%;">
+                    <t t-esc='receipt.get_cashier().name'/>
+                </div>
+                <div class="pos-details-right" style="width:33%;">
+                    <t t-esc='receipt.config.name'/>
+                </div>
+            </div>
+            <br/>
+            <div class="pos-customer">
+                Customer <span t-esc='client'/>
+                <span t-esc="client_phone"/>
+            </div>
+            <div class="pos-orderline">
+                <div style="width:40%;">Particulars</div>
+                <div style="width:10%;">ST%</div>
+                <div style="width:15%;">Qty</div>
+                <div style="width:20%;">Price</div>
+                <div style="width:15%;">Total</div>
+            </div>
+            <t t-foreach='orderlines' t-as='line'>
+            <div class="pos-line">
+                <div style="width:40%;">
+                    <t t-esc='line.product_id'/>
+                    <div t-if="line.note">
+                        <t t-if="receipt.config.print_notes == 1">
+                            <div>
+                                <i class="fa fa-tag">
+                                    <t t-esc="line.note"/>
+                                </i>
+                            </div>
+                        </t>
+                    </div>s
+                </div>
+                <div style="width:10%;text-align:center;">
+                    <t t-esc='line.tax_total'/>%
+                </div>
+                <div class="line-right" style="width:10%;">
+                    <t t-esc='Math.round(line.qty)'/>
+                </div>
+                <div class="line-right" style="width:20%;">
+                    <t t-esc="widget.format_currency_no_symbol(line.price_unit)"/>
+                </div>
+                <div class="line-right" style="width:20%;">
+                    <t t-esc='widget.format_currency_no_symbol(line.price_unit * line.qty)'/>
+                </div>
+            </div>
+            </t>
+            <div class="line"></div>
+            <div class="receipt-amount">
+                <span>Items: <t t-esc="orderlines.length" /> | Qty: <t t-esc="total_qty"/></span>
+                <span class="pos-receipt-right-align pos-total" t-esc='widget.format_currency(subtotal)'/>
+            </div>
+            <div class="pos-receipt-paid">
+                Total Sales Tax
+                <span t-esc='widget.format_currency_no_symbol(tax)' class="pos-receipt-right-align"/>
+            </div>
+            <div class="line" style="margin-left: 77px;width: 225px;"></div>
+            <div class="pos-receipt-paid" style="font-size: 14px;font-weight: 800;margin-top: 5px;">
+                Net Amount
+                <span t-esc='widget.format_currency_no_symbol(tax + subtotal)' class="pos-receipt-right-align"/>
+            </div>
+            <t t-foreach='paymentlines' t-as='line'>
+                <div class="pos-receipt-paid">
+                    Paid by <t t-esc='line.name'/> (Rounded):
+                    <span t-esc='widget.format_currency_no_symbol(line.amount)' class="pos-receipt-right-align"/>
+                </div>
+            </t>
+            <div class="pos-receipt-paid">
+                CASH Back:
+                <span t-esc='widget.format_currency(change)' class="pos-receipt-right-align"/>
+            </div>
+            <div class="line"></div>
+            <div class="receipt-terms">
+                No Exchange without Receipt. Goods Sold are not<br/>
+                Refundable. Exchange within 14 Days of<br/>
+                Purchase. No Exchange or Return on Sale Items.<br/>
+                Visit online Shop<br/>
+                <t t-esc='widget.pos.company.website'/>
+            </div>
+            <div style="text-align: center;">
+                <img style="margin-top: 15px;width: 280px;height: 80px;" t-att-src="barcode_img"/>
+            </div>
+            <div class="line"></div>
+            <div class="footer_date_time">
+                <div class="date">Print Date : <t t-esc="moment(order.creation_date).format('DD-MMM-YYYY')"/></div>
+                <div class="time">Print Time : <t t-esc="moment(order.creation_date).format('hh:mm:ss A')"/></div>
+            </div>
+            <div class="line"></div>
+            <t t-if="note">
+            <div>
+                <div>
+                    <t t-if="receipt.config.print_notes == 1">
+                        <span>
+                            Note:<t t-esc="note"/>
+                        </span>
+                    </t>
+                </div>
+            </div>
+            <div class="line"></div>
+            </t>
+            <div class="receipt-terms">
+                Powered By: Dymaxel Systems (Pvt.) Ltd.<br/>
+                <br/>
+            </div>
+    </div>
+</t>
+    
+    <t t-extend='OrdersScreenWidget'>
+        <t t-jquery='.wk_order_list thead tr' t-operation='append'>
+            <th>Return Status</th>
+        </t>
+    </t>
+    <t t-extend='WkOrderLine'>
+        <t t-jquery='.wk-order-line' t-operation='append'>
+            <td><t t-esc='order.return_status' /></td>
+        </t>
+    </t>
+
+    <t t-extend="OrderReceipt">
+        <t t-jquery=".pos-receipt-contact" t-operation="append">
+            <t t-if='order.is_return_order and !order.is_exchange_order'>
+                <div class="pos-center-align"><span>Return Order</span></div>
+            </t>
+         </t>
+        <t t-jquery=".pos-receipt-contact" t-operation="append">
+            <t t-if='order.is_return_order and order.is_exchange_order'>
+                <div class="pos-center-align"><span>Exchange Order</span></div>
+            </t>
+         </t>
+         <t t-jquery="div.pos-receipt-amount:eq(0)" t-operation="replace">
+            <div class="pos-receipt-amount">
+                <t t-if="!order.is_return_order or order.get_total_with_tax()>0">
+                    TOTAL
+                </t>
+                <t t-if="order.is_return_order and order.get_total_with_tax()&lt;=0">
+                    TOTAL Refund
+                </t>
+                <t t-if="order.is_return_order and order.get_total_with_tax()&lt;=0">
+                    <span t-esc='widget.format_currency_no_symbol(receipt.total_with_tax * -1)' class="pos-receipt-right-align"/>
+                </t>
+                <t t-if="!order.is_return_order and order.get_total_with_tax()&lt;=0">
+                    <span t-esc='widget.format_currency_no_symbol(receipt.total_with_tax)' class="pos-receipt-right-align"/>
+                </t>
+            </div>
+         </t>
+
+    </t>
+
+</templates>
+    

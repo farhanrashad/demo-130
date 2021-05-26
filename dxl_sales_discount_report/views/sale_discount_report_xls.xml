@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <report
+            id="sale_discount_xlsx"
+            model="pos.order"
+            string="Sale Discount Report"
+            report_type="xlsx"
+            name="dxl_sales_discount_report.sale_discount_xlsx"
+            file="dxl_sales_discount_report.sale_discount_xlsx"
+            attachment_use="True"
+            menu="False"
+        />
+    </data>
+</odoo>

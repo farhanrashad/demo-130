@@ -1,0 +1,14 @@
+.leftpane {
+    margin-left: 160px;
+}
+.rightpane {
+    margin-left: 160px;
+}
+.sh_numpad {
+    height: 100%;
+    width: 160px;
+    background-color: #e2e2e2;
+}
+.orders {
+    margin-left: 160px !important;   
+}

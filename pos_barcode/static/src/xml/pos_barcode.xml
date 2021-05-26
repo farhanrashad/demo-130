@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<templates id="pos_barcode_template" inherit_id="point_of_sale.template" xml:space="preserve">
+
+	<t t-name="POSBarcodeReturnWidget" name="POS Return Order with Barcode">
+		<div class="control-button button confirm" id="create_barcode_return2">
+			<i class="fa fa-barcode"></i> Return with Barcode
+		</div>
+	</t>
+	<t t-name="PosBarcodePopupWidget">
+		<div class="modal-dialog">
+			<div class="popup popup-confirm">
+				<p class="title">Return Order Barcode</p>
+					<div class="body">
+						<div class='div-container'>
+							<input id ="entered_item_barcode" type="text" class="input-field" name="code" style='margin-top: 15px;'>
+							</input>
+						</div>
+					</div>
+					<div class="footer">
+					<div class="button cancel">Cancel</div>
+					<div class="button confirm_return" id="apply_barcode_return_order" >Apply</div>
+				</div>
+			</div>
+		</div>
+	</t>
+	<t t-name="PosReturnOrderPopupWidget">
+		<div class="modal-dialog">
+			<div class="popup popup-confirm" style="height: 315px;">
+				<p class="title">Return Products</p>
+					<div class="body" style="height: 150px;">
+						<div class='div-container'>
+							<table class='return-product-list'>
+								<thead style="line-height: 30px;">
+									<tr class="return_product_header">
+										<th>Product</th>
+										<th>Return Qty</th>
+									</tr>
+								</thead>
+								<tbody class='return-product-list-contents  touch-scrollable scrollable-y'>
+									<tr class="return_product_body" t-foreach="widget.options.orderlines || []" t-as="item" style="line-height: 26px;">
+										<td class="popup-product-lable">
+											<t t-esc='item.product_id[1]' />
+										</td>
+									 	<td class="entered_item_qty">
+											<input id ="entered_item_qty" t-att-line-id='item.id' t-att-qty-id='item.qty' t-att-return-qty='item.return_qty' type="text" class="input-field" name="code" style="font-size: 15px; text-align:center;"></input>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					 </div>
+
+				<div class="footer">
+					<div class="button cancel">
+						Cancel
+					</div>
+					<div class="button confirm" id="apply_return_order">
+						Apply
+					</div>
+					<div class="button select_all" id="apply_select_all" style="width: 175px;">
+						Select/Un-Select All
+					</div>
+				</div>
+			</div>
+		</div>
+	</t>
+
+</templates>

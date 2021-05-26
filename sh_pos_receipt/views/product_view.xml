@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>      
+    <record id="product_template_form_view_inheri_receipt" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.product</field>
+        <field name="priority" eval="50"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="barcode" position="after">
+                <field name="variant_name"/>
+            </field>
+        </field>
+    </record>
+    <record id="view_company_form_pos_logo" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.pos.logo</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="favicon" position="after">
+                <field name="pos_logo" widget="image" class="float-left oe_avatar"/>
+            </field>
+        </field>
+    </record>
+</odoo>

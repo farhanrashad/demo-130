@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    <record id="view_account_bnk_stmt_cashbox_footer_inherit_cash_inout" model="ir.ui.view">
+        <field name="name">account.bnk_stmt_cashbox.form.close.modal</field>
+        <field name="model">account.bank.statement.cashbox</field>
+        <field name="inherit_id" ref="account.view_account_bnk_stmt_cashbox_footer"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <field name="is_pos_manager" invisible="1"/>
+            </xpath>
+        </field>
+    </record> -->
+
+    <record id="point_of_sale.view_account_bnk_stmt_cashbox_footer" model="ir.ui.view">
+        <field name="name">account.bnk_stmt_cashbox.form.close.modal</field>
+        <field name="model">account.bank.statement.cashbox</field>
+        <field name="inherit_id" ref="account.view_account_bnk_stmt_cashbox_footer"/>
+        <field name="mode">primary</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                  <field name="is_pos_manager" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='cashbox_lines_ids']" position="before">
+                <button name="set_default_cashbox" type="object" string="Set Default Cash Opening" groups="point_of_sale.group_pos_manager"/>
+            </xpath>
+            <xpath expr="//field[@name='cashbox_lines_ids']" position="attributes">
+                <attribute name="attrs">{'readonly': [('is_pos_manager', '=', False)]}</attribute>
+                <attribute name="context">{'default_currency_id': currency_id, 'is_pos_manager': is_pos_manager}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='cashbox_lines_ids']" position="inside">
+                <form>
+                  <group>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="number" readonly="not context.get('is_pos_manager')"/>
+                  </group>
+                  <group>
+                    <field name="coin_value" widget="monetary" options="{'currency_field': 'currency_id'}" readonly="not context.get('is_pos_manager')"/>
+                    <field name="subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                  </group>
+                  <footer>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                  </footer>
+                </form>
+            </xpath>
+      </field>
+    </record>
+</odoo>
