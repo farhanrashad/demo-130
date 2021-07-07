@@ -1,0 +1,29 @@
+<odoo>
+  <data>
+      
+      
+    <record id="account_asset_form_view_inherit" model="ir.ui.view">
+			<field name="name">account.asset.form.view</field>
+			<field name="model">account.asset</field>
+			<field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//div[hasclass('oe_title')]" position="before">
+                  <div class="oe_title">
+                      <h1>	<field name="code"/> </h1>
+                 </div>    
+				</xpath>
+				<xpath expr="//field[@name='first_depreciation_date']" position="after">
+                       <label for="sequence_number_next"/>
+                         <div>
+                            <field name="sequence_number_next" style="padding-right: 1.0em"/>
+                            <field name="sequence_id" required="0" attrs="{'readonly': 1}" groups="base.group_no_one"/>
+                        </div>
+				</xpath>
+			</field>
+		</record>
+         
+  </data>
+</odoo>
+
+
+<!-- groups="de_account_asset_number.group_asset_sequence" -->

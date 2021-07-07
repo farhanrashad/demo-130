@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="material_template">
+        <t t-call="web.external_layout">
+            <t t-call="web.html_container">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Done</th>
+                            <th>Demand</th>
+                            <th>Reserved</th>
+                            <th>UOM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="docs" t-as='o'>
+                            <tr>
+                                <td>
+                                    <t t-esc="o.product_id.name"/>
+                                </td>
+                                <td>
+                                    <t t-esc="o.quantity"/>
+                                </td>
+                                <td>
+                                    <t t-esc="o.mr_demand"/>
+                                </td>
+                                <td>
+                                    <t t-esc="o.mr_reserved"/>
+                                </td>
+                                <td>
+                                    <t t-esc="o.mr_uom"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+        </t>
+    </template>
+
+</odoo>

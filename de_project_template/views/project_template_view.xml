@@ -1,0 +1,84 @@
+<odoo>
+
+    <record id="action_project_templates" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="domain">[('is_project_template' ,'=', True)]</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_id" ref="project.view_project_kanban"/>
+            <field name="search_view_id" ref="project.view_project_project_filter"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new project
+                </p>
+                <p>
+                    Or <a type="action" name="%(project.ir_actions_server_project_sample)d" tabindex="-1">activate a sample project</a> to play with.
+                </p>
+            </field>
+    </record>
+
+    <record id="project_task_template_form" model="ir.ui.view">
+            <field name="name">project.task.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//header/button[@name='action_assign_to_me']" position="after" >
+                        <button name="action_create_task_template" type="object" string="Create Task Template" class="oe_highlight" attrs="{'invisible' : [('is_task_template', '=', True)]}"/>
+                        <button name="action_create_task" type="object" string="Create Task" class="oe_highlight" attrs="{'invisible' : [('is_task_template', '=', False)]}"/>
+                </xpath>
+
+				<xpath expr="//group/field[@name='tag_ids']" position="after">
+                        <field name="is_task_template" string="Is Task Template?"/>
+                </xpath>
+
+            </field>
+    </record>
+
+
+	<record id="project_task_form" model="ir.ui.view">
+            <field name="name">project.project.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//header/button[@class='oe_highlight oe_read_only']" position="after" >
+                        <button name="action_create_project_template" type="object" string="Create Project Template" class="oe_highlight" attrs="{'invisible' : [('is_project_template', '=', True)]}"/>
+                        <button name="action_create_project" type="object" string="Create Project" class="oe_highlight" attrs="{'invisible' : [('is_project_template', '=', False)]}"/>
+                </xpath>
+
+
+				<xpath expr="//group/field[@name='partner_id']" position="after">
+                        <field name="is_project_template" string="Is Project Template?"/>
+                </xpath>
+
+
+            </field>
+    </record>
+
+    <record id="action_view_all_template_task" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">kanban,tree,form,calendar,pivot,graph,activity</field>
+            <field name="domain">[('is_task_template' ,'=', True)]</field>
+            <field name="context">{'search_default_my_tasks': 1}</field>
+            <field name="search_view_id" ref="project.view_task_search_form"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new task
+                </p><p>
+                    Odoo's project management allows you to manage the pipeline of your tasks efficiently.<br/>
+                    You can track progress, discuss on tasks, attach documents, etc.
+                </p>
+            </field>
+    </record>
+
+
+	<menuitem action="de_project_template.action_project_templates"  id="menu_project_templates" name="Templates" parent="project.menu_main_pm" groups="project.group_project_manager" sequence="2"/>
+
+    <menuitem action="de_project_template.action_project_templates" id="menu_project_template_submenu" name="Project Templates" parent="de_project_template.menu_project_templates" groups="base.group_no_one" sequence="100"/>
+    <menuitem action="de_project_template.action_view_all_template_task" id="menu_task_template_submenu" name="Task Templates" parent="de_project_template.menu_project_templates" groups="base.group_no_one" sequence="101"/>
+
+
+</odoo>

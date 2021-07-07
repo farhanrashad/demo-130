@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+		<menuitem id="employee_insurance_menu_parent" name="Employee Insurance"
+			parent="hr.menu_hr_root" sequence="5" />
+			
+		<menuitem id="employee_insurance_menu" name="Insurance"
+			parent="employee_insurance_menu_parent" sequence="1" action="action_view_employee_insurance"/>
+			
+		<menuitem id="employee_insurance_type_menu" name="Insurance Types"
+			parent="employee_insurance_menu_parent" sequence="2" action="action_view_employee_insurance_type"/>
+	</data>
+</odoo>
+

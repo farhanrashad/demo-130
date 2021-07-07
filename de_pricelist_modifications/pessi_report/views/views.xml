@@ -1,0 +1,93 @@
+<flectra>
+    <data>
+
+        <record id="pessi_report.hr_employee_form_ext" model="ir.ui.view">
+            <field name="name">pessi_report hr_employee_form_ext</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='work_location']" position="after">
+                    <field name="emp_location"/>
+                    <field name="pessi_location"/>
+                </xpath>
+
+                <xpath expr="//field[@name='resource_calendar_id']" position="after">
+                    <field name="emp_status"/>
+                    <field name="nature_of_work"/>
+                </xpath>
+
+                <xpath expr="//page[@name='hr_settings']/group/group[2]" position="after">
+                    <group string='EOBI' name="eobi_group">
+                        <field name="eobi_status"/>
+                        <field name="eobi_no"/>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model='ir.ui.view' id='pessi_report.report_wizard_form'>
+            <field name="name">pessi_report report_wizard_form</field>
+            <field name="model">hr.contributation.register.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Wizard">
+                    <group attrs="{'invisible':[('excel_file','=',1)]}">
+                        <group attrs="{'invisible':[('inventory_printed','=',True)]}">
+                            <field name="date_from"/>
+                            <field name="branch_id"/>
+                        </group>
+                        <!--<group attrs="{'invisible':[('excel_file','=',True), 'readonly': [('excel_file', '=', 'True')]}">-->
+                        <group attrs="{'invisible':[('inventory_printed','=',True)]}">
+                            <field name="date_to"/>
+                        </group>
+                        <group name='sub_group2' attrs="{'invisible':[('inventory_printed','=',False)]}">
+                            <field name="file_name" invisible="1"/>
+                            <field name="excel_file" readonly="1" filename="file_name"/>
+                            <field name="inventory_printed" invisible="1"/>
+                    </group>
+                    </group>
+
+<!--                    <group attrs="{'invisible':[('excel_file','=',False)]}">-->
+<!--                        <group>-->
+<!--                            <field name="file_name" readonly="1"/>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="excel_file" readonly="1" filename="file_name"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
+                    <footer>
+                        <button name='pessi_report' string='Print' class='oe_highlight' type='object'/>
+                        <button string="Cancel" class="btn btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model='ir.actions.act_window' id='pessi_report.report_wizard_form_action'>
+            <field name="name">Pessi Report In Excel</field>
+            <field name="res_model">hr.contributation.register.wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="pessi_report.report_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <record id="pessi_report.hr_contribution_register_form_ext" model="ir.ui.view">
+            <field name="name">pessi_report hr_contribution_register_form_ext</field>
+            <field name="model">hr.contribution.register</field>
+            <field name="inherit_id" ref="hr_payroll.hr_contribution_register_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/group" position="before">
+                    <header>
+                        <button name="%(pessi_report.report_wizard_form_action)d" type="action"
+                                string="PESSI Report" class="oe_highlight"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</flectra>

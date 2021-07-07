@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Open HRMS Employee Info',
+    'version': '13.0.2.0.0',
+    'summary': """Adding Advanced Fields In Employee Master""",
+    'description': 'This module helps you to add more information in employee records.',
+    'category': 'Generic Modules/Human Resources',
+    'author': 'Dynexcel',
+    'company': 'Dynexcel',
+    'website': "https://www.dynexcel.co",
+    'depends': ['base', 'hr', 'mail', 'hr_gamification', 'hr_contract'],
+    'data': [
+        'security/ir.model.access.csv',
+#         'data/data.xml',
+        'views/contract_days_view.xml',
+        'views/updation_config.xml',
+        'views/hr_employee_view.xml',
+        'views/hr_notification.xml',
+    ],
+    'demo': [],
+    'images': ['static/description/banner.png'],
+    'license': 'AGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}

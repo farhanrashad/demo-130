@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_server_material_requirement_inh" model="ir.actions.server">
+        <field name="name">Material Requirement Wizards</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.open_wizard()
+        </field>
+    </record>
+
+</odoo>

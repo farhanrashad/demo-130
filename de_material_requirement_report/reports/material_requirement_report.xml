@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="material_requirement_report_record" model="ir.actions.report">
+        <field name="name">Material Requirement Report</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">de_material_requirement_report.material_template</field>
+    </record>
+    
+</odoo>

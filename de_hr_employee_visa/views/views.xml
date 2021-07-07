@@ -1,0 +1,130 @@
+<odoo>
+  <data>
+	  <!-- form view -->
+	  <record id="hr_employee_form_view_test" model="ir.ui.view">
+			<field name="name">hr.employee.form.inherit</field>
+			<field name="model">hr.employee</field>
+              <field name="inherit_id" ref="hr.view_employee_form"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//page[@name='hr_settings']" position='after'>
+				 <page string="Passport and Visa">
+					 <group>
+						 <group>
+							 <field name="passport_number"/>
+							 <field name="passport_issue_date"/>
+							 <field name="passport_expiry_date"/>
+					     </group>
+						 <group>
+							 <field name="passport_country"/>
+							 <field name="other_nationality" widget="many2many_tags"/>
+					     </group>
+					 </group>
+					 <separator string="Visa"/>
+					 <field name="visa_lines">
+							<tree editable="bottom">
+								<field name="description"/>
+								<field name="visa_Type"/>
+								<field name="Visa_issuance_Date"/>
+								<field name="Visa_Expiration_Date"/>
+								<field name="Visa_country"/>
+								<field name="no_of_entries"/>
+								<field name="status"/>
+							</tree>
+					 </field>
+				 </page>
+                </xpath>
+            </field>
+     </record>
+		<!--	tree view  -->
+	  <record model='ir.ui.view' id='visa_tree_view'>
+        <field name="name">visa.tree.view</field>
+        <field name="model">visa.card.details</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="description"/>
+                <field name="visa_Type"/>
+                <field name="Visa_issuance_Date"/>
+                <field name="Visa_Expiration_Date"/>
+                <field name="Visa_country"/>
+                <field name="Visa_country"/>
+                <field name="no_of_entries"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model='ir.ui.view' id='visa_form_view'>
+        <field name="name">visa.form.view</field>
+        <field name="model">visa.card.details</field>
+        <field name="arch" type="xml">
+            <form>
+				<header>
+					<field name="stats" widget="statusbar" statusbar_visible="to_request,in_process,approve,reject,expired"/>
+				</header>
+				<sheet>
+				<group>
+					<group>
+						<field name="description"/>
+						<field name="visa_Type"/>
+						<field name="Visa_issuance_Date"/>
+						<field name="Visa_Expiration_Date"/>
+					</group>
+					<group>
+						<field name="Visa_country"/>
+						<field name="Visa_country"/>
+						<field name="no_of_entries"/>
+						<field name="status"/>
+					</group>
+				</group>
+				</sheet>
+            </form>
+        </field>
+    </record>
+		<!--	tree view close    -->
+		<!--	search view  -->
+	  <record model='ir.ui.view' id='visa_detail_search_view'>
+        <field name="name">visa.detail.search.view</field>
+        <field name="model">visa.card.details</field>
+        <field name="arch" type="xml">
+            <search string="Custody">
+                <field name="description"/>
+                <field name="visa_Type"/>
+                <field name="Visa_issuance_Date"/>
+                <field name="Visa_Expiration_Date"/>
+                <field name="Visa_country"/>
+                <field name="no_of_entries"/>
+                <field name="status"/>
+<!--                <separator/>-->
+<!--                <group expand="0" string="Group By">-->
+<!--                    <filter string="Status" name="status" domain="[]" context="{'group_by':'state'}"/>-->
+<!--                    <filter string="Employee" name="employee" domain="[]" context="{'group_by':'employee'}"/>-->
+<!--                    <filter string="Vehicle" name="vehicle" domain="[]" context="{'group_by':'fleet'}"/>-->
+<!--                    <filter string="Project" name="Project" domain="[]" context="{'group_by':'project_id'}"/>-->
+<!--                    <filter string="Task" name="Task" domain="[]" context="{'group_by':'task_id'}"/>-->
+<!--                </group>-->
+            </search>
+        </field>
+    </record>
+		<!--	search view close  -->
+
+	  <record id="visa_menu_action" model="ir.actions.act_window">
+        <field name="name">Visa Detais</field>
+        <field name="res_model">visa.card.details</field>
+
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="visa_detail_search_view"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a New Vehicle Request.
+            </p>
+        </field>
+    </record>
+	  <menuitem id="visa_menu_root"
+              name="Visa Detail"
+              parent="hr.menu_hr_root"
+              sequence="3"
+			  action="visa_menu_action"/>
+              /> 	  
+  </data>
+</odoo>
